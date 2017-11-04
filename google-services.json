@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "213590279451",
+    "firebase_url": "https://mathsmart-49d61.firebaseio.com",
+    "project_id": "mathsmart-49d61",
+    "storage_bucket": "mathsmart-49d61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213590279451:android:4513d7af9b22953d",
+        "android_client_info": {
+          "package_name": "com.pythagorithm.mathsmartv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213590279451-8ee0rdj8k3jhq8b9v84jdq5bdovnvhqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC79yxXWQN-wc2Wlz_CT7Qn8ColGrXWjkM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
