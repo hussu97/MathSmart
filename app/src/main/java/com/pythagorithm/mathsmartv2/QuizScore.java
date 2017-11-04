@@ -11,6 +11,8 @@ public class QuizScore {
     private String topic;
     private int time;
     private boolean correctAnswer;
+
+    //constructor
     QuizScore(String qID,String aID,double w,String topic,int time,boolean answer){
         this.questionID=qID;
         this.assignmentID=aID;

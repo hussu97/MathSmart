@@ -5,40 +5,38 @@ package com.pythagorithm.mathsmartv2;
  */
 
 public class Assignment {
-    private String name;
-    private String topic;
-    private int numQuestions;
+    private String assignmentID;
+    private String assignmentName;
+    private String assignmentTopic;
+    private int minCorrectAnswers;
     private String dueDate;
-    private String studentID;
-    private DatabaseConnector dc;
+    private String submissionPeriod;
+    private String[] sectionList;
 
-    public String getName() {return name;}
-
-    public void setName(String name) {this.name = name;}
-
-    public String getTopic() {return topic;}
-
-    public void setTopic(String topic) {this.topic = topic;}
-
-    public int getNumQuestions() {return numQuestions;}
-
-    public void setNumQuestions(int numQuestions) {this.numQuestions = numQuestions;}
-
-    public String getDueDate() {return dueDate;}
-
-    public void setDueDate(String dueDate) {this.dueDate = dueDate;}
-
-    public String getStudentID() {return studentID;}
-
-    public void setStudentID(String studentID) {this.studentID = studentID;}
-
-    public DatabaseConnector getDc() {return dc;}
-
-    public void setDc(DatabaseConnector dc) {this.dc = dc;}
-
-    Assignment(String studentID){
-        this.studentID=studentID;
-
+    //constructor
+    public Assignment(String assignmentID, String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, String[] sectionList) {
+        this.assignmentID = assignmentID;
+        this.assignmentName = assignmentName;
+        this.assignmentTopic = assignmentTopic;
+        this.minCorrectAnswers = minCorrectAnswers;
+        this.dueDate = dueDate;
+        this.submissionPeriod = submissionPeriod;
+        this.sectionList = sectionList;
     }
 
+    //setters and getters
+    public String getAssignmentID() {return assignmentID;}
+    public void setAssignmentID(String assignmentID) {this.assignmentID = assignmentID;}
+    public String getAssignmentName() {return assignmentName;}
+    public void setAssignmentName(String assignmentName) {this.assignmentName = assignmentName;}
+    public String getAssignmentTopic() {return assignmentTopic;}
+    public void setAssignmentTopic(String assignmentTopic) {this.assignmentTopic = assignmentTopic;}
+    public int getMinCorrectAnswers() {return minCorrectAnswers;}
+    public void setMinCorrectAnswers(int minCorrectAnswers) {this.minCorrectAnswers = minCorrectAnswers;}
+    public String getDueDate() {return dueDate;}
+    public void setDueDate(String dueDate) {this.dueDate = dueDate;}
+    public String getSubmissionPeriod() {return submissionPeriod;}
+    public void setSubmissionPeriod(String submissionPeriod) {this.submissionPeriod = submissionPeriod;}
+    public String[] getSectionList() {return sectionList;}
+    public void setSectionList(String[] sectionList) {this.sectionList = sectionList;}
 }
