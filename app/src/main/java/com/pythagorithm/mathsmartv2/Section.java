@@ -8,6 +8,10 @@ public class Section {
     String sectionID;
     Student [] students;
 
+    public Section(String sectionID) {
+        this.sectionID = sectionID;
+    }
+
     public String getGrade() {
         return grade;
     }

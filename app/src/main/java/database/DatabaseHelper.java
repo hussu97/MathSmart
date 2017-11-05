@@ -3,12 +3,17 @@ package database;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.pythagorithm.mathsmartv2.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,14 +22,16 @@ import java.util.Map;
  * This class interfaces the Firestore realtime database with the application
  */
 public class DatabaseHelper {
-    // This is the name of the collection for questions
+    // This is the name of the collections in the database
     final String QUESTION_COLLECTION = "question";
+    final String ASSIGNMENT_COLLECTION = "assignment";
     // This tag is used for logging
     final String DATABASE_TAG = "Firestore";
     // This flag is used to determine whether update functions run correctly
     boolean success;
     String aID="";
     String qID="";
+    ArrayList<Question> qs;
     FirebaseFirestore db;
 
     // at the initiation of the database, the connection is created
@@ -67,7 +74,7 @@ public class DatabaseHelper {
         Postconditions: A new Assignment object has been added to the database and its ID is returned.
    */
     public String addAssignment(Assignment a){
-        db.collection(QUESTION_COLLECTION)
+        db.collection(ASSIGNMENT_COLLECTION)
                 .add(a)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -123,7 +130,7 @@ public class DatabaseHelper {
      */
     public boolean updateAssignment(final String attribute, final String value, final String currAID){
         success = false;
-        db.collection(QUESTION_COLLECTION)
+        db.collection(ASSIGNMENT_COLLECTION)
                 .document(currAID)
                 .update(attribute, value)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -141,5 +148,22 @@ public class DatabaseHelper {
                     }
                 });
         return success;
+    }
+
+    public ArrayList<Question> retrieveQuestionsOfAssignment(String secID){
+        qs = new ArrayList<Question>();
+        db.collection(ASSIGNMENT_COLLECTION)
+                .whereEqualTo("sections",new Section(secID))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (DocumentSnapshot doc : task.getResult()){
+                        qs.add(doc.toObject(Question.class));
+                    }
+                }
+            }
+        });
+        return qs;
     }
 }

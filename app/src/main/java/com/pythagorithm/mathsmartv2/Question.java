@@ -5,7 +5,7 @@ package com.pythagorithm.mathsmartv2;
  * This class is temporary for testing purposes
  */
 public class Question {
-    String id;
+    String questionID;
 
     String questionStatment;
     String correctAnswer, wrongAnswer1, difficulty, topic;
@@ -26,12 +26,12 @@ public class Question {
         this.topic = topic;
     }
 
-    public String getId() {
-        return id;
+    public String getQuestionID() {
+        return questionID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setQuestionID(String id) {
+        this.questionID = id;
     }
 
     public String getQuestionStatment() {

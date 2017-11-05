@@ -1,5 +1,6 @@
 package com.pythagorithm.mathsmartv2;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import database.DatabaseHelper;
@@ -21,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         Question q = new Question("this is a stupid q", "correct", "wrong", "3", "maths","ds");
 
         db.addQuestion(q);
+
+
+        db.updateQuestion("correctAnswer", "correcter", "1bVzoeZW6BqAEKxr0c2k");
     }
 
 

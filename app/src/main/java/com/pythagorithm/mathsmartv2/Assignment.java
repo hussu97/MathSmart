@@ -12,8 +12,7 @@ public class Assignment {
     int submissionPeriod;
     Section [] sections;
 
-    public Assignment(String assignmentID, String assignmentName, String assignmentTopic, int minCorrectAnswers, Date dueDate, int submissionPeriod, Section[] sections) {
-        this.assignmentID = assignmentID;
+    public Assignment( String assignmentName, String assignmentTopic, int minCorrectAnswers, Date dueDate, int submissionPeriod, Section[] sections) {
         this.assignmentName = assignmentName;
         this.assignmentTopic = assignmentTopic;
         this.minCorrectAnswers = minCorrectAnswers;
