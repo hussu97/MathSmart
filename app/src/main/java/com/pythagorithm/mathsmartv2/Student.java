@@ -8,19 +8,25 @@ import java.util.ArrayList;
 
 public class Student extends User {
     private String sectionID;
+    private String studentID;
     private ArrayList<Assignment> assignmentList;
     private DatabaseConnector dc;
     private AssignmentHandler aH;
     Student(){
-        this.sectionID=super.userID;
+        this.studentID=super.userID;
         this.dc=super.dc;
         assignmentList=dc.getAvailableAssignments(sectionID);
     }
 
-    public void continueAssignment(int assignmentNum,int questionNumber){
+    public Question startAssignment(int assignmentNum){
         if(assignmentNum<assignmentList.size()) {
-            aH = new AssignmentHandler(assignmentList.get(assignmentNum));
-            aH.init();
+            aH = new AssignmentHandler(assignmentList.get(assignmentNum),studentID);
+            return aH.getCurrentQuestion();
         }
+        else
+            return null;
+    }
+    public void solveQuestion(String qID,String aID,int w,String topic,int time,boolean answer){
+        aH.solveQuestion(qID,aID,w,topic,time,answer);
     }
 }

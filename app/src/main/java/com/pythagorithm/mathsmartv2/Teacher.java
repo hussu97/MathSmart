@@ -14,36 +14,42 @@ public class Teacher extends User{
     private String sectionID;
     private Question question;
 
-    Teacher(){
-        this.teacherID=super.userID;
+    Teacher(String teacherID){
+        super(teacherID);
         this.dc=new DatabaseConnector(teacherID);
     }
 
     //=========================================================================================================================
     //QUESTIONS
     //=========================================================================================================================
-    public Question getQuestion(String questionID){
-        return dc.getQuestion(questionID);
+    public ArrayList<Question> getAvailableQuestions(String topic, String sectionID){
+        return dc.getAvailableQuestions(topic,sectionID);
     }
-    public Question createQuestion(String qID, String qStatement, String[] a, int w, String topic){
-        return new Question(qID, qStatement, a, w, topic);
+    public Question createQuestion(String qID, String qStatement, String[] a, String c,int w, String topic){
+        Question q=new Question(qStatement, a,c, w, topic);
+        q.setQuestionID(addQuestion(q));
+        return q;
     }
     public Question editQuestion(String questionID){
         return getQuestion(questionID);
     }
     public void updateQuestion(String questionID,Question question){
-        dc.setQuestion(questionID,question);
+        dc.updateQuestion(questionID,question);
     }
-
-
+    private String addQuestion(Question q){
+        return dc.addQuestion(q);
+    }
+    private Question getQuestion(String questionID) {
+        return dc.getQuestion(questionID);
+    }
     //=========================================================================================================================
     //ASSIGNMENTS
     //=========================================================================================================================
     public ArrayList<Assignment> getAssignments(String sectionID){
         return dc.getAvailableAssignments(sectionID);
     }
-    public Assignment createAssignment(String assignmentID,String name, String topic, int numQuestions, String dueDate, String submissionPeriod,String[] sectionID){
-        return new Assignment(assignmentID,name, topic, numQuestions, dueDate,submissionPeriod, sectionID);
+    public Assignment createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod,String[] sectionID){
+        return new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionID);
     }
     public Assignment editAssignment(String sectionID){
         for(Assignment a:availableAssignments)

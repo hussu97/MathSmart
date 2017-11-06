@@ -14,7 +14,7 @@ public class Assignment {
     private String[] sectionList;
 
     //constructor
-    public Assignment(String assignmentID, String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, String[] sectionList) {
+    public Assignment(String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, String[] sectionList) {
         this.assignmentID = assignmentID;
         this.assignmentName = assignmentName;
         this.assignmentTopic = assignmentTopic;

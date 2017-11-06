@@ -18,26 +18,31 @@ public class Progress {
 
     //Setters and getters
     public String getQuestionID() {return questionID;}
-    public void setQuestionID(String questionID) {
+    public Progress setQuestionID(String questionID) {
         this.questionID = questionID;
+        return this;
     }
     public boolean isComplete() {
         return isComplete;
     }
-    public void setComplete(boolean complete) {
+    public Progress setComplete(boolean complete) {
         isComplete = complete;
+        return this;
     }
     public boolean isFilled() {
         return isFilled;
     }
-    public void setFilled(boolean filled) {
+    public Progress setFilled(boolean filled) {
         isFilled = filled;
+        return this;
     }
     public int getWeight() {
         return weight;
     }
-    public void setWeight(int weight) {
+    public Progress setWeight(int weight) {
         this.weight = weight;
+        return this;
     }
+
 
 }

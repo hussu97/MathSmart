@@ -7,18 +7,19 @@ package com.pythagorithm.mathsmartv2;
 public class Question {
     private String questionID;
     private String questionStatement;
-    private String[] answers;
+    private String[] wrongAnswer;
+    private String correctAnswer;
     private int weight;
     private String topic;
 
     //constructor
-    Question(String qID, String qStatement, String[] a, int w, String topic){
-        this.questionID=qID;
+    Question(String qStatement, String[] a,String c, int w, String topic){
         this.questionStatement=qStatement;
-        answers=new String[a.length];
+        wrongAnswer=new String[a.length];
         for(int i=0;i<a.length;i++)
-            answers[i]=a[i];
+            wrongAnswer[i]=a[i];
         this.weight=w;
+        this.correctAnswer=c;
         this.topic=topic;
     }
 
@@ -31,12 +32,10 @@ public class Question {
         return questionStatement;
     }
     public void setQuestionStatement(String questionStatement) {this.questionStatement = questionStatement;}
-    public String[] getAnswers() {
-        return answers;
-    }
-    public void setAnswers(String[] answers) {
-        this.answers = answers;
-    }
+    public String[] getWrongAnswer() {return wrongAnswer;}
+    public void setWrongAnswer(String[] wrongAnswer) {this.wrongAnswer = wrongAnswer;}
+    public String getCorrectAnswer() {return correctAnswer;}
+    public void setCorrectAnswer(String correctAnswer) {this.correctAnswer = correctAnswer;}
     public int getWeight() {
         return weight;
     }

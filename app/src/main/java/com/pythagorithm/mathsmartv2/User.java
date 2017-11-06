@@ -3,15 +3,13 @@ package com.pythagorithm.mathsmartv2;
 /**
  * Created by H_Abb on 11/2/2017.
  */
-public class User {
-    private String username;
+public abstract class User {
     protected String userID;
     protected DatabaseConnector dc;
     User(){
-        this("null","null");
+        this("null");
     }
-    User(String username,String userID){
-        this.username=username;
+    User(String userID){
         this.userID=userID;
         dc=new DatabaseConnector(userID);
     }

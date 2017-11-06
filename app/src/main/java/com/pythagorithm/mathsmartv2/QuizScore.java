@@ -7,13 +7,13 @@ package com.pythagorithm.mathsmartv2;
 public class QuizScore {
     private String questionID;
     private String assignmentID;
-    private double weight;
+    private int weight;
     private String topic;
     private int time;
     private boolean correctAnswer;
 
     //constructor
-    QuizScore(String qID,String aID,double w,String topic,int time,boolean answer){
+    QuizScore(String qID,String aID,int w,String topic,int time,boolean answer){
         this.questionID=qID;
         this.assignmentID=aID;
         this.weight=w;
@@ -21,4 +21,5 @@ public class QuizScore {
         this.topic=topic;
         this.correctAnswer=answer;
     }
+
 }
