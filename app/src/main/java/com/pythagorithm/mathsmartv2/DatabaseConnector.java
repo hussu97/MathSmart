@@ -52,6 +52,18 @@ public class DatabaseConnector {
     public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
         return "JI";
     }
-    public void updateScore(QuizScore qS,String studentID){
+    public void updateScore(String aID,String qID,double questionScore,double overallScore){
+    }
+    public boolean saveAssignment(String aID,ArrayList<String> completedQuestions,double assignmentScore,double overallScore){
+        return true;
+    }
+    //=========================================================================================================================
+    //SCORES
+    //=========================================================================================================================
+    public double getAssignmentScore(String aID,String studentID){
+        return 0;
+    }
+    public double getOverallScore(String studentID){
+        return 0;
     }
 }

@@ -21,7 +21,6 @@ public class AssignmentHandler {
     private int max;
     private String studentID;
     private Assignment assignment;
-    private Progress progress[][];
     private double overallScore;
     private double currentScore;
     private double assignmentScore;
@@ -37,10 +36,6 @@ public class AssignmentHandler {
     AssignmentHandler(Assignment assignment,String studentID){
         this.studentID=studentID;
         this.assignment=assignment;
-        this.assignmentScore=0;
-        max=this.assignment.getMinCorrectAnswers();
-        progress=new Progress[MAX_WEIGHT][MAX_VERSION];
-        completedQuestions=new ArrayList<>();
         dc=new DatabaseConnector();
         init();
     }
@@ -48,8 +43,6 @@ public class AssignmentHandler {
     //setters and getters
     public Assignment getAssignment() {return assignment;}
     public void setAssignment(Assignment assignment) {this.assignment = assignment;}
-    public Progress[][] getProgress() {return progress;}
-    public void setProgress(Progress[][] progress) {this.progress = progress;}
     public double getOverallScore() {return overallScore;}
     public void setOverallScore(double overallScore) {this.overallScore = overallScore;}
     public double getCurrentScore() {return currentScore;}
@@ -66,88 +59,66 @@ public class AssignmentHandler {
     Gets available Questions from database for each difficulty in one topic
      */
     private void init(){
-        String topic = assignment.getAssignmentTopic();
-        Question q;
-
-        for(int i=0;i<MAX_WEIGHT;i++){
-            completedQuestions.clear();
-            for(int j=0;j<MAX_VERSION;j++){
-                q=dc.getQuestion(completedQuestions,i,topic);
-                if(q!=null) {
-                    completedQuestions.add(q.getQuestionID());
-                    progress[i][j].setQuestionID(q.getQuestionID()).setWeight(q.getWeight()).setFilled(true);
-                }
-                else{
-                    j=MAX_VERSION;
-                }
-            }
-        }
+        max=assignment.getMinCorrectAnswers();
+        completedQuestions=new ArrayList<>();
         start();
     }
     /*
     Private function to return the First question of the database
      */
     private void start(){
-        progress[(int)Math.ceil(overallScore)][0].setComplete(true);
-        currentQuestion=dc.getQuestion(progress[(int)Math.ceil(overallScore)][0].getQuestionID());
+        int x=ceil(overallScore);
+        completedQuestions.clear();
+        currentQuestion=dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
+        completedQuestions.add(currentQuestion.getQuestionID());
     }
     /*
     Function used to generate current question score and send back new question
      */
-    public void solveQuestion(String qID,String aID,int w,String topic,int time,boolean answer) {
+    public Question solveQuestion(Question currQ,int time,boolean answer) {
+        int i=ceil(overallScore);
+        boolean alt=true;
+        int scoreMinus=i,scorePlus=i;
+        currentQuestion=null;
+
         //scores generation
-        currentScore = generateScore(qID, aID, w, topic, time, answer);
+        currentScore = masterFormula(currQ.getWeight(),answer,time);
         assignmentScore+=currentScore;
         overallScore = OVERALL_SCORE_WEIGHT * overallScore + CURRENT_SCORE_WEIGHT * currentScore;
+        dc.updateScore(assignment.getAssignmentID(),currQ.getQuestionID(),currentScore,overallScore);
 
-        int i = (int) Math.ceil(overallScore), j=0;
-        //Change difficulty to +-1, +-2, so on if question from same difficulty is not available
-        int weightPlus=i; int weightMinus=i;
-        boolean foundQuestion=false,alt=true;
-        //If question is answered correctly, reduce minnumber of correct questions
-        if(answer)max--;
-        //If assignment is complete, return null question
-        if(max==0) {
-            currentQuestion=null;
-            return;
+        if(--max==0)
+            return null;
+
+        while(currentQuestion==null&&(i>0||i<11)) {
+            currentQuestion = dc.getQuestion(completedQuestions, i, assignment.getAssignmentTopic());
+            if(alt)
+                i=++scorePlus;
+            else
+                i=--scoreMinus;
+            alt=!alt;
         }
-        while(!foundQuestion){
-            j=0;
-            if(i>-1&&i<MAX_WEIGHT) {
-                if (progress[i][j].isFilled() && progress[i][j].isComplete() && j < MAX_VERSION) {
-                    j++;
-                }
-            }
-            //Appropriate question has been found
-            else if(!progress[i][j].isComplete()){
-                foundQuestion=true;
-            }
-            //Changing weight of question to be found
-            else if (weightPlus<MAX_WEIGHT&&weightMinus>-1){
-                if(alt)
-                    i=++weightPlus;
-                else
-                    i=--weightMinus;
-                alt=!alt;
-            }
-            //Assignment has run out of questions to offer
-            else{
-                currentQuestion=null;
-                return;
-            }
+
+        if(currentQuestion==null)
+            return null;
+        else {
+            completedQuestions.add(currentQuestion.getQuestionID());
+            return currentQuestion;
         }
-        progress[i][j].setComplete(true);
-        currentQuestion=dc.getQuestion(progress[i][j].getQuestionID());
     }
-    private double generateScore(String qID,String aID,int w,String topic,int time,boolean answer){
-        dc.updateScore(new QuizScore(qID, aID, w, topic, time, answer),studentID);
-        return masterFormula(w,answer,time);
+
+    public boolean saveAssignment(){
+        return dc.saveAssignment(assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore);
     }
+
     //420 BLAZE IT SHIZZZZZZ
     private double masterFormula(int weight, boolean correct,int time){
         if(correct)
             return CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time);
         else
             return (CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time))*-1;
+    }
+    private int ceil(double score){
+        return (int)Math.ceil(score);
     }
 }

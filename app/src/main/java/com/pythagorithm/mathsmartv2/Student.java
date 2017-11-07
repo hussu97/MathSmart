@@ -17,7 +17,6 @@ public class Student extends User {
         this.dc=super.dc;
         assignmentList=dc.getAvailableAssignments(sectionID);
     }
-
     public Question startAssignment(int assignmentNum){
         if(assignmentNum<assignmentList.size()) {
             aH = new AssignmentHandler(assignmentList.get(assignmentNum),studentID);
@@ -26,11 +25,19 @@ public class Student extends User {
         else
             return null;
     }
-    public Question getNextQuestion(Question q,String aID,int time,boolean answer){
-        solveQuestion(q.getQuestionID(), aID, q.getWeight(), q.getTopic(), time, answer);
-        return aH.getCurrentQuestion();
+    public Question continueAssignment(){
+        return null;
     }
-    private void solveQuestion(String qID,String aID,int w,String topic,int time,boolean answer){
-        aH.solveQuestion(qID,aID,w,topic,time,answer);
+    public boolean saveAssignment(){
+        return aH.saveAssignment();
+    }
+    public Question getNextQuestion(Question currQ,int time,boolean answer){
+        return aH.solveQuestion(currQ,time, answer);
+    }
+    public double getAssignmentScore(int assignmentNum){
+        return dc.getAssignmentScore(assignmentList.get(assignmentNum).getAssignmentID(),studentID);
+    }
+    public double getOverallScore(String studentID){
+        return dc.getOverallScore(studentID);
     }
 }

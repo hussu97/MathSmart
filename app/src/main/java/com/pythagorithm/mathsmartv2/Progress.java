@@ -8,7 +8,6 @@ public class Progress {
     private String questionID;
     private boolean isComplete;
     private boolean isFilled;
-    private int weight;
 
     //Constructor
     Progress(){
@@ -34,13 +33,6 @@ public class Progress {
     }
     public Progress setFilled(boolean filled) {
         isFilled = filled;
-        return this;
-    }
-    public int getWeight() {
-        return weight;
-    }
-    public Progress setWeight(int weight) {
-        this.weight = weight;
         return this;
     }
 
