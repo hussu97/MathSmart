@@ -25,8 +25,6 @@ public class Teacher extends User{
     public void setTeacherID(String teacherID) {this.teacherID = teacherID;}
     public String[] getSectionList() {return sectionList;}
     public void setSectionList(String[] sectionList) {this.sectionList = sectionList;}
-    public ArrayList<Assignment> getAvailableAssignments() {return availableAssignments;}
-    public void setAvailableAssignments(ArrayList<Assignment> availableAssignments) {this.availableAssignments = availableAssignments;}
     public String getSectionID() {return sectionID;}
     public void setSectionID(String sectionID) {this.sectionID = sectionID;}
     public Question getQuestion() {return question;}

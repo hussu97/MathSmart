@@ -22,4 +22,51 @@ public class QuizScore {
         this.correctAnswer=answer;
     }
 
+    public String getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
+    }
+
+    public String getAssignmentID() {
+        return assignmentID;
+    }
+
+    public void setAssignmentID(String assignmentID) {
+        this.assignmentID = assignmentID;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public boolean isCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(boolean correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 }

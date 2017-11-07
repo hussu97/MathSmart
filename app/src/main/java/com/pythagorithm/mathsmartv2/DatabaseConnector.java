@@ -53,6 +53,5 @@ public class DatabaseConnector {
         return "JI";
     }
     public void updateScore(QuizScore qS,String studentID){
-
     }
 }

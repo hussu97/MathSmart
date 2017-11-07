@@ -7,6 +7,9 @@ import java.util.ArrayList;
  */
 
 public class AssignmentHandler {
+    /*
+    CONSTANTS for calculating score and for defining number of difficulties and versions
+     */
     private final double WEIGHT_VALUE=0.5;
     private final double TIME_VALUE=0.1;
     private final double CORRECT_ANSWER_VALUE=0.3;
@@ -14,6 +17,7 @@ public class AssignmentHandler {
     private final double CURRENT_SCORE_WEIGHT=0.2;
     private final int MAX_WEIGHT=10;
     private final int MAX_VERSION=5;
+    //other attributes
     private int max;
     private String studentID;
     private Assignment assignment;
@@ -142,8 +146,8 @@ public class AssignmentHandler {
     //420 BLAZE IT SHIZZZZZZ
     private double masterFormula(int weight, boolean correct,int time){
         if(correct)
-            return CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*time;
+            return CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time);
         else
-            return (CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*time)*-1;
+            return (CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time))*-1;
     }
 }
