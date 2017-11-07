@@ -14,10 +14,24 @@ public class Teacher extends User{
     private String sectionID;
     private Question question;
 
+    //Constructor
     Teacher(String teacherID){
         super(teacherID);
         this.dc=new DatabaseConnector(teacherID);
     }
+
+    //Getters and setters
+    public String getTeacherID() {return teacherID;}
+    public void setTeacherID(String teacherID) {this.teacherID = teacherID;}
+    public String[] getSectionList() {return sectionList;}
+    public void setSectionList(String[] sectionList) {this.sectionList = sectionList;}
+    public ArrayList<Assignment> getAvailableAssignments() {return availableAssignments;}
+    public void setAvailableAssignments(ArrayList<Assignment> availableAssignments) {this.availableAssignments = availableAssignments;}
+    public String getSectionID() {return sectionID;}
+    public void setSectionID(String sectionID) {this.sectionID = sectionID;}
+    public Question getQuestion() {return question;}
+    public void setQuestion(Question question) {this.question = question;}
+
 
     //=========================================================================================================================
     //QUESTIONS
@@ -48,8 +62,10 @@ public class Teacher extends User{
     public ArrayList<Assignment> getAssignments(String sectionID){
         return dc.getAvailableAssignments(sectionID);
     }
-    public Assignment createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod,String[] sectionID){
-        return new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionID);
+    public Assignment createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod, String[] sectionList){
+        Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
+        a.setAssignmentID(addAssignment(a));
+        return a;
     }
     public Assignment editAssignment(String sectionID){
         for(Assignment a:availableAssignments)
@@ -65,7 +81,7 @@ public class Teacher extends User{
             }
         }
     }
-    public void uploadAssignment(Assignment assigment){
-        dc.setAvailableAssignments(sectionID,availableAssignments);
+    public String addAssignment(Assignment assigment){
+        return dc.addAssignment(assigment.getSectionList(),availableAssignments);
     }
 }

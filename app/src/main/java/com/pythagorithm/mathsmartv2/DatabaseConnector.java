@@ -18,6 +18,9 @@ public class DatabaseConnector {
     public ArrayList<Question> getAvailableQuestions(String topic,String sectionID){
         return new ArrayList<>();
     }
+    //=========================================================================================================================
+    //QUESTIONS
+    //=========================================================================================================================
     public Question getQuestion(int weight, String topic){
         String[] s=new String[4];
         return new Question("s",s,"s",4,"s");
@@ -39,12 +42,15 @@ public class DatabaseConnector {
     public void updateQuestion(String qID,Question q){
 
     }
+    //=========================================================================================================================
+    //ASSIGNMENTS
+    //=========================================================================================================================
     public ArrayList<Assignment> getAvailableAssignments(String sectionID){
         return new ArrayList<>();
     }
 
-    public void setAvailableAssignments(String sectionID,ArrayList<Assignment> assignmentList){
-
+    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
+        return "JI";
     }
     public void updateScore(QuizScore qS,String studentID){
 
