@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         sup s = new sup();
         s.getNextQuesion(prevQ, 3, curr);
 
-        
+
 
     }
 
