@@ -21,11 +21,6 @@ public class DatabaseConnector {
     //=========================================================================================================================
     //QUESTIONS
     //=========================================================================================================================
-    public Question getQuestion(int weight, String topic){
-        String[] s=new String[4];
-        return new Question("s",s,"s",4,"s");
-    }
-
     public Question getQuestion(ArrayList<String> completedQuestion,int weight, String topic){
         String[] s=new String[4];
         return new Question("s",s,"s",4,"s");
@@ -48,13 +43,16 @@ public class DatabaseConnector {
     public ArrayList<Assignment> getAvailableAssignments(String sectionID){
         return new ArrayList<>();
     }
-
+    public void getAssignmentProgress(String studentID,String aID,ArrayList<String> completedQuestions,double assignmentScore,int min){
+        //Change values of completedQuestions, assignmentScore, and min
+        //If not available, change value of completedQuestions to 'null'
+    }
     public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
         return "JI";
     }
     public void updateScore(String aID,String qID,double questionScore,double overallScore){
     }
-    public boolean saveAssignment(String aID,ArrayList<String> completedQuestions,double assignmentScore,double overallScore){
+    public boolean saveAssignment(String studentID,String aID,ArrayList<String> completedQuestions,double assignmentScore,double overallScore){
         return true;
     }
     //=========================================================================================================================

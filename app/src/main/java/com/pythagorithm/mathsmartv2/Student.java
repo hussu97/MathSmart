@@ -10,23 +10,31 @@ public class Student extends User {
     private String sectionID;
     private String studentID;
     private ArrayList<Assignment> assignmentList;
+    private ArrayList<String>currAssignmentQuestions;
+    private double currAssignmentScore;
+    private double overallScore;
+    private int min;
     private DatabaseConnector dc;
     private AssignmentHandler aH;
     Student(){
         this.studentID=super.userID;
         this.dc=super.dc;
+        overallScore=dc.getOverallScore(studentID);
         assignmentList=dc.getAvailableAssignments(sectionID);
     }
     public Question startAssignment(int assignmentNum){
         if(assignmentNum<assignmentList.size()) {
-            aH = new AssignmentHandler(assignmentList.get(assignmentNum),studentID);
+            dc.getAssignmentProgress(assignmentList.get(assignmentNum).getAssignmentID(),studentID,currAssignmentQuestions,currAssignmentScore,min);
+            if(currAssignmentQuestions==null) {
+                aH = new AssignmentHandler(assignmentList.get(assignmentNum), studentID,overallScore);
+            }
+            else{
+                aH=new AssignmentHandler(assignmentList.get(assignmentNum),studentID,overallScore,currAssignmentQuestions,currAssignmentScore,min);
+            }
             return aH.getCurrentQuestion();
         }
         else
             return null;
-    }
-    public Question continueAssignment(){
-        return null;
     }
     public boolean saveAssignment(){
         return aH.saveAssignment();

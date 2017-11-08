@@ -18,7 +18,7 @@ public class AssignmentHandler {
     private final int MAX_WEIGHT=10;
     private final int MAX_VERSION=5;
     //other attributes
-    private int max;
+    private int min;
     private String studentID;
     private Assignment assignment;
     private double overallScore;
@@ -30,14 +30,29 @@ public class AssignmentHandler {
 
     /*
     Constructor: Initializes studentID to upload quizScore
-    Progress: Filled with Question ID's and used to check whether a question has been solved or not
-    Completed Questions: Array of questions solved by student
      */
-    AssignmentHandler(Assignment assignment,String studentID){
+    //Starting new Assignment
+    AssignmentHandler(Assignment assignment,String studentID,double overallScore){
         this.studentID=studentID;
         this.assignment=assignment;
+        this.overallScore=overallScore;
+        this.min=assignment.getMinCorrectAnswers();
         dc=new DatabaseConnector();
         init();
+    }
+    /*
+    Continuing an existing assignment
+    Extra arguments required: List of completed questions (Only question ID), assignment score, and also the updated minimum number of correct answers
+     */
+    AssignmentHandler(Assignment assignment,String studentID,double overallScore,ArrayList<String> completedQuestions,double assignmentScore,int min){
+        this.studentID=studentID;
+        this.assignment=assignment;
+        this.completedQuestions=completedQuestions;
+        this.assignmentScore=assignmentScore;
+        this.overallScore=overallScore;
+        this.min=min;
+        dc=new DatabaseConnector();
+        start();
     }
 
     //setters and getters
@@ -59,8 +74,9 @@ public class AssignmentHandler {
     Gets available Questions from database for each difficulty in one topic
      */
     private void init(){
-        max=assignment.getMinCorrectAnswers();
+        min=assignment.getMinCorrectAnswers();
         completedQuestions=new ArrayList<>();
+        assignmentScore=0;
         start();
     }
     /*
@@ -68,9 +84,7 @@ public class AssignmentHandler {
      */
     private void start(){
         int x=ceil(overallScore);
-        completedQuestions.clear();
         currentQuestion=dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
-        completedQuestions.add(currentQuestion.getQuestionID());
     }
     /*
     Function used to generate current question score and send back new question
@@ -79,6 +93,7 @@ public class AssignmentHandler {
         int i=ceil(overallScore);
         boolean alt=true;
         int scoreMinus=i,scorePlus=i;
+        completedQuestions.add(currQ.getQuestionID());
         currentQuestion=null;
 
         //scores generation
@@ -87,9 +102,13 @@ public class AssignmentHandler {
         overallScore = OVERALL_SCORE_WEIGHT * overallScore + CURRENT_SCORE_WEIGHT * currentScore;
         dc.updateScore(assignment.getAssignmentID(),currQ.getQuestionID(),currentScore,overallScore);
 
-        if(--max==0)
+        //checking whether assignment is complete of not
+        if(answer)
+            --min;
+        if(min==0)
             return null;
 
+        //getting appropriate question
         while(currentQuestion==null&&(i>0||i<11)) {
             currentQuestion = dc.getQuestion(completedQuestions, i, assignment.getAssignmentTopic());
             if(alt)
@@ -99,16 +118,16 @@ public class AssignmentHandler {
             alt=!alt;
         }
 
+
         if(currentQuestion==null)
             return null;
         else {
-            completedQuestions.add(currentQuestion.getQuestionID());
             return currentQuestion;
         }
     }
 
     public boolean saveAssignment(){
-        return dc.saveAssignment(assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore);
+        return dc.saveAssignment(studentID,assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore);
     }
 
     //420 BLAZE IT SHIZZZZZZ
