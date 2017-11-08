@@ -14,6 +14,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pythagorithm.mathsmartv2.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,15 +25,20 @@ import java.util.Map;
  * This class interfaces the Firestore realtime database with the application
  */
 public class DatabaseHelper {
-    // This is the name of the collection for questions
-    final static String QUESTION_COLLECTION = "question";
+
+    // This is the name of the collections in the database
+    final String QUESTION_COLLECTION = "question";
+    final String ASSIGNMENT_COLLECTION = "assignment";
     // This tag is used for logging
     final static String DATABASE_TAG = "Firestore";
     // This flag is used to determine whether update functions run correctly
     boolean success;
     String aID="";
     String qID="";
-    static FirebaseFirestore db;
+
+
+    ArrayList<Question> qs;
+    FirebaseFirestore db;
 
     // at the initiation of the database, the connection is created
     public DatabaseHelper(){
@@ -73,7 +80,7 @@ public class DatabaseHelper {
         Postconditions: A new Assignment object has been added to the database and its ID is returned.
    */
     public String addAssignment(Assignment a){
-        db.collection(QUESTION_COLLECTION)
+        db.collection(ASSIGNMENT_COLLECTION)
                 .add(a)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -146,6 +153,7 @@ public class DatabaseHelper {
                     }
                 });
     }
+
 //    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //        @Override
 //        public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -165,32 +173,6 @@ public class DatabaseHelper {
 //    });
 //    }
 
-    public static void getNextQuesion(final String[] prevQs, final int diff, final CurrentQuestion curr){
-        db.collection(QUESTION_COLLECTION)
-                .whereEqualTo("difficulty", diff)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (DocumentSnapshot doc : task.getResult()){
-                                if (Arrays.asList(prevQs).contains(doc.getId())){
-                                    Log.d(DATABASE_TAG, "Question with ID: "+ doc.getId() +" found. Not needed.");
-                                }
-                                else {
-                                    Log.d(DATABASE_TAG, "Question with ID: "+ doc.getId() +" found. Success.");
-                                    Question q = doc.toObject(com.pythagorithm.mathsmartv2.Question.class);
-                                    Log.d(DATABASE_TAG, "onComplete: "+ doc.getData());
-                                    curr.setQuestionObject(q);
-                                    curr.setImported(true);
-//                                    LoginActivity.
-                                }
-                            }
-                        }
-                    }
-
-        });
-    }
 
 }

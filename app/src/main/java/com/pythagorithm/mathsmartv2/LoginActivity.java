@@ -1,8 +1,10 @@
 package com.pythagorithm.mathsmartv2;
 
+
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         sup s = new sup();
         s.getNextQuesion(prevQ, 3, curr);
 
+        
 
-        Log.d("stup", "ot a new question");
     }
 
     void display(){

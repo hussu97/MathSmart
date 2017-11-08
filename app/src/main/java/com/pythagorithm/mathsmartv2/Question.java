@@ -5,6 +5,7 @@ package com.pythagorithm.mathsmartv2;
  * This class is temporary for testing purposes
  */
 public class Question {
+
     String questionStatment;
     String correctAnswer, wrongAnswer1, topic;
 
