@@ -15,8 +15,9 @@ public class Teacher extends User{
     private Question question;
 
     //Constructor
-    Teacher(String teacherID){
-        super(teacherID);
+    Teacher(String username){
+        super(username);
+        teacherID=super.userID;
         this.dc=new DatabaseConnector(teacherID);
     }
 
@@ -45,8 +46,8 @@ public class Teacher extends User{
     public Question editQuestion(String questionID){
         return getQuestion(questionID);
     }
-    public void updateQuestion(String questionID,Question question){
-        dc.updateQuestion(questionID,question);
+    public void updateQuestion(Question question){
+        dc.updateQuestion(question);
     }
     private String addQuestion(Question q){
         return dc.addQuestion(q);
@@ -79,7 +80,7 @@ public class Teacher extends User{
             }
         }
     }
-    public String addAssignment(Assignment assigment){
-        return dc.addAssignment(assigment.getSectionList(),availableAssignments);
+    public String addAssignment(Assignment assignment){
+        return dc.addAssignment(assignment.getSectionList(),availableAssignments);
     }
 }

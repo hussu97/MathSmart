@@ -16,12 +16,36 @@ public class Student extends User {
     private int min;
     private DatabaseConnector dc;
     private AssignmentHandler aH;
-    Student(){
+
+    //Constructor
+    Student(String username){
+        super(username);
         this.studentID=super.userID;
         this.dc=super.dc;
-        overallScore=dc.getOverallScore(studentID);
-        assignmentList=dc.getAvailableAssignments(sectionID);
+        this.sectionID=dc.getSectionID(studentID);
+        this.overallScore=dc.getOverallScore(studentID);
+        this.assignmentList=dc.getAvailableAssignments(sectionID);
     }
+
+    //getters and setters
+    public String getSectionID() {return sectionID;}
+    public void setSectionID(String sectionID) {this.sectionID = sectionID;}
+    public String getStudentID() {return studentID;}
+    public void setStudentID(String studentID) {this.studentID = studentID;}
+    public ArrayList<Assignment> getAssignmentList() {return assignmentList;}
+    public void setAssignmentList(ArrayList<Assignment> assignmentList) {this.assignmentList = assignmentList;}
+    public ArrayList<String> getCurrAssignmentQuestions() {return currAssignmentQuestions;}
+    public void setCurrAssignmentQuestions(ArrayList<String> currAssignmentQuestions) {this.currAssignmentQuestions = currAssignmentQuestions;}
+    public double getCurrAssignmentScore() {return currAssignmentScore;}
+    public void setCurrAssignmentScore(double currAssignmentScore) {this.currAssignmentScore = currAssignmentScore;}
+    public double getOverallScore() {return overallScore;}
+    public void setOverallScore(double overallScore) {this.overallScore = overallScore;}
+    public int getMin() {return min;}
+    public void setMin(int min) {this.min = min;}
+    public AssignmentHandler getaH() {return aH;}
+    public void setaH(AssignmentHandler aH) {this.aH = aH;}
+
+
     public Question startAssignment(int assignmentNum){
         if(assignmentNum<assignmentList.size()) {
             dc.getAssignmentProgress(assignmentList.get(assignmentNum).getAssignmentID(),studentID,currAssignmentQuestions,currAssignmentScore,min);

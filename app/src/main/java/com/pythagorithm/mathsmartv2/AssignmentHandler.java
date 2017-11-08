@@ -37,8 +37,10 @@ public class AssignmentHandler {
         this.assignment=assignment;
         this.overallScore=overallScore;
         this.min=assignment.getMinCorrectAnswers();
+        this.completedQuestions=new ArrayList<>();
+        this.assignmentScore=0;
         dc=new DatabaseConnector();
-        init();
+        start();
     }
     /*
     Continuing an existing assignment
@@ -73,12 +75,6 @@ public class AssignmentHandler {
     /*
     Gets available Questions from database for each difficulty in one topic
      */
-    private void init(){
-        min=assignment.getMinCorrectAnswers();
-        completedQuestions=new ArrayList<>();
-        assignmentScore=0;
-        start();
-    }
     /*
     Private function to return the First question of the database
      */

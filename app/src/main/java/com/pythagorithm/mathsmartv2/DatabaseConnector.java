@@ -12,15 +12,21 @@ public class DatabaseConnector {
         this.ID=userID;
     }
     DatabaseConnector(){}
-    public boolean login(String userID){
-        return true;
+    //=========================================================================================================================
+    //OTHER
+    //=========================================================================================================================
+    public String login(String username){
+        return "";
     }
-    public ArrayList<Question> getAvailableQuestions(String topic,String sectionID){
-        return new ArrayList<>();
+    public String getSectionID(String studentID){
+        return "";
     }
     //=========================================================================================================================
     //QUESTIONS
     //=========================================================================================================================
+    public ArrayList<Question> getAvailableQuestions(String topic,String sectionID){
+        return new ArrayList<>();
+    }
     public Question getQuestion(ArrayList<String> completedQuestion,int weight, String topic){
         String[] s=new String[4];
         return new Question("s",s,"s",4,"s");
@@ -34,7 +40,7 @@ public class DatabaseConnector {
     public String addQuestion(Question q){
         return "null";
     }
-    public void updateQuestion(String qID,Question q){
+    public void updateQuestion(Question q){
 
     }
     //=========================================================================================================================
@@ -50,14 +56,14 @@ public class DatabaseConnector {
     public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
         return "JI";
     }
-    public void updateScore(String aID,String qID,double questionScore,double overallScore){
-    }
     public boolean saveAssignment(String studentID,String aID,ArrayList<String> completedQuestions,double assignmentScore,double overallScore){
         return true;
     }
     //=========================================================================================================================
     //SCORES
     //=========================================================================================================================
+    public void updateScore(String aID,String qID,double questionScore,double overallScore){
+    }
     public double getAssignmentScore(String aID,String studentID){
         return 0;
     }
