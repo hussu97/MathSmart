@@ -5,17 +5,21 @@ package com.pythagorithm.mathsmartv2;
  * This class is temporary for testing purposes
  */
 public class Question {
-    String id;
-
     String questionStatment;
-    String correctAnswer, wrongAnswer1, difficulty, topic;
+    String correctAnswer, wrongAnswer1, topic;
 
-    public Question(String topic, String id, String questionStatment, String correctAnswer, String wrongAnswer1, String difficulty) {
-        this.topic = topic;
-        this.questionStatment = questionStatment;
-        this.correctAnswer = correctAnswer;
+    long difficulty;
+
+    public Question() {
+    }
+
+    public Question(String topic, String questionStatment, String correctAnswer, String wrongAnswer1, long difficulty) {
+
         this.wrongAnswer1 = wrongAnswer1;
+        this.questionStatment = questionStatment;
         this.difficulty = difficulty;
+        this.topic = topic;
+        this.correctAnswer = correctAnswer;
     }
 
     public String getTopic() {
@@ -24,14 +28,6 @@ public class Question {
 
     public void setTopic(String topic) {
         this.topic = topic;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getQuestionStatment() {
@@ -58,11 +54,11 @@ public class Question {
         this.wrongAnswer1 = wrongAnswer1;
     }
 
-    public String getDifficulty() {
+    public long getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(String difficulty) {
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 }

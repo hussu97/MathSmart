@@ -3,12 +3,18 @@ package database;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.pythagorithm.mathsmartv2.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,14 +24,14 @@ import java.util.Map;
  */
 public class DatabaseHelper {
     // This is the name of the collection for questions
-    final String QUESTION_COLLECTION = "question";
+    final static String QUESTION_COLLECTION = "question";
     // This tag is used for logging
-    final String DATABASE_TAG = "Firestore";
+    final static String DATABASE_TAG = "Firestore";
     // This flag is used to determine whether update functions run correctly
     boolean success;
     String aID="";
     String qID="";
-    FirebaseFirestore db;
+    static FirebaseFirestore db;
 
     // at the initiation of the database, the connection is created
     public DatabaseHelper(){
@@ -121,16 +127,15 @@ public class DatabaseHelper {
          q is a valid Question Object
          Postconditions: Question with ID currQID is changed to q
      */
-    public boolean updateAssignment(final String attribute, final String value, final String currAID){
-        success = false;
+    public void updateAssignment(final String attribute, final String value, final String currAID) {
         db.collection(QUESTION_COLLECTION)
                 .document(currAID)
                 .update(attribute, value)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(DATABASE_TAG, "updatedAssignment succeeded. Updated aID: "+ currAID +" attribute: "+ attribute
-                                + " with new value: "+ value);
+                        Log.d(DATABASE_TAG, "updatedAssignment succeeded. Updated aID: " + currAID + " attribute: " + attribute
+                                + " with new value: " + value);
                         success = true;
                     }
                 })
@@ -140,6 +145,52 @@ public class DatabaseHelper {
                         Log.d(DATABASE_TAG, "updateAssignment() failed ", e);
                     }
                 });
-        return success;
     }
+//    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//        @Override
+//        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//            if (task.isSuccessful()){
+//                for (DocumentSnapshot doc : task.getResult()){
+//                    if (Arrays.asList(prevQs).contains(doc.getId())){
+//                        Log.d(DATABASE_TAG, "Question with ID: "+ doc.getId() +" found. Not needed.");
+//                    }
+//                    else {
+//                        Log.d(DATABASE_TAG, "Question with ID: "+ doc.getId() +" found. Success.");
+//                        curr.setQuestionObject(doc.toObject(Question.class));
+//                        curr.setImported(true);
+//                    }
+//                }
+//            }
+//        }
+//    });
+//    }
+
+    public static void getNextQuesion(final String[] prevQs, final int diff, final CurrentQuestion curr){
+        db.collection(QUESTION_COLLECTION)
+                .whereEqualTo("difficulty", diff)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (DocumentSnapshot doc : task.getResult()){
+                                if (Arrays.asList(prevQs).contains(doc.getId())){
+                                    Log.d(DATABASE_TAG, "Question with ID: "+ doc.getId() +" found. Not needed.");
+                                }
+                                else {
+                                    Log.d(DATABASE_TAG, "Question with ID: "+ doc.getId() +" found. Success.");
+                                    Question q = doc.toObject(com.pythagorithm.mathsmartv2.Question.class);
+                                    Log.d(DATABASE_TAG, "onComplete: "+ doc.getData());
+                                    curr.setQuestionObject(q);
+                                    curr.setImported(true);
+//                                    LoginActivity.
+                                }
+                            }
+                        }
+                    }
+
+        });
+    }
+
 }
