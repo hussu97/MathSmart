@@ -13,7 +13,7 @@ public class Question {
     private String topic;
 
     //constructor
-    Question(String qStatement, String[] a,String c, int w, String topic){
+    public Question(String qStatement, String[] a,String c, int w, String topic){
         this.questionStatement=qStatement;
         wrongAnswer=new String[a.length];
         for(int i=0;i<a.length;i++)

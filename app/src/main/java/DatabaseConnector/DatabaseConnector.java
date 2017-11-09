@@ -1,4 +1,7 @@
-package com.pythagorithm.mathsmartv2;
+package DatabaseConnector;
+
+import com.pythagorithm.mathsmartv2.Assignment;
+import com.pythagorithm.mathsmartv2.Question;
 
 import java.util.ArrayList;
 
@@ -8,10 +11,10 @@ import java.util.ArrayList;
 
 public class DatabaseConnector {
     private String ID;
-    DatabaseConnector(String userID){
+    public DatabaseConnector(String userID){
         this.ID=userID;
     }
-    DatabaseConnector(){}
+    public DatabaseConnector(){}
     //=========================================================================================================================
     //OTHER
     //=========================================================================================================================
@@ -24,7 +27,7 @@ public class DatabaseConnector {
     //=========================================================================================================================
     //QUESTIONS
     //=========================================================================================================================
-    public ArrayList<Question> getAvailableQuestions(String topic,String sectionID){
+    public ArrayList<Question> getAvailableQuestions(String topic, String sectionID){
         return new ArrayList<>();
     }
     public Question getQuestion(ArrayList<String> completedQuestion,int weight, String topic){

@@ -1,5 +1,7 @@
 package com.pythagorithm.mathsmartv2;
 
+import DatabaseConnector.DatabaseConnector;
+
 /**
  * Created by H_Abb on 11/2/2017.
  */

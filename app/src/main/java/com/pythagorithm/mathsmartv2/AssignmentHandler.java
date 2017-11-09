@@ -2,6 +2,8 @@ package com.pythagorithm.mathsmartv2;
 
 import java.util.ArrayList;
 
+import DatabaseConnector.DatabaseConnector;
+
 /**
  * Created by H_Abb on 11/3/2017.
  */
