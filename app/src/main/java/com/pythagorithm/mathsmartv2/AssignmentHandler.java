@@ -80,7 +80,7 @@ public class AssignmentHandler {
      */
     private void start(){
         int x=ceil(overallScore);
-        currentQuestion=dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
+        DatabaseHelper.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
     }
     /*
     Function used to generate current question score and send back new question
@@ -136,4 +136,34 @@ public class AssignmentHandler {
     private int ceil(double score){
         return (int)Math.ceil(score);
     }
+
+    private class DatabaseHelper(){
+        public void getNextQuestion(final AssignmentHandler a, final String[] prevQs, final int diff, final CurrentQuestion curr){
+            FirebaseFirestore.getInstance().collection("question")
+                    .whereEqualTo("difficulty", diff)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
+                                for (DocumentSnapshot doc : task.getResult()){
+                                    if (Arrays.asList(prevQs).contains(doc.getId())){
+                                        Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Not needed.");
+                                    }
+                                    else {
+                                        Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Success.");
+                                        Question q = doc.toObject(com.pythagorithm.mathsmartv2.Question.class);
+                                        Log.d("Firestore", "onComplete: "+ doc.getData());
+                                        setCurrentQuestion(q);
+                                    }
+                                }
+                            }
+                        }
+
+                    });
+        }
+    }
+
+
 }
