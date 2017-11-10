@@ -6,6 +6,7 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 
 public class Assignment {
     private String assignmentID;
+
     private String assignmentName;
     private String assignmentTopic;
     private int minCorrectAnswers;
