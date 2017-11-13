@@ -28,7 +28,13 @@ public class AssignmentHandler {
     private double assignmentScore;
     private DatabaseConnector dc;
     private Question currentQuestion;
+    private boolean questionAvailable;
     private ArrayList<String> completedQuestions;
+
+    private int scorePlus;
+    private int scoreMinus;
+    private boolean alt;
+    private int nextQWeight;
 
     /*
     Constructor: Initializes studentID to upload quizScore
@@ -67,7 +73,10 @@ public class AssignmentHandler {
     public double getCurrentScore() {return currentScore;}
     public void setCurrentScore(double currentScore) {this.currentScore = currentScore;}
     public Question getCurrentQuestion() {return currentQuestion;}
-    public void setCurrentQuestion(Question currentQuestion) {this.currentQuestion = currentQuestion;}
+    public void setCurrentQuestion(Question currentQuestion) {
+        questionAvailable = true;
+        this.currentQuestion = currentQuestion;
+    }
     public ArrayList<String> getCompletedQuestions() {return completedQuestions;}
     public void setCompletedQuestions(ArrayList<String> completedQuestions) {this.completedQuestions = completedQuestions;}
     public double getAssignmentScore() {return assignmentScore;}
@@ -82,50 +91,64 @@ public class AssignmentHandler {
      */
     private void start(){
         int x=ceil(overallScore);
-        currentQuestion=dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
+        questionAvailable = false;
+        dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
     }
     /*
     Function used to generate current question score and send back new question
+    Description: Takes in the time and answer of the user and calculates the question score and adds it the database.
+        Also, it will increment the assignment score and either signal ending the assignment or the beginning of the new
+        assignment
+
+    Preconditions: Takes in the time taken to answer question and whether or not
+        the answer is correct
+    Postcondition: Creates a new QuestionScore object and updates assignment score and:
+        a) signals the ending of the assignment, or
+        b) begins fetching next question
      */
-    public Question solveQuestion(Question currQ,int time,boolean answer) {
-        int i=ceil(overallScore);
-        boolean alt=true;
-        int scoreMinus=i,scorePlus=i;
-        completedQuestions.add(currQ.getQuestionID());
-        currentQuestion=null;
+    public boolean solveQuestion(int time,boolean answer) {
+        nextQWeight=ceil(overallScore);
+        alt=true;
+        completedQuestions.add(currentQuestion.getQuestionID());
+        scoreMinus = scorePlus = nextQWeight;
+
 
         //scores generation
-        currentScore = masterFormula(currQ.getWeight(),answer,time);
+        currentScore = masterFormula(currentQuestion.getWeight(),answer,time);
         assignmentScore+=currentScore;
         overallScore = OVERALL_SCORE_WEIGHT * overallScore + CURRENT_SCORE_WEIGHT * currentScore;
-        dc.updateScore(assignment.getAssignmentID(),currQ.getQuestionID(),currentScore,overallScore);
+        questionAvailable = false;
+        dc.updateScore(assignment.getAssignmentID(),currentQuestion.getQuestionID(),currentScore,overallScore);
+
+        currentQuestion=null;
 
         //checking whether assignment is complete of not
         if(answer)
             --min;
         if(min==0)
-            return null;
+            return true;
+        else {
+            getNextQuestion();
+            return false;
+        }
 
+    }
+
+    public void getNextQuestion(){
         //getting appropriate question
-        while(currentQuestion==null&&(i>0||i<11)) {
-            currentQuestion = dc.getQuestion(completedQuestions, i, assignment.getAssignmentTopic());
+        while(currentQuestion==null&&(nextQWeight>0||nextQWeight<11)) {
+            dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
             if(alt)
-                i=++scorePlus;
+                nextQWeight=++scorePlus;
             else
-                i=--scoreMinus;
+                nextQWeight=--scoreMinus;
             alt=!alt;
         }
 
-
-        if(currentQuestion==null)
-            return null;
-        else {
-            return currentQuestion;
-        }
     }
 
-    public boolean saveAssignment(){
-        return dc.saveAssignment(studentID,assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore);
+    public void saveAssignment(){
+        dc.saveAssignment(studentID,assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore);
     }
 
     //420 BLAZE IT SHIZZZZZZ
@@ -135,6 +158,7 @@ public class AssignmentHandler {
         else
             return (CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time))*-1;
     }
+
     private int ceil(double score){
         return (int)Math.ceil(score);
     }
