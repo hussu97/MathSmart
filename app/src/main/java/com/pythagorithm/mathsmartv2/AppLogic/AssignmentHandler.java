@@ -100,11 +100,12 @@ public class AssignmentHandler {
         Also, it will increment the assignment score and either signal ending the assignment or the beginning of the new
         assignment
 
+
     Preconditions: Takes in the time taken to answer question and whether or not
         the answer is correct
     Postcondition: Creates a new QuestionScore object and updates assignment score and:
-        a) signals the ending of the assignment, or
-        b) begins fetching next question
+        True: signals the ending of the assignment, or
+        False: begins fetching next question
      */
     public boolean solveQuestion(int time,boolean answer) {
         nextQWeight=ceil(overallScore);
@@ -118,7 +119,7 @@ public class AssignmentHandler {
         assignmentScore+=currentScore;
         overallScore = OVERALL_SCORE_WEIGHT * overallScore + CURRENT_SCORE_WEIGHT * currentScore;
         questionAvailable = false;
-        dc.updateScore(assignment.getAssignmentID(),currentQuestion.getQuestionID(),currentScore,overallScore);
+        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
 
         currentQuestion=null;
 
@@ -136,14 +137,13 @@ public class AssignmentHandler {
 
     public void getNextQuestion(){
         //getting appropriate question
-        while(currentQuestion==null&&(nextQWeight>0||nextQWeight<11)) {
-            dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
-            if(alt)
-                nextQWeight=++scorePlus;
-            else
-                nextQWeight=--scoreMinus;
-            alt=!alt;
-        }
+
+        dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
+        if(alt)
+            nextQWeight=++scorePlus;
+        else
+            nextQWeight=--scoreMinus;
+        alt=!alt;
 
     }
 

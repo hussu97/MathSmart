@@ -15,6 +15,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by H_Abb on 11/2/2017.
@@ -129,7 +130,23 @@ public class DatabaseConnector {
     //=========================================================================================================================
     //SCORES
     //=========================================================================================================================
-    public void updateScore(String aID,String qID,double questionScore,double overallScore){
+    public void updateScore(String studentID, final String questionID, String assignmentID, boolean correct, int time, String topic, int difficulty){
+        QuestionScore qs = new QuestionScore(studentID, questionID, assignmentID, correct, time, topic, difficulty);
+        FirebaseFirestore.getInstance().collection("question-scores")
+                .add(qs)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Firestore", "Score of question" +questionID+ " saved ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error writing score", e);
+                    }
+        });
+
     }
     public double getAssignmentScore(String aID,String studentID){
         return 0;
