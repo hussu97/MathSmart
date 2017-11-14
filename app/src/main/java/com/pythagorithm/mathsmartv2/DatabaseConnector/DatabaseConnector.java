@@ -56,7 +56,7 @@ public class DatabaseConnector {
     public void getQuestion(final ArrayList<String> completedQuestion,int weight, String topic){
 
 
-            FirebaseFirestore.getInstance().collection("question")
+            FirebaseFirestore.getInstance().collection("questions")
                     .whereEqualTo("difficulty", weight)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -86,13 +86,25 @@ public class DatabaseConnector {
 
     }
 
-    public Question getQuestion(String qID){
-        String[] s=new String[4];
-        return new Question("s",s,"s",4,"s");
-    }
+//    public Question getQuestion(String qID){
+//        String[] s=new String[4];
+//        return new Question("s",s,"s",4,"s");
+//    }
 
-    public String addQuestion(Question q){
-        return "null";
+    public void addQuestion(Question q){
+        FirebaseFirestore.getInstance().collection("questions")
+                .add(q)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Firestore", "added question successfully");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Firestore", "Question was not added successfully");
+                    }
+        });
     }
     public void updateQuestion(Question q){
 
@@ -107,9 +119,26 @@ public class DatabaseConnector {
         //Change values of completedQuestions, assignmentScore, and min
         //If not available, change value of completedQuestions to 'null'
     }
-    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
-        return "JI";
+//    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
+//        return "JI";
+//    }
+
+    public void addAssignment(Assignment a){
+        FirebaseFirestore.getInstance().collection("assignments")
+                .add(a)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Firestore", "added assignment successfully");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Firestore", "assignment was not added successfully");
+            }
+        });
     }
+
     public void saveAssignment(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, final double overallScore, int min){
         final AssignmentProgress ap = new AssignmentProgress(studentID,aID, completedQuestions,assignmentScore,overallScore, min);
 

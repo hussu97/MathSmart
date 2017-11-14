@@ -1,5 +1,7 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import java.util.HashMap;
+
 /**
  * Created by H_Abb on 11/2/2017.
  */
@@ -12,13 +14,14 @@ public class Assignment {
     private int minCorrectAnswers;
     private String dueDate;
     private String submissionPeriod;
-    private String[] sectionList;
+    private HashMap<String, Boolean> sectionList;
 
+    public Assignment() {
+    }
 
     //constructor
-    public Assignment(String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, String[] sectionList) {
+    public Assignment(String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, HashMap<String, Boolean> sectionList) {
 
-        this.assignmentID = assignmentID;
         this.assignmentName = assignmentName;
         this.assignmentTopic = assignmentTopic;
         this.minCorrectAnswers = minCorrectAnswers;
@@ -40,6 +43,6 @@ public class Assignment {
     public void setDueDate(String dueDate) {this.dueDate = dueDate;}
     public String getSubmissionPeriod() {return submissionPeriod;}
     public void setSubmissionPeriod(String submissionPeriod) {this.submissionPeriod = submissionPeriod;}
-    public String[] getSectionList() {return sectionList;}
-    public void setSectionList(String[] sectionList) {this.sectionList = sectionList;}
+    public HashMap<String, Boolean> getSectionList() {return sectionList;}
+    public void setSectionList(HashMap<String, Boolean> sectionList) {this.sectionList = sectionList;}
 }

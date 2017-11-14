@@ -62,12 +62,12 @@ public class Student extends User {
         else
             return null;
     }
-    public boolean saveAssignment(){
-        return aH.saveAssignment();
-    }
-    public Question getNextQuestion(Question currQ,int time,boolean answer){
-        return aH.solveQuestion(currQ,time, answer);
-    }
+//    public boolean saveAssignment(){
+//        return aH.saveAssignment();
+//    }
+//    public Question getNextQuestion(Question currQ,int time,boolean answer){
+//        return aH.solveQuestion(currQ,time, answer);
+//    }
     public double getAssignmentScore(int assignmentNum){
         return dc.getAssignmentScore(assignmentList.get(assignmentNum).getAssignmentID(),studentID);
     }

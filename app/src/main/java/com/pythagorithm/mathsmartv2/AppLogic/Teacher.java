@@ -40,41 +40,41 @@ public class Teacher extends User{
     public ArrayList<Question> getAvailableQuestions(String topic, String sectionID){
         return dc.getAvailableQuestions(topic,sectionID);
     }
-    public Question createQuestion(String qID, String qStatement, String[] a, String c,int w, String topic){
-        Question q=new Question(qStatement, a,c, w, topic);
-        q.setQuestionID(addQuestion(q));
-        return q;
-    }
-    public Question editQuestion(String questionID){
-        return getQuestion(questionID);
-    }
+//    public Question createQuestion(String qID, String qStatement, String[] a, String c,int w, String topic){
+//        Question q=new Question(qStatement, a,c, w, topic);
+//        q.setQuestionID(addQuestion(q));
+//        return q;
+//    }
+//    public Question editQuestion(String questionID){
+//        return getQuestion(questionID);
+//    }
     public void updateQuestion(Question question){
         dc.updateQuestion(question);
     }
-    private String addQuestion(Question q){
-        return dc.addQuestion(q);
-    }
-    private Question getQuestion(String questionID) {
-        return dc.getQuestion(questionID);
-    }
+//    private String addQuestion(Question q){
+//        return dc.addQuestion(q);
+//    }
+//    private Question getQuestion(String questionID) {
+//        return dc.getQuestion(questionID);
+//    }
     //=========================================================================================================================
     //ASSIGNMENTS
     //=========================================================================================================================
     public ArrayList<Assignment> getAssignments(String sectionID){
         return dc.getAvailableAssignments(sectionID);
     }
-    public Assignment createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod, String[] sectionList){
-        Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
-        a.setAssignmentID(addAssignment(a));
-        return a;
-    }
-    public Assignment editAssignment(String sectionID){
-        for(Assignment a:availableAssignments)
-            for(String secID:a.getSectionList())
-                if(secID==sectionID)
-                    return a;
-        return null;
-    }
+//    public Assignment createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod, String[] sectionList){
+//        Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
+//        a.setAssignmentID(addAssignment(a));
+//        return a;
+//    }
+//    public Assignment editAssignment(String sectionID){
+//        for(Assignment a:availableAssignments)
+//            for(String secID:a.getSectionList())
+//                if(secID==sectionID)
+//                    return a;
+//        return null;
+//    }
     public void updateAssignment(Assignment assignment){
         for(Assignment a:availableAssignments) {
             if(a.getAssignmentID()==assignment.getAssignmentID()){
@@ -82,7 +82,7 @@ public class Teacher extends User{
             }
         }
     }
-    public String addAssignment(Assignment assignment){
-        return dc.addAssignment(assignment.getSectionList(),availableAssignments);
-    }
+//    public String addAssignment(Assignment assignment){
+//        return dc.addAssignment(assignment.getSectionList(),availableAssignments);
+//    }
 }

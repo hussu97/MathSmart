@@ -3,6 +3,7 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 import java.util.ArrayList;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
+import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 
 /**
  * Created by H_Abb on 11/3/2017.
@@ -40,7 +41,7 @@ public class AssignmentHandler {
     Constructor: Initializes studentID to upload quizScore
      */
     //Starting new Assignment
-    AssignmentHandler(Assignment assignment,String studentID,double overallScore){
+    public AssignmentHandler(Assignment assignment,String studentID,double overallScore){
         this.studentID=studentID;
         this.assignment=assignment;
         this.overallScore=overallScore;
@@ -76,6 +77,7 @@ public class AssignmentHandler {
     public void setCurrentQuestion(Question currentQuestion) {
         questionAvailable = true;
         this.currentQuestion = currentQuestion;
+        LoginActivity.dispQ();
     }
     public ArrayList<String> getCompletedQuestions() {return completedQuestions;}
     public void setCompletedQuestions(ArrayList<String> completedQuestions) {this.completedQuestions = completedQuestions;}
