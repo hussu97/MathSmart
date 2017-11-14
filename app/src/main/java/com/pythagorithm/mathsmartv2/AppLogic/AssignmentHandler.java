@@ -1,5 +1,7 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
@@ -48,7 +50,7 @@ public class AssignmentHandler {
         this.min=assignment.getMinCorrectAnswers();
         this.completedQuestions=new ArrayList<>();
         this.assignmentScore=0;
-        dc=new DatabaseConnector();
+        dc=new DatabaseConnector(this);
         start();
     }
     /*
@@ -62,7 +64,7 @@ public class AssignmentHandler {
         this.assignmentScore=assignmentScore;
         this.overallScore=overallScore;
         this.min=min;
-        dc=new DatabaseConnector();
+        dc=new DatabaseConnector(this);
         start();
     }
 
@@ -77,6 +79,7 @@ public class AssignmentHandler {
     public void setCurrentQuestion(Question currentQuestion) {
         questionAvailable = true;
         this.currentQuestion = currentQuestion;
+        Log.d("Firestore", "Setting current question");
         LoginActivity.dispQ();
     }
     public ArrayList<String> getCompletedQuestions() {return completedQuestions;}
@@ -92,6 +95,7 @@ public class AssignmentHandler {
     Private function to return the First question of the database
      */
     private void start(){
+        Log.d("Firestore", "started");
         int x=ceil(overallScore);
         questionAvailable = false;
         dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
@@ -139,7 +143,7 @@ public class AssignmentHandler {
 
     public void getNextQuestion(){
         //getting appropriate question
-
+        Log.d("Firestore", "called getNextQuestion");
         dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
         if(alt)
             nextQWeight=++scorePlus;

@@ -48,8 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         DatabaseConnector c = new DatabaseConnector();
         c.addQuestion(q);
         c.addAssignment(a);
-        AssignmentHandler ah = new AssignmentHandler(a, "123", 3);
-
+        AssignmentHandler ah = new AssignmentHandler(a, "123", 4);
     }
 
     @Override

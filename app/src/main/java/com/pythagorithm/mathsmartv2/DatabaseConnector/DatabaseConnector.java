@@ -53,17 +53,23 @@ public class DatabaseConnector {
 
         return new ArrayList<>();
     }
-    public void getQuestion(final ArrayList<String> completedQuestion,int weight, String topic){
+    public void getQuestion(final ArrayList<String> completedQuestion, final int weight, String topic){
 
-
+            Log.d("Firestore", "getting question...");
             FirebaseFirestore.getInstance().collection("questions")
-                    .whereEqualTo("difficulty", weight)
+                    .whereEqualTo("weight", weight)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            Log.d("Firestore","Entered onComplete in getQuestion");
+                            if (task.getResult().getDocuments().size()==0){
+                                Log.d("Firestore", "Did not find a question with weight"+weight);
+                                assignmentHandler.getNextQuestion();
+                            }
                             if (task.isSuccessful()){
+
                                 for (DocumentSnapshot doc : task.getResult()){
                                     if (Arrays.asList(completedQuestion).contains(doc.getId())){
                                         Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Not needed.");
@@ -80,6 +86,7 @@ public class DatabaseConnector {
                                     }
                                 }
                             }
+
                         }
 
                     });
