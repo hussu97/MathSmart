@@ -10,17 +10,27 @@ public class AssignmentProgress {
     String assignmentID;
     ArrayList<String> completedQuestions;
     double assignmentScore;
+    int min;
     double overallScore; // weight the student reached
 
     public AssignmentProgress() {
     }
 
-    public AssignmentProgress(String studentID, String assignmentID, ArrayList<String> completedQuestions, double assignmentScore, double overallScore) {
+    public AssignmentProgress(String studentID, String assignmentID, ArrayList<String> completedQuestions, double assignmentScore, double overallScore, int min) {
         this.studentID = studentID;
         this.assignmentID = assignmentID;
         this.completedQuestions = completedQuestions;
         this.assignmentScore = assignmentScore;
         this.overallScore = overallScore;
+        this.min = min;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
     }
 
     public String getStudentID() {

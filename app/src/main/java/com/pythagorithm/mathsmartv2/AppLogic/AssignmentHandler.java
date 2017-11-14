@@ -148,7 +148,7 @@ public class AssignmentHandler {
     }
 
     public void saveAssignment(){
-        dc.saveAssignment(studentID,assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore);
+        dc.saveAssignment(studentID,assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore, min);
     }
 
     //420 BLAZE IT SHIZZZZZZ

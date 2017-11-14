@@ -110,20 +110,59 @@ public class DatabaseConnector {
     public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
         return "JI";
     }
-    public void saveAssignment(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, final double overallScore){
-        AssignmentProgress ap = new AssignmentProgress(studentID,aID, completedQuestions,assignmentScore,overallScore);
+    public void saveAssignment(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, final double overallScore, int min){
+        final AssignmentProgress ap = new AssignmentProgress(studentID,aID, completedQuestions,assignmentScore,overallScore, min);
+
+        FirebaseFirestore.getInstance().collection("assignment-progress")
+                .whereEqualTo("assignmentID", aID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        updateAssignmentProgress(ap,documentSnapshots.getDocuments().get(0).getId());
+                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: assignment exists and progress will update");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAssignmentProgress(ap);
+                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: creating assignment progress");
+                    }
+        });
+    }
+
+    public void createAssignmentProgress(final AssignmentProgress ap){
         FirebaseFirestore.getInstance().collection("assignment-progress")
                 .add(ap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Firestore", "Wrote assignment progress for assignment " + aID);
+                        Log.d("Firestore", "Wrote assignment progress for assignment " + ap.getAssignmentID());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("Firestore", "Error writing document", e);
+                    }
+                });
+    }
+
+    public void updateAssignmentProgress(AssignmentProgress ap, final String apID){
+        FirebaseFirestore.getInstance().collection("assignment-progress")
+                .document(apID)
+                .set(ap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firestore", "Updated assignment "+ apID+ " successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Firestore", "Updating assignment "+apID +" unsuccessfully ... check your code man");
                     }
                 });
     }
