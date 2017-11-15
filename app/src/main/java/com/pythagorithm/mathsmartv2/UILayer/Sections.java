@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.pythagorithm.mathsmartv2.R;
 
 public class Sections extends AppCompatActivity {
@@ -85,6 +87,8 @@ public class Sections extends AppCompatActivity {
 
     }
     public void logOut(View v){
+        FirebaseAuth.getInstance().signOut();
+        Log.d("FireAuth",FirebaseAuth.getInstance().getUid());
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }

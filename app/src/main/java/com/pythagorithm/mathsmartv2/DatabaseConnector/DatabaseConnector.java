@@ -11,11 +11,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.pythagorithm.mathsmartv2.AppLogic.*;
+import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
+import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
+import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
+import com.pythagorithm.mathsmartv2.AppLogic.Question;
+import com.pythagorithm.mathsmartv2.AppLogic.QuestionScore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by H_Abb on 11/2/2017.
@@ -46,6 +49,7 @@ public class DatabaseConnector {
     public String getSectionID(String studentID){
         return "";
     }
+    public int getTotalQuestionsSolved(String studentID){return 1;}
     //=========================================================================================================================
     //QUESTIONS
     //=========================================================================================================================

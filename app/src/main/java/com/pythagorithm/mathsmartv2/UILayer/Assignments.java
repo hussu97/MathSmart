@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.pythagorithm.mathsmartv2.R;
 
 public class Assignments extends AppCompatActivity {
@@ -22,7 +24,8 @@ public class Assignments extends AppCompatActivity {
         myRoot1 = (ViewGroup) findViewById(R.id.pendingAssignmentsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.completedAssingmentsHolder);
 
-        getIntent().getStringExtra("ass");
+        Toast.makeText(this,getIntent().getStringExtra("username"),
+                Toast.LENGTH_SHORT).show();
 
         displayPendingAssingments(15);
         displayCompleteAssingments(3);
@@ -51,6 +54,7 @@ public class Assignments extends AppCompatActivity {
     public void logout(View v){
 
 
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
 
         startActivity(intent);

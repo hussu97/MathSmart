@@ -1,8 +1,8 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
-import java.util.ArrayList;
-
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
+
+import java.util.ArrayList;
 
 /**
  * Created by H_Abb on 11/2/2017.
@@ -13,6 +13,7 @@ public class Student extends User {
     private String studentID;
     private ArrayList<Assignment> assignmentList;
     private ArrayList<String>currAssignmentQuestions;
+    private int totalQuestionsSolved;
     private double currAssignmentScore;
     private double overallScore;
     private int min;
@@ -27,6 +28,7 @@ public class Student extends User {
         this.sectionID=dc.getSectionID(studentID);
         this.overallScore=dc.getOverallScore(studentID);
         this.assignmentList=dc.getAvailableAssignments(sectionID);
+        this.totalQuestionsSolved=dc.getTotalQuestionsSolved(studentID);
     }
 
     //getters and setters
@@ -52,10 +54,10 @@ public class Student extends User {
         if(assignmentNum<assignmentList.size()) {
             dc.getAssignmentProgress(assignmentList.get(assignmentNum).getAssignmentID(),studentID,currAssignmentQuestions,currAssignmentScore,min);
             if(currAssignmentQuestions==null) {
-                aH = new AssignmentHandler(assignmentList.get(assignmentNum), studentID,overallScore);
+                aH = new AssignmentHandler(assignmentList.get(assignmentNum), studentID,overallScore,totalQuestionsSolved);
             }
             else{
-                aH=new AssignmentHandler(assignmentList.get(assignmentNum),studentID,overallScore,currAssignmentQuestions,currAssignmentScore,min);
+                aH=new AssignmentHandler(assignmentList.get(assignmentNum),studentID,overallScore,currAssignmentQuestions,currAssignmentScore,min,totalQuestionsSolved);
             }
             return aH.getCurrentQuestion();
         }

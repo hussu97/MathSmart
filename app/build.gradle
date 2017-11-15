@@ -32,6 +32,8 @@ dependencies {
     compile 'com.google.firebase:firebase-firestore:11.6.0'
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'io.github.kexanie.library:MathView:0.0.6'
+    compile 'com.google.firebase:firebase-auth:11.6.0'
 }
+
 
 apply plugin: 'com.google.gms.google-services'

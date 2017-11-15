@@ -2,10 +2,10 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
+
+import java.util.ArrayList;
 
 /**
  * Created by H_Abb on 11/3/2017.
@@ -15,13 +15,12 @@ public class AssignmentHandler {
     /*
     CONSTANTS for calculating score and for defining number of difficulties and versions
      */
-    private final double WEIGHT_VALUE=0.5;
-    private final double TIME_VALUE=0.1;
-    private final double CORRECT_ANSWER_VALUE=0.3;
-    private final double OVERALL_SCORE_WEIGHT=0.8;
-    private final double CURRENT_SCORE_WEIGHT=0.2;
+    private final double CORRECT_ANSWER_WEIGHT_VALUE=0.96374752;
+    private final double CORRECT_ANSWER_TIME_VALUE=-0.0018861;
+    private final double CORRECT_ANSWER_COEFF = 0.662951474663;
+    private final double INCORRECT_ANSWER_COEFF = 0.028;
+    private final double INCORRECT_ANSWER_WEIGHT_VALUE = 0.9609;
     private final int MAX_WEIGHT=10;
-    private final int MAX_VERSION=5;
     //other attributes
     private int min;
     private String studentID;
@@ -29,6 +28,7 @@ public class AssignmentHandler {
     private double overallScore;
     private double currentScore;
     private double assignmentScore;
+    private double totalQuestionsAttempted;
     private DatabaseConnector dc;
     private Question currentQuestion;
     private boolean questionAvailable;
@@ -43,13 +43,14 @@ public class AssignmentHandler {
     Constructor: Initializes studentID to upload quizScore
      */
     //Starting new Assignment
-    public AssignmentHandler(Assignment assignment,String studentID,double overallScore){
+    public AssignmentHandler(Assignment assignment,String studentID,double overallScore,int totalQuestionsAttempted){
         this.studentID=studentID;
         this.assignment=assignment;
         this.overallScore=overallScore;
         this.min=assignment.getMinCorrectAnswers();
         this.completedQuestions=new ArrayList<>();
         this.assignmentScore=0;
+        this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);
         start();
     }
@@ -57,13 +58,15 @@ public class AssignmentHandler {
     Continuing an existing assignment
     Extra arguments required: List of completed questions (Only question ID), assignment score, and also the updated minimum number of correct answers
      */
-    AssignmentHandler(Assignment assignment,String studentID,double overallScore,ArrayList<String> completedQuestions,double assignmentScore,int min){
+    AssignmentHandler(Assignment assignment,String studentID,double overallScore,ArrayList<String> completedQuestions,double assignmentScore,int min
+    ,int totalQuestionsAttempted){
         this.studentID=studentID;
         this.assignment=assignment;
         this.completedQuestions=completedQuestions;
         this.assignmentScore=assignmentScore;
         this.overallScore=overallScore;
         this.min=min;
+        this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);
         start();
     }
@@ -114,8 +117,8 @@ public class AssignmentHandler {
         False: begins fetching next question
      */
     public boolean solveQuestion(int time,boolean answer) {
+        overallScore = ((overallScore*totalQuestionsAttempted)+ currentScore)/(totalQuestionsAttempted+1);
         nextQWeight=ceil(overallScore);
-        alt=true;
         completedQuestions.add(currentQuestion.getQuestionID());
         scoreMinus = scorePlus = nextQWeight;
 
@@ -123,7 +126,6 @@ public class AssignmentHandler {
         //scores generation
         currentScore = masterFormula(currentQuestion.getWeight(),answer,time);
         assignmentScore+=currentScore;
-        overallScore = OVERALL_SCORE_WEIGHT * overallScore + CURRENT_SCORE_WEIGHT * currentScore;
         questionAvailable = false;
         dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
 
@@ -160,9 +162,9 @@ public class AssignmentHandler {
     //420 BLAZE IT SHIZZZZZZ
     private double masterFormula(int weight, boolean correct,int time){
         if(correct)
-            return CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time);
+            return CORRECT_ANSWER_COEFF+CORRECT_ANSWER_WEIGHT_VALUE*weight+CORRECT_ANSWER_TIME_VALUE*time;
         else
-            return (CORRECT_ANSWER_VALUE+WEIGHT_VALUE*(MAX_WEIGHT-weight)+TIME_VALUE*(1/time))*-1;
+            return INCORRECT_ANSWER_COEFF+INCORRECT_ANSWER_WEIGHT_VALUE*weight;
     }
 
     private int ceil(double score){
