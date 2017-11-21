@@ -27,9 +27,14 @@ public class Sections extends AppCompatActivity {
         displayPendingAssingments(15);
     }
     public void createBtn(View v){
-
-        Intent intent = new Intent(this, addQuestion.class);
-        startActivity(intent);
+        if(v.getId() == R.id.button3) {
+            Intent intent = new Intent(this, addQuestion.class);
+            startActivity(intent);
+        }
+        if(v.getId() == R.id.button5){
+            Intent intent = new Intent(this, addAssignment.class);
+            startActivity(intent);
+        }
 
     }
     public void secClicked(View v){

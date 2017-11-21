@@ -29,6 +29,14 @@
         android:layout_gravity="right"
         android:onClick="createBtn" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Assignment"
+        android:id="@+id/button5"
+        android:layout_gravity="right"
+        android:onClick="createBtn" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

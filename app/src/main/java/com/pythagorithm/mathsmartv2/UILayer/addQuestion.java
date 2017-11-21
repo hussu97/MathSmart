@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.pythagorithm.mathsmartv2.R;
@@ -18,6 +20,8 @@ import io.github.kexanie.library.MathView;
 
 public class addQuestion extends AppCompatActivity {
     MathView formula;
+    Spinner topicSpinner;
+    Spinner difSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +29,21 @@ public class addQuestion extends AppCompatActivity {
         formula = (MathView) findViewById(R.id.questionFormula);
         String tex = "";
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+
+        topicSpinner = (Spinner) findViewById(R.id.topicSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.topics, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        topicSpinner.setAdapter(adapter);
+
+        difSpinner = (Spinner) findViewById(R.id.difSpinner);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
+                this, R.array.difficulty, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        difSpinner.setAdapter(adapter2);
     }
     public void previewBtn(View v){
         EditText previewer= (EditText) findViewById(R.id.qEditTxt);

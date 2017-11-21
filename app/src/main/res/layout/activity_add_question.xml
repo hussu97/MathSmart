@@ -150,34 +150,41 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView6"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:layout_weight="1"
-        android:text="Enter Question Topic"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/tEditTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Question Topic"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter Question Difficulty"
-        android:textSize="18sp" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/topicSpinner" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/dEditTxt"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Question Difficulty"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/difSpinner" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/button4"
