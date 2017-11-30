@@ -23,11 +23,14 @@ public class AssignmentProgress {
         this.studentID = studentID;
         this.assignmentID = assignmentID;
         this.completedQuestions = new HashMap<>();
-        HashMap<String, Boolean> compQsValue = new HashMap<>();
-        for (int i =0; i< completedQuestions.size();i++){
-            compQsValue.put(completedQuestions.get(i),true);
+        if (completedQuestions !=null) {
+            HashMap<String, Boolean> compQsValue = new HashMap<>();
+            for (int i = 0; i < completedQuestions.size(); i++) {
+                compQsValue.put(completedQuestions.get(i), true);
+            }
+            this.completedQuestions.put("completedQuestions", compQsValue);
         }
-        this.completedQuestions.put("completedQuestions", compQsValue);
+        else this.completedQuestions=null;
         this.assignmentScore = assignmentScore;
         this.questionsLeft = questionsLeft;
     }
@@ -57,9 +60,12 @@ public class AssignmentProgress {
     }
 
     public ArrayList<String> getCompletedQuestions() {
-        HashMap<String,Boolean> temp = (HashMap<String, Boolean>)this.completedQuestions.get("completedQuestions");
-        ArrayList<String> result = new ArrayList<String>(temp.keySet());
-        return result;
+        if (completedQuestions!=null) {
+            HashMap<String, Boolean> temp = (HashMap<String, Boolean>) this.completedQuestions.get("completedQuestions");
+            ArrayList<String> result = new ArrayList<String>(temp.keySet());
+            return result;
+        }
+        else return new ArrayList<String>();
     }
 
     public void setCompletedQuestions(ArrayList<String> completedQuestions) {

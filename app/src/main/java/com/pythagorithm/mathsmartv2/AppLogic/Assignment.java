@@ -1,5 +1,7 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 /**
@@ -21,7 +23,7 @@ public class Assignment {
 
     //constructor
     public Assignment(String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, HashMap<String, Boolean> sectionList) {
-
+        this.assignmentID = genRandom();
         this.assignmentName = assignmentName;
         this.assignmentTopic = assignmentTopic;
         this.minCorrectAnswers = minCorrectAnswers;
@@ -29,7 +31,26 @@ public class Assignment {
         this.submissionPeriod = submissionPeriod;
         this.sectionList = sectionList;
     }
-
+    public String genRandom(){
+        MessageDigest instance = null;
+        try {
+            instance = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        byte[] messageDigest = instance.digest(String.valueOf(System.nanoTime()).getBytes());
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < messageDigest.length; i++) {
+            String hex = Integer.toHexString(0xFF & messageDigest[i]);
+            if (hex.length() == 1) {
+                // could use a for loop, but we're only dealing with a single
+                // byte
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
     //setters and getters
     public String getAssignmentID() {return assignmentID;}
     public void setAssignmentID(String assignmentID) {this.assignmentID = assignmentID;}

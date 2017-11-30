@@ -101,7 +101,7 @@ public class DatabaseConnector {
 //        return new Question("s",s,"s",4,"s");
 //    }
 
-    public void addQuestion(Question q){
+    public void addQuestion(final Question q){
         FirebaseFirestore.getInstance().collection("questions")
                 .add(q)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -133,7 +133,7 @@ public class DatabaseConnector {
 //        return "JI";
 //    }
 
-    public void addAssignment(Assignment a){
+    public void addAssignment(final Assignment a){
         FirebaseFirestore.getInstance().collection("assignments")
                 .add(a)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -157,59 +157,48 @@ public class DatabaseConnector {
     public void saveAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, int questionsLeft){
         final AssignmentProgress ap = new AssignmentProgress(studentID, aID,completedQuestions, assignmentScore,questionsLeft);
 
-        FirebaseFirestore.getInstance().collection("assignment-progress")
-                .whereEqualTo("assignmentID", aID)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot documentSnapshots) {
-                        updateAssignmentProgress(ap,documentSnapshots.getDocuments().get(0).getId());
-                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: assignment exists and progress will update");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        createAssignmentProgress(ap);
-                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: creating assignment progress");
-                    }
-        });
-    }
+//        FirebaseFirestore.getInstance().collection("assignment-progress")
+//                .whereEqualTo("assignmentID", aID)
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot documentSnapshots) {
+//                        updateAssignmentProgress(ap,documentSnapshots.getDocuments().get(0).getId());
+//                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: assignment exists and progress will update");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        createAssignmentProgress(ap);
+//                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: creating assignment progress");
+//                    }
+//        });
 
-    public void createAssignmentProgress(final AssignmentProgress ap){
         FirebaseFirestore.getInstance().collection("assignment-progress")
-                .add(ap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Firestore", "Wrote assignment progress for assignment " + ap.getAssignmentID());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error writing document", e);
-                    }
-                });
-    }
-
-    public void updateAssignmentProgress(AssignmentProgress ap, final String apID){
-        FirebaseFirestore.getInstance().collection("assignment-progress")
-                .document(apID)
+                .document(aID)
                 .set(ap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "Updated assignment "+ apID+ " successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Firestore", "Updating assignment "+apID +" unsuccessfully ... check your code man");
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Firestore","updated assignment progress of assignment: "+aID);
                     }
                 });
     }
+
+    public void createAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions , int questionsLeft){
+        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,null, 0,questionsLeft);
+        FirebaseFirestore.getInstance().collection("assignment-progress")
+                .document(aID)
+                .set(ap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Firestore","created assignment progress for assignment: "+aID);
+                    }
+                });
+    }
+
     //=========================================================================================================================
     //SCORES
     //=========================================================================================================================

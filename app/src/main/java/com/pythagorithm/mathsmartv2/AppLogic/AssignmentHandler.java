@@ -99,6 +99,7 @@ public class AssignmentHandler {
      */
     private void start(){
         Log.d("Firestore", "Assignment handler of aissgnment: "+assignment.getAssignmentID()+" started");
+        dc.createAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,min);
         questionAvailable = false;
         dc.getQuestion(completedQuestions,ceil(overallScore),assignment.getAssignmentTopic());
     }
