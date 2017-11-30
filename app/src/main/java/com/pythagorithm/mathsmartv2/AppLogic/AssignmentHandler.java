@@ -125,7 +125,7 @@ public class AssignmentHandler {
         currentScore = masterFormula(currentQuestion.getWeight(),answer,time);
         assignmentScore+=currentScore;
         questionAvailable = false;
-        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),completedQuestions,currentScore, assignmentScore, answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
+        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),completedQuestions,currentScore, assignmentScore, min,answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
 
         currentQuestion=null;
 
@@ -160,7 +160,7 @@ public class AssignmentHandler {
     }
 
     public void saveAssignment(){
-        dc.saveAssignment(studentID,assignment.getAssignmentID(),completedQuestions,overallScore,assignmentScore, min);
+        dc.saveAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,assignmentScore, min);
     }
 
     //420 BLAZE IT SHIZZZZZZ

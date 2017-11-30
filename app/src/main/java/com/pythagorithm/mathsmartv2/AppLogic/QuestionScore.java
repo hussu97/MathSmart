@@ -15,11 +15,12 @@ public class QuestionScore {
     Date date;
     String topic;
     int difficulty;
+    double score;
 
     public QuestionScore() {
     }
 
-    public QuestionScore(String studentID, String questionID, String assignmentID, boolean correct, int time,  String topic, int difficulty) {
+    public QuestionScore(String studentID, String questionID, String assignmentID, boolean correct, int time,  String topic, int difficulty, double score) {
         this.questionScoreID = null;
         this.studentID = studentID;
         this.questionID = questionID;
@@ -29,6 +30,15 @@ public class QuestionScore {
         this.date = getDate();
         this.topic = topic;
         this.difficulty = difficulty;
+        this.score = score;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 
     public String getQuestionScoreID() {

@@ -149,8 +149,13 @@ public class DatabaseConnector {
         });
     }
 
-    public void saveAssignment(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, final double overallScore, int min){
-        final AssignmentProgress ap = new AssignmentProgress(studentID,aID, completedQuestions,assignmentScore,overallScore, min);
+    /*
+        Description: Save progress of an assignment to the database. Can be retrieved later.
+        Precondition: a student is logged in and an assignment has been started.
+        Postcondition: an assignment progress object is added to the database.
+     */
+    public void saveAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, int questionsLeft){
+        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,completedQuestions, assignmentScore,questionsLeft);
 
         FirebaseFirestore.getInstance().collection("assignment-progress")
                 .whereEqualTo("assignmentID", aID)
@@ -215,8 +220,8 @@ public class DatabaseConnector {
         Postcondition: a new score for a question is added to the database. The assignment report of the assignment with assignment ID assignmentID
         is either created or updated with the new score
      */
-    public void updateScore(String studentID, final String questionID, String assignmentID,ArrayList<String> completedQuestions, double questionScore, double assignementScore,boolean correct, int time, String topic, int difficulty){
-        QuestionScore qs = new QuestionScore(studentID, questionID, assignmentID, correct, time, topic, difficulty);
+    public void updateScore(String studentID, final String questionID, String assignmentID,ArrayList<String> completedQuestions, double questionScore, double assignementScore, int questionsLeft ,boolean correct, int time, String topic, int difficulty){
+        QuestionScore qs = new QuestionScore(studentID, questionID, assignmentID, correct, time, topic, difficulty, questionScore);
         FirebaseFirestore.getInstance().collection("question-scores")
                 .add(qs)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -231,10 +236,7 @@ public class DatabaseConnector {
                         Log.w("Firestore", "Error writing score", e);
                     }
         });
-        AssignmentProgress(studentID,assignmentID,completedQuestions,assignementScore,
-        FirebaseFirestore.getInstance().collection("assignment-progress")
-                .document(assignmentID)
-                .set()
+        saveAssignmentProgress(studentID,assignmentID,completedQuestions,assignementScore,questionsLeft);
 
     }
     public double getAssignmentScore(String aID,String studentID){
