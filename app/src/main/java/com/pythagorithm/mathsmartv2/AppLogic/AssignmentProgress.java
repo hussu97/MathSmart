@@ -1,6 +1,9 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by b00061342 on 11/13/2017.
@@ -8,7 +11,7 @@ import java.util.ArrayList;
 public class AssignmentProgress {
     String studentID;
     String assignmentID;
-    ArrayList<String> completedQuestions;
+    Map<String,Object> completedQuestions;
     double assignmentScore;
     int questionsLeft; // minimum questions to complete assignment
     double overallScore; // weight the student reached
@@ -19,7 +22,12 @@ public class AssignmentProgress {
     public AssignmentProgress(String studentID, String assignmentID, ArrayList<String> completedQuestions, double assignmentScore, int questionsLeft) {
         this.studentID = studentID;
         this.assignmentID = assignmentID;
-        this.completedQuestions = completedQuestions;
+        this.completedQuestions = new HashMap<>();
+        HashMap<String, Boolean> compQsValue = new HashMap<>();
+        for (int i =0; i< completedQuestions.size();i++){
+            compQsValue.put(completedQuestions.get(i),true);
+        }
+        this.completedQuestions.put("completedQuestions", compQsValue);
         this.assignmentScore = assignmentScore;
         this.questionsLeft = questionsLeft;
     }
@@ -49,11 +57,16 @@ public class AssignmentProgress {
     }
 
     public ArrayList<String> getCompletedQuestions() {
-        return completedQuestions;
+        HashMap<String,Boolean> temp = (HashMap<String, Boolean>)this.completedQuestions.get("completedQuestions");
+        ArrayList<String> result = new ArrayList<String>(temp.keySet());
+        return result;
     }
 
     public void setCompletedQuestions(ArrayList<String> completedQuestions) {
-        this.completedQuestions = completedQuestions;
+        HashMap<String, Boolean> compQsValue = new HashMap<>();
+        for (int i =0; i< completedQuestions.size();i++){
+            compQsValue.put(completedQuestions.get(i),true);
+        }
     }
 
     public double getAssignmentScore() {

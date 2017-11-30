@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         c.addQuestion(q);
         c.addAssignment(a);
         AssignmentHandler ah = new AssignmentHandler(a, "123", 4.23,15);
+        ah.saveAssignment();
     }
 
     @Override
