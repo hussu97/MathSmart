@@ -66,20 +66,31 @@ public class Student extends User {
         Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
     }
 
-    public Question startAssignment(int assignmentNum){
-        if(assignmentNum<assignmentList.size()) {
-            dc.getAssignmentProgress(assignmentList.get(assignmentNum).getAssignmentID(),studentID,currAssignmentQuestions,currAssignmentScore,min);
-            if(currAssignmentQuestions==null) {
-                aH = new AssignmentHandler(assignmentList.get(assignmentNum), studentID,overallScore,totalQuestionsSolved);
-            }
-            else{
-                aH=new AssignmentHandler(assignmentList.get(assignmentNum),studentID,overallScore,currAssignmentQuestions,currAssignmentScore,min,totalQuestionsSolved);
-            }
-            return aH.getCurrentQuestion();
-        }
-        else
-            return null;
+    public void startAssignment(Assignment assignment){
+
+        dc.getAssignmentProgress(this, studentID, assignment.getAssignmentID());
+//        if(assignmentNum<assignmentList.size()) {
+//            dc.getAssignmentProgress(assignmentList.get(assignmentNum).getAssignmentID(),studentID,currAssignmentQuestions,currAssignmentScore,min);
+//            if(currAssignmentQuestions==null) {
+//                aH = new AssignmentHandler(assignmentList.get(assignmentNum), studentID,overallScore,totalQuestionsSolved);
+//            }
+//            else{
+//                aH=new AssignmentHandler(assignmentList.get(assignmentNum),studentID,overallScore,currAssignmentQuestions,currAssignmentScore,min,totalQuestionsSolved);
+//            }
+//            return aH.getCurrentQuestion();
+//        }
+//        else
+//            return null;
     }
+
+    public void createAssignmentHandler(boolean found, AssignmentProgress ap, String aID){
+        Assignment a = null;
+        for (int i =0;i < assignmentList.size(); i++){
+            if (assignmentList.get(i).getAssignmentID()==aID)
+                a = assignmentList.get(i);
+                aH = new AssignmentHandler(a,studentID,(double)overallScore,ap.getCompletedQuestions(),ap.getAssignmentScore(), ap.getQuestionsLeft(),0/*duno lol*/);
+        }
+       }
 //    public boolean saveAssignment(){
 //        return aH.saveAssignment();
 //    }

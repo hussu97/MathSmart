@@ -144,14 +144,37 @@ public class DatabaseConnector {
                             Assignment a = doc.toObject(Assignment.class);
                             assignmentList.add(a);
                             Log.d("Firestore", "found assignment AID:"+a.getAssignmentID()+". Adding to list");
-                            student.setAssignmentList(assignmentList);
                         }
+                        student.setAssignmentList(assignmentList);
                     }
                 });
     }
-    public void getAssignmentProgress(String studentID,String aID,ArrayList<String> completedQuestions,double assignmentScore,int min){
+    public void getAssignmentProgress(final Student s, final String studentID, final String aID){
         //Change values of completedQuestions, assignmentScore, and min
         //If not available, change value of completedQuestions to 'null'
+        FirebaseFirestore.getInstance()
+                .collection(ASSIGNMENT_PROGRESS_COLLECTION)
+                .whereEqualTo("assignmentID",aID)
+                .whereEqualTo("studentID",studentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
+                        Log.d("Firestore","Entered onComplete to get assignment progress");
+                        if (task.getResult().getDocuments().size()==0){
+                            Log.d("Firestore", "Did not find assignment progress for assignment "+aID+" for student: "+studentID);
+                            s.createAssignmentHandler(false,new AssignmentProgress(),aID);
+                        }
+                        for (DocumentSnapshot doc : task.getResult()){
+                            Assignment a = doc.toObject(Assignment.class);
+                            assignmentList.add(a);
+                            Log.d("Firestore", "found progress for student with studentID: "+studentID+" for assignment "+ aID);
+                            s.createAssignmentHandler(true, doc.toObject(AssignmentProgress.class), aID);
+                        }
+
+                    }
+                });
     }
 //    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
 //        return "JI";
