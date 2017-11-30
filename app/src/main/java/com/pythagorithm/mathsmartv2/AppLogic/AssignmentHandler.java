@@ -98,10 +98,9 @@ public class AssignmentHandler {
     Private function to return the First question of the database
      */
     private void start(){
-        Log.d("Firestore", "started");
-        int x=ceil(overallScore);
+        Log.d("Firestore", "Assignment handler of aissgnment: "+assignment.getAssignmentID()+" started");
         questionAvailable = false;
-        dc.getQuestion(completedQuestions,x,assignment.getAssignmentTopic());
+        dc.getQuestion(completedQuestions,ceil(overallScore),assignment.getAssignmentTopic());
     }
     /*
     Function used to generate current question score and send back new question
@@ -110,8 +109,7 @@ public class AssignmentHandler {
         assignment
 
 
-    Preconditions: Takes in the time taken to answer question and whether or not
-        the answer is correct
+    Preconditions: Question solved is currentQuestion.
     Postcondition: Creates a new QuestionScore object and updates assignment score and:
         True: signals the ending of the assignment, or
         False: begins fetching next question
@@ -127,7 +125,7 @@ public class AssignmentHandler {
         currentScore = masterFormula(currentQuestion.getWeight(),answer,time);
         assignmentScore+=currentScore;
         questionAvailable = false;
-        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
+        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),completedQuestions,currentScore, assignmentScore, answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
 
         currentQuestion=null;
 
@@ -146,12 +144,18 @@ public class AssignmentHandler {
     public void getNextQuestion(){
         //getting appropriate question
         Log.d("Firestore", "called getNextQuestion");
-        dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
         if(alt)
             nextQWeight=++scorePlus;
         else
             nextQWeight=--scoreMinus;
         alt=!alt;
+        if (nextQWeight<0||nextQWeight>10){
+            Log.d("Firestore", "No questions for assignment: "+assignment.getAssignmentID()+" found");
+            /////////////////////////////////
+            // What happens when no questions are available
+            //////////////////////////////
+        }
+        else dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
 
     }
 

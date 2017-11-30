@@ -59,7 +59,7 @@ public class DatabaseConnector {
     }
     public void getQuestion(final ArrayList<String> completedQuestion, final int weight, String topic){
 
-            Log.d("Firestore", "getting question...");
+            Log.d("Firestore", "Initialized getQuestion...");
             FirebaseFirestore.getInstance().collection("questions")
                     .whereEqualTo("weight", weight)
                     .get()
@@ -69,11 +69,10 @@ public class DatabaseConnector {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             Log.d("Firestore","Entered onComplete in getQuestion");
                             if (task.getResult().getDocuments().size()==0){
-                                Log.d("Firestore", "Did not find a question with weight"+weight);
+                                Log.d("Firestore", "Did not find a question with weight"+weight+". Getting a new questions...");
                                 assignmentHandler.getNextQuestion();
                             }
-                            if (task.isSuccessful()){
-
+                            else if (task.isSuccessful()){
                                 for (DocumentSnapshot doc : task.getResult()){
                                     if (Arrays.asList(completedQuestion).contains(doc.getId())){
                                         Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Not needed.");
@@ -209,7 +208,14 @@ public class DatabaseConnector {
     //=========================================================================================================================
     //SCORES
     //=========================================================================================================================
-    public void updateScore(String studentID, final String questionID, String assignmentID, boolean correct, int time, String topic, int difficulty){
+
+    /*
+        Description: Create a  new score report for a solved question and updates the assignement score of that solved question
+        Precondition: question has been solved.
+        Postcondition: a new score for a question is added to the database. The assignment report of the assignment with assignment ID assignmentID
+        is either created or updated with the new score
+     */
+    public void updateScore(String studentID, final String questionID, String assignmentID,ArrayList<String> completedQuestions, double questionScore, double assignementScore,boolean correct, int time, String topic, int difficulty){
         QuestionScore qs = new QuestionScore(studentID, questionID, assignmentID, correct, time, topic, difficulty);
         FirebaseFirestore.getInstance().collection("question-scores")
                 .add(qs)
@@ -225,6 +231,10 @@ public class DatabaseConnector {
                         Log.w("Firestore", "Error writing score", e);
                     }
         });
+        AssignmentProgress(studentID,assignmentID,completedQuestions,assignementScore,
+        FirebaseFirestore.getInstance().collection("assignment-progress")
+                .document(assignmentID)
+                .set()
 
     }
     public double getAssignmentScore(String aID,String studentID){
