@@ -1,5 +1,7 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.util.Log;
+
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 
 import java.util.ArrayList;
@@ -21,14 +23,20 @@ public class Student extends User {
     private AssignmentHandler aH;
 
     //Constructor
-    Student(String username){
+    public Student(String username){
         super(username);
         this.studentID=super.userID;
         this.dc=super.dc;
         this.sectionID=dc.getSectionID(studentID);
         this.overallScore=dc.getOverallScore(studentID);
-        this.assignmentList=dc.getAvailableAssignments(sectionID);
+        this.assignmentList= new ArrayList<Assignment>();
         this.totalQuestionsSolved=dc.getTotalQuestionsSolved(studentID);
+    }
+
+    public Student(){
+        sectionID = "sectionA";
+        studentID = "5s5R52Ct8mSKN1vndbuOQNlOZI53";
+        dc = new DatabaseConnector();
     }
 
     //getters and setters
@@ -36,8 +44,11 @@ public class Student extends User {
     public void setSectionID(String sectionID) {this.sectionID = sectionID;}
     public String getStudentID() {return studentID;}
     public void setStudentID(String studentID) {this.studentID = studentID;}
-    public ArrayList<Assignment> getAssignmentList() {return assignmentList;}
-    public void setAssignmentList(ArrayList<Assignment> assignmentList) {this.assignmentList = assignmentList;}
+    public void setAssignmentList(ArrayList<Assignment> assignmentList) {
+        this.assignmentList = assignmentList;
+        Log.d("Firestore","changed assignment list to new assignment list with "+ assignmentList.size()+ " assignments");
+        // UI.showassignments
+    }
     public ArrayList<String> getCurrAssignmentQuestions() {return currAssignmentQuestions;}
     public void setCurrAssignmentQuestions(ArrayList<String> currAssignmentQuestions) {this.currAssignmentQuestions = currAssignmentQuestions;}
     public double getCurrAssignmentScore() {return currAssignmentScore;}
@@ -49,6 +60,11 @@ public class Student extends User {
     public AssignmentHandler getaH() {return aH;}
     public void setaH(AssignmentHandler aH) {this.aH = aH;}
 
+
+    public void fetchAssignmentList() {
+        dc.getAvailableAssignments(this, sectionID);
+        Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
+    }
 
     public Question startAssignment(int assignmentNum){
         if(assignmentNum<assignmentList.size()) {

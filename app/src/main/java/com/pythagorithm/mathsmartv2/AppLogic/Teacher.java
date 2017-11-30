@@ -60,9 +60,9 @@ public class Teacher extends User{
     //=========================================================================================================================
     //ASSIGNMENTS
     //=========================================================================================================================
-    public ArrayList<Assignment> getAssignments(String sectionID){
-        return dc.getAvailableAssignments(sectionID);
-    }
+//    public ArrayList<Assignment> getAssignments(String sectionID){
+//        //return dc.getAvailableAssignments(sectionID);
+//    }
 //    public Assignment createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod, String[] sectionList){
 //        Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
 //        a.setAssignmentID(addAssignment(a));

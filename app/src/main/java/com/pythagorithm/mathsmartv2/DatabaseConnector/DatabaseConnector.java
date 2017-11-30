@@ -16,6 +16,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.QuestionScore;
+import com.pythagorithm.mathsmartv2.AppLogic.Student;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,8 +127,27 @@ public class DatabaseConnector {
     //=========================================================================================================================
     //ASSIGNMENTS
     //=========================================================================================================================
-    public ArrayList<Assignment> getAvailableAssignments(String sectionID){
-        return new ArrayList<>();
+    public void getAvailableAssignments(final Student student, final String sectionID){
+        FirebaseFirestore.getInstance()
+                .collection(ASSIGNMENT_COLLECTION)
+                .whereEqualTo("sectionList."+sectionID,true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
+                        Log.d("Firestore","Entered onComplete to find assignments");
+                        if (task.getResult().getDocuments().size()==0){
+                            Log.d("Firestore", "Did not find assignments with section: "+sectionID);
+                        }
+                        for (DocumentSnapshot doc : task.getResult()){
+                            Assignment a = doc.toObject(Assignment.class);
+                            assignmentList.add(a);
+                            Log.d("Firestore", "found assignment AID:"+a.getAssignmentID()+". Adding to list");
+                            student.setAssignmentList(assignmentList);
+                        }
+                    }
+                });
     }
     public void getAssignmentProgress(String studentID,String aID,ArrayList<String> completedQuestions,double assignmentScore,int min){
         //Change values of completedQuestions, assignmentScore, and min

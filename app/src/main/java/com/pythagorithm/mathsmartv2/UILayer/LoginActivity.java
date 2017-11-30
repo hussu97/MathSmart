@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
+import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
 
@@ -58,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
         c.addAssignment(a);
         ah = new AssignmentHandler(a, "123", 4.23,15);
         ah.saveAssignment();
+        Student s = new Student();
+        s.fetchAssignmentList();
     }
 
     @Override
