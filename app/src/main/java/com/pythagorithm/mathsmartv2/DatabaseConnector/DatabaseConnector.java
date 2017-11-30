@@ -35,6 +35,10 @@ public class DatabaseConnector {
     }
     public DatabaseConnector(){}
 
+    public final String QUESTIONS_COLLECTION = "QUESTIONS";
+    public final String ASSIGNMENT_COLLECTION="ASSIGNMENTS";
+    public final String QUESTION_SCORES_COLLECTION="QUESTION_SCORES";
+    public final String ASSIGNMENT_PROGRESS_COLLECTION = "ASSIGNMENT_PROGRESS_COLLECTION";
 
     public DatabaseConnector(AssignmentHandler assignmentHandler){
         this.assignmentHandler = assignmentHandler;
@@ -60,7 +64,7 @@ public class DatabaseConnector {
     public void getQuestion(final ArrayList<String> completedQuestion, final int weight, String topic){
 
             Log.d("Firestore", "Initialized getQuestion...");
-            FirebaseFirestore.getInstance().collection("questions")
+            FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)
                     .whereEqualTo("weight", weight)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -102,7 +106,7 @@ public class DatabaseConnector {
 //    }
 
     public void addQuestion(final Question q){
-        FirebaseFirestore.getInstance().collection("questions")
+        FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)
                 .add(q)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -134,7 +138,7 @@ public class DatabaseConnector {
 //    }
 
     public void addAssignment(final Assignment a){
-        FirebaseFirestore.getInstance().collection("assignments")
+        FirebaseFirestore.getInstance().collection(ASSIGNMENT_COLLECTION)
                 .add(a)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -175,7 +179,7 @@ public class DatabaseConnector {
 //                    }
 //        });
 
-        FirebaseFirestore.getInstance().collection("assignment-progress")
+        FirebaseFirestore.getInstance().collection(ASSIGNMENT_PROGRESS_COLLECTION)
                 .document(aID)
                 .set(ap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -188,7 +192,7 @@ public class DatabaseConnector {
 
     public void createAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions , int questionsLeft){
         final AssignmentProgress ap = new AssignmentProgress(studentID, aID,null, 0,questionsLeft);
-        FirebaseFirestore.getInstance().collection("assignment-progress")
+        FirebaseFirestore.getInstance().collection(ASSIGNMENT_PROGRESS_COLLECTION)
                 .document(aID)
                 .set(ap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -211,7 +215,7 @@ public class DatabaseConnector {
      */
     public void updateScore(String studentID, final String questionID, String assignmentID,ArrayList<String> completedQuestions, double questionScore, double assignementScore, int questionsLeft ,boolean correct, int time, String topic, int difficulty){
         QuestionScore qs = new QuestionScore(studentID, questionID, assignmentID, correct, time, topic, difficulty, questionScore);
-        FirebaseFirestore.getInstance().collection("question-scores")
+        FirebaseFirestore.getInstance().collection(QUESTION_SCORES_COLLECTION)
                 .add(qs)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

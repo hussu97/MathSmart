@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private TextView userWarning;
     private FirebaseAuth mAuth;
+    private static AssignmentHandler ah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         DatabaseConnector c = new DatabaseConnector();
         c.addQuestion(q);
         c.addAssignment(a);
-        AssignmentHandler ah = new AssignmentHandler(a, "123", 4.23,15);
+        ah = new AssignmentHandler(a, "123", 4.23,15);
         ah.saveAssignment();
     }
 
@@ -102,6 +103,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public static void dispQ(){
         Log.d("Firestore", "found q lol");
+
+        ah.solveQuestion(3,true);
     }
 
 }
