@@ -17,6 +17,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.QuestionScore;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,6 +114,7 @@ public class DatabaseConnector {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added question successfully");
+                        UIConnector.addedQuestion(q);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -161,6 +163,7 @@ public class DatabaseConnector {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added assignment successfully");
+                        UIConnector.addedAssignment(a);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
