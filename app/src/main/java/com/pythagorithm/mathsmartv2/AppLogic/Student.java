@@ -3,6 +3,7 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
+import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class Student extends User {
     public Student(){
         sectionID = "sectionA";
         studentID = "5s5R52Ct8mSKN1vndbuOQNlOZI53";
+        overallScore=3;
         dc = new DatabaseConnector();
     }
 
@@ -48,6 +50,7 @@ public class Student extends User {
         this.assignmentList = assignmentList;
         Log.d("Firestore","changed assignment list to new assignment list with "+ assignmentList.size()+ " assignments");
         // UI.showassignments
+        LoginActivity.showAssignments();
     }
     public ArrayList<String> getCurrAssignmentQuestions() {return currAssignmentQuestions;}
     public void setCurrAssignmentQuestions(ArrayList<String> currAssignmentQuestions) {this.currAssignmentQuestions = currAssignmentQuestions;}
@@ -85,12 +88,20 @@ public class Student extends User {
 
     public void createAssignmentHandler(boolean found, AssignmentProgress ap, String aID){
         Assignment a = null;
-        for (int i =0;i < assignmentList.size(); i++){
-            if (assignmentList.get(i).getAssignmentID()==aID)
+        for (int i =0;i < assignmentList.size(); i++) {
+            if (assignmentList.get(i).getAssignmentID().equals(aID)) {
                 a = assignmentList.get(i);
-                aH = new AssignmentHandler(a,studentID,(double)overallScore,ap.getCompletedQuestions(),ap.getAssignmentScore(), ap.getQuestionsLeft(),0/*duno lol*/);
+                if (found) {
+                    aH = new AssignmentHandler(a, studentID, (double) overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), 0/*duno lol*/);
+                }
+                else {
+                    // TODO: questions attempted for what exactly
+                    aH = new AssignmentHandler(a, studentID,overallScore,0);
+                }
+                LoginActivity.assignmentHandlerReady(aH);
+            }
         }
-       }
+    }
 //    public boolean saveAssignment(){
 //        return aH.saveAssignment();
 //    }

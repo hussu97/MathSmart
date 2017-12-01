@@ -36,6 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static AssignmentHandler ah;
 
+    static Student s;
+    static Assignment a;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +55,14 @@ public class LoginActivity extends AppCompatActivity {
 
         str.put("sectionA", true);
         str.put("sectionB", true);
-        Assignment a = new Assignment("name", "fractions", 3, "3-2-2018", "4 days", str);
-        Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
+        a = new Assignment("name", "fractions", 3, "3-2-2018", "4 days", str);
+        //Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
         DatabaseConnector c = new DatabaseConnector();
-        c.addQuestion(q);
+        //c.addQuestion(q);
         c.addAssignment(a);
-        ah = new AssignmentHandler(a, "123", 4.23,15);
-        ah.saveAssignment();
-        Student s = new Student();
+        //ah = new AssignmentHandler(a, "123", 4.23,15);
+        //ah.saveAssignment();
+        s = new Student();
         s.fetchAssignmentList();
     }
 
@@ -108,6 +111,15 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("Firestore", "found q lol");
 
         ah.solveQuestion(3,true);
+    }
+
+    public static void assignmentHandlerReady(AssignmentHandler a){
+        ah = a;
+    }
+
+    public static void showAssignments(){
+        Log.d("Firestore", "shown assignments");
+        s.startAssignment(a);
     }
 
 }

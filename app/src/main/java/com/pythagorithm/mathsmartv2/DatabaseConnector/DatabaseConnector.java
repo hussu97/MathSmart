@@ -149,6 +149,26 @@ public class DatabaseConnector {
                     }
                 });
     }
+
+//    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
+//        return "JI";
+//    }
+
+    public void addAssignment(final Assignment a){
+        FirebaseFirestore.getInstance().collection(ASSIGNMENT_COLLECTION)
+                .add(a)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Firestore", "added assignment successfully");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Firestore", "assignment was not added successfully");
+            }
+        });
+    }
     public void getAssignmentProgress(final Student s, final String studentID, final String aID){
         //Change values of completedQuestions, assignmentScore, and min
         //If not available, change value of completedQuestions to 'null'
@@ -176,26 +196,6 @@ public class DatabaseConnector {
                     }
                 });
     }
-//    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
-//        return "JI";
-//    }
-
-    public void addAssignment(final Assignment a){
-        FirebaseFirestore.getInstance().collection(ASSIGNMENT_COLLECTION)
-                .add(a)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Firestore", "added assignment successfully");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Firestore", "assignment was not added successfully");
-            }
-        });
-    }
-
     /*
         Description: Save progress of an assignment to the database. Can be retrieved later.
         Precondition: a student is logged in and an assignment has been started.

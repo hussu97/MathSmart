@@ -44,6 +44,7 @@ public class AssignmentHandler {
      */
     //Starting new Assignment
     public AssignmentHandler(Assignment assignment,String studentID,double overallScore,int totalQuestionsAttempted){
+        Log.d("Firestore", "Assignment handler for assignment "+assignment.getAssignmentID()+" created for the first time");
         this.studentID=studentID;
         this.assignment=assignment;
         this.overallScore=overallScore;
@@ -60,6 +61,7 @@ public class AssignmentHandler {
      */
     AssignmentHandler(Assignment assignment,String studentID,double overallScore,ArrayList<String> completedQuestions,double assignmentScore,int min
     ,int totalQuestionsAttempted){
+        Log.d("Firestore","Assignment handler for assignment "+assignment.getAssignmentID()+" created to resume");
         this.studentID=studentID;
         this.assignment=assignment;
         this.completedQuestions=completedQuestions;
