@@ -1,3 +1,47 @@
 <resources>
-    <string name="app_name">MathSmartV2</string>
+    <string name="app_name">MathSmartV3</string>
+    <string-array name="topics">
+        <item>Algebra</item>
+        <item>Geometry</item>
+        <item>Trigonometry</item>
+    </string-array>
+    <string-array name="answers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+    <string-array name="sections">
+        <item>Section 1A</item>
+        <item>Section 1B</item>
+        <item>Section 1C</item>
+        <item>Section 1D</item>
+        <item>Section 1E</item>
+
+    </string-array>
+
+    <string-array name="difficulty">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
 </resources>
