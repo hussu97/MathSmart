@@ -11,11 +11,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
+import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.R;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Sections extends AppCompatActivity {
     private ViewGroup myRoot1;
     private ViewGroup myRoot2;
+    Teacher t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +31,14 @@ public class Sections extends AppCompatActivity {
 
         myRoot1 = (ViewGroup) findViewById(R.id.sectionsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.assingmentsHolder);
-
+        Intent i = getIntent();
+        ((TextView)findViewById(R.id.sectionListTxt)).setText(i.getStringExtra("username"));
         displayPendingAssingments(15);
+        t = new Teacher("tuff");
+        HashMap<String, Boolean> sections = new HashMap<String, Boolean>();
+        sections.put("sectionA", true);
+        t.setSectionList(sections);
+        t.setSections(this);
     }
     public void createBtn(View v){
         if(v.getId() == R.id.button3) {
@@ -42,15 +56,14 @@ public class Sections extends AppCompatActivity {
         TextView secNum = (TextView) findViewById(R.id.sectionAssList);
         TextView secTitle = (TextView) v.findViewById(R.id.secTitle);
         secNum.setText(secTitle.getText().toString()+"'s Assignments");
-        displaySectionAssingments(8);
-
+        t.getAssignments("sectionA");
     }
     @Override
     public void onBackPressed(){
 
     }
 
-    void displayPendingAssingments(int number){
+    public void displayPendingAssingments(int number){
 
         for (int i = 0; i < number; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.section_box, null, false);
@@ -70,19 +83,21 @@ public class Sections extends AppCompatActivity {
         }
 
     }
-    void displaySectionAssingments(int number){
+    public void displaySectionAssingments(ArrayList<Assignment> ass){
         myRoot2.removeAllViews();
-        for (int i = 0; i < number; i++) {
+        for (int i = 0; i < ass.size(); i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentteacher_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
-            assTitle.setText("Assingment " + i);
+            TextView assID = (TextView) inflatedLayout.findViewById(R.id.Descrip1);
+            assTitle.setText( ass.get(i).getAssignmentName());
             //assTitle.setPadding(0,0,20,0);
             assTitle.setTextColor(Color.BLACK);
 
-            assDesc.setText("Completed " + i);
+            assDesc.setText(ass.get(i).getAssignmentID());
             //assDesc.setPadding(0,0,20,0);
             assDesc.setTextColor(Color.BLACK);
+
             inflatedLayout.setPadding(0,0,25,0);
 
             myRoot2.addView(inflatedLayout);

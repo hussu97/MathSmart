@@ -162,10 +162,6 @@ public class AssignmentHandler {
 
     }
 
-    public void saveAssignment(){
-        dc.saveAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,assignmentScore, min);
-    }
-
     //420 BLAZE IT SHIZZZZZZ
     private double masterFormula(int weight, boolean correct,int time){
         if(correct)

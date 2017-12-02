@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,8 +22,11 @@ import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
+import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -35,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView userWarning;
     private FirebaseAuth mAuth;
     private static AssignmentHandler ah;
+    LoginActivity la;
 
     static Student s;
     static Assignment a;
@@ -50,12 +55,12 @@ public class LoginActivity extends AppCompatActivity {
         userWarning = (TextView) findViewById(R.id.warningUserTextView);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         HashMap<String, Boolean> str= new HashMap<String, Boolean>();
-
+        la = this;
         mAuth=FirebaseAuth.getInstance();
 
         str.put("sectionA", true);
         str.put("sectionB", true);
-        a = new Assignment("name", "fractions", 3, "3-2-2018", "4 days", str);
+        a = new Assignment("name", "fractions", 3, "3-2-2018","", str);
         //Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
         DatabaseConnector c = new DatabaseConnector();
         //c.addQuestion(q);
@@ -64,6 +69,12 @@ public class LoginActivity extends AppCompatActivity {
         //ah.saveAssignment();
         s = new Student();
         s.fetchAssignmentList();
+        HashMap<String, Boolean> sectionList = new HashMap<>();
+        sectionList.put("sectionA",true);
+        HashMap<String, Assignment> assList= new HashMap<>();
+        assList.put(a.getAssignmentID(),a);
+ //       Teacher t = new Teacher("43Ph0AS85QQwxzKG2mpyucpEp2u2",sectionList,c, assList);
+ //       c.addTeacher(t);
     }
 
     @Override
@@ -86,17 +97,16 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Log.d("FireAuth","CreateEmail:Success");
                             FirebaseUser user=mAuth.getCurrentUser();
+                            DatabaseConnector c = new DatabaseConnector();
                             //If user is a student
                             if(username.getText().toString().toLowerCase().trim().startsWith("s")) {
                                 Intent intent = new Intent(LoginActivity.this, Assignments.class);
                                 intent.putExtra("username", user.getUid());
                                 startActivity(intent);
                             }
-                            //If user is a teacher
+                            // If user is a teacher
                             else {
-                                Intent intent = new Intent(LoginActivity.this, Sections.class);
-                                intent.putExtra("username",user.getUid());
-                                startActivity(intent);
+                                c.loginTeacher(la, user.getUid());
                             }
                         }else {
                             Log.w("FireAuth","Authentication failed");
@@ -120,6 +130,16 @@ public class LoginActivity extends AppCompatActivity {
     public static void showAssignments(){
         Log.d("Firestore", "shown assignments");
         s.startAssignment(a);
+    }
+
+    public void loginFailed(){
+        Toast.makeText(this,"Login failed", Toast.LENGTH_SHORT);
+    }
+
+    public void startSectionsActivity(Teacher teacher){
+        Intent intent = new Intent(LoginActivity.this, Sections.class);
+        intent.putExtra("username",teacher.getTeacherID());
+        startActivity(intent);
     }
 
 }
