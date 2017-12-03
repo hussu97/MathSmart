@@ -3,6 +3,7 @@ package com.pythagorithm.mathsmartv2.UILayer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +13,26 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
+import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
 
 public class Assignments extends AppCompatActivity {
     private ViewGroup myRoot1;
     private ViewGroup myRoot2;
     private Student student;
+    private DatabaseConnector dc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
 
+        dc = new DatabaseConnector();
+
         Intent intent = getIntent();
 
         student = (Student)intent.getParcelableExtra("student");
+
+        student.setAssignmentsActivity(this);
 
         myRoot1 = (ViewGroup) findViewById(R.id.pendingAssignmentsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.completedAssingmentsHolder);
@@ -33,9 +40,14 @@ public class Assignments extends AppCompatActivity {
         Toast.makeText(this,getIntent().getStringExtra("username"),
                 Toast.LENGTH_SHORT).show();
 
-        displayPendingAssingments(15);
-        displayCompleteAssingments(3);
     }
+
+    private void getAssignments(){
+        dc.getAvailableAssignments(student);
+        dc.getCompletedAssignments(student);
+        Toast.makeText(this, "Getting assignments...",Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onBackPressed() {
     }
@@ -66,11 +78,11 @@ public class Assignments extends AppCompatActivity {
         startActivity(intent);
 
     }
-    void displayPendingAssingments(int number){
+    public void displayPendingAssingments(){
 
         String dates[]={student.getStudentID(),"Nov 28 2017","Dec 2 2017"};
         String topics[]={"Multiplication","Algebra","Fractions"};
-        for (int i = 1; i < number; i++) {
+        for (int i = 1; i < 1; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignment_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
@@ -101,10 +113,10 @@ public class Assignments extends AppCompatActivity {
         }
 
     }
-    void displayCompleteAssingments(int number){
+    public void displayCompleteAssingments(){
         String dates[]={"Nov 5 2017","Nov 7 2017"};
         String topics[]={"Addition","Subtraction",};
-        for (int i = 1; i < number; i++) {
+        for (int i = 1; i < 0; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentcompleted_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);

@@ -131,10 +131,7 @@ public class LoginActivity extends AppCompatActivity {
         ah = a;
     }
 
-    public static void showAssignments(){
-        Log.d("Firestore", "shown assignments");
-        s.startAssignment(a);
-    }
+
 
     public void loginFailed(){
         Toast.makeText(this,"Login failed", Toast.LENGTH_SHORT);

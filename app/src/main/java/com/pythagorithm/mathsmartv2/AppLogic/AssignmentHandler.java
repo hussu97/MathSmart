@@ -135,8 +135,10 @@ public class AssignmentHandler {
         //checking whether assignment is complete of not
         if(answer)
             --min;
-        if(min==0)
+        if(min==0) {
+            dc.completeAssignment(studentID, assignment.getAssignmentID());
             return true;
+        }
         else {
             getNextQuestion();
             return false;

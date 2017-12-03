@@ -1,6 +1,7 @@
 package com.pythagorithm.mathsmartv2.UIConnector;
 
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
+import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
@@ -14,6 +15,7 @@ import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 public class UIConnector {
     private Teacher teacher;
     private Student student;
+    AssignmentHandler aH;
     private LoginActivity la;
     public UIConnector(LoginActivity la, String uID, boolean teacher){
         this.la = la;
