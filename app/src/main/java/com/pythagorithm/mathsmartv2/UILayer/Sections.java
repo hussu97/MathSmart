@@ -23,6 +23,7 @@ import java.util.HashMap;
 public class Sections extends AppCompatActivity {
     private ViewGroup myRoot1;
     private ViewGroup myRoot2;
+    private Teacher teacher;
     Teacher t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +33,9 @@ public class Sections extends AppCompatActivity {
         myRoot1 = (ViewGroup) findViewById(R.id.sectionsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.assingmentsHolder);
         Intent i = getIntent();
-        ((TextView)findViewById(R.id.sectionListTxt)).setText(i.getStringExtra("username"));
+        teacher = (Teacher)i.getParcelableExtra("teacher");
+        ((TextView)findViewById(R.id.sectionListTxt)).setText(teacher.getSectionList().get("sectionA").toString());
         displayPendingAssingments(15);
-        t = new Teacher("tuff");
         HashMap<String, Boolean> sections = new HashMap<String, Boolean>();
         sections.put("sectionA", true);
         t.setSectionList(sections);

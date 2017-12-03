@@ -32,6 +32,7 @@ public class DatabaseConnector {
     private String ID;
 
     private AssignmentHandler assignmentHandler;
+    private final String STUDENT_COLLECTION = "STUDENTS";
 
 
     public DatabaseConnector(String userID){
@@ -52,11 +53,35 @@ public class DatabaseConnector {
     //=========================================================================================================================
     //OTHER
     //=========================================================================================================================
-    public String login(String username){
-        return "";
+    public void loginStudent(final UIConnector uic,final String uID){
+        Log.d("Firestore", "Initialized getQuestion...");
+        FirebaseFirestore.getInstance().collection(STUDENT_COLLECTION)
+                .whereEqualTo("studentID", uID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("Firestore","Entered onComplete in loginStudent");
+                        if (task.getResult().getDocuments().size()==0){
+                            Log.d("Firestore", "Did not find a student with uID"+uID);
+                            uic.loginUnsuccessful();
+                        }
+                        else if (task.isSuccessful()){
+                            for (DocumentSnapshot doc : task.getResult()){
+                                Student student= doc.toObject(Student.class);
+                                Log.d("Firestore", "onComplete: "+ doc.getData());
+                                uic.loginSuccessful(student);
+                            }
+                        }
+
+                    }
+
+                });
+
     }
     public void loginTeacher(final UIConnector uic, final String uID){
-        Log.d("Firestore", "Initialized getQuestion...");
+        Log.d("Firestore", "Initialized loginTeacher...");
         FirebaseFirestore.getInstance().collection(TEACHER_COLLECTION)
                 .whereEqualTo("teacherID", uID)
                 .get()

@@ -18,6 +18,7 @@ public class Assignment {
     private String submissionPeriod;
     private HashMap<String, Boolean> sectionList;
 
+
     public Assignment() {
     }
 

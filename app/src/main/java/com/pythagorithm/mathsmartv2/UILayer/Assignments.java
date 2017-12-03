@@ -11,15 +11,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.R;
 
 public class Assignments extends AppCompatActivity {
     private ViewGroup myRoot1;
     private ViewGroup myRoot2;
+    private Student student;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
+
+        Intent intent = getIntent();
+
+        student = (Student)intent.getParcelableExtra("student");
 
         myRoot1 = (ViewGroup) findViewById(R.id.pendingAssignmentsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.completedAssingmentsHolder);
@@ -62,7 +68,7 @@ public class Assignments extends AppCompatActivity {
     }
     void displayPendingAssingments(int number){
 
-        String dates[]={"Nov 12 2017","Nov 28 2017","Dec 2 2017"};
+        String dates[]={student.getStudentID(),"Nov 28 2017","Dec 2 2017"};
         String topics[]={"Multiplication","Algebra","Fractions"};
         for (int i = 1; i < number; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignment_box, null, false);

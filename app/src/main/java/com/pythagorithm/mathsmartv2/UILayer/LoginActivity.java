@@ -102,9 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                             DatabaseConnector c = new DatabaseConnector();
                             //If user is a student
                             if(username.getText().toString().toLowerCase().trim().startsWith("s")) {
-                                Intent intent = new Intent(LoginActivity.this, Assignments.class);
-                                intent.putExtra("username", user.getUid());
-                                startActivity(intent);
+                                Toast.makeText(la, "Loggin student in...", Toast.LENGTH_SHORT).show();
+                                uiConnector = new UIConnector(la, user.getUid(), false);
                             }
                             // If user is a teacher
                             else {
@@ -143,7 +142,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void startSectionsActivity(Teacher teacher){
         Intent intent = new Intent(LoginActivity.this, Sections.class);
-        intent.putExtra("username",teacher.getTeacherID());
+        intent.putExtra("teacher", teacher);
+        startActivity(intent);
+    }
+
+    public void startAssignmentsActivity(Student student){
+        Intent intent = new Intent(LoginActivity.this, Assignments.class);
+        intent.putExtra("student", student);
         startActivity(intent);
     }
 

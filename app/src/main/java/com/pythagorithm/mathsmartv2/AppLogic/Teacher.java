@@ -3,6 +3,7 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,23 +15,19 @@ import com.pythagorithm.mathsmartv2.UILayer.Sections;
  * Created by H_Abb on 11/4/2017.
  */
 
-public class Teacher extends User implements Parcelable{
+public class Teacher  implements Parcelable{
     private String teacherID;
     private HashMap<String, Boolean> sectionList;
     private HashMap<String, Assignment> availableAssignments;
+    private DatabaseConnector dc;
     private String sectionID;
     private Sections s;
 
     //Constructor
-    public Teacher(String username ){
-        super(username);
-        teacherID=super.userID;
-        this.dc=new DatabaseConnector(teacherID);
-    }
 
     public Teacher(Parcel in){
         teacherID = in.readString();
-        Bundle sectionsBundle = new Bundle();
+        Bundle sectionsBundle = in.readBundle();
         sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("map");
     }
 
@@ -39,7 +36,7 @@ public class Teacher extends User implements Parcelable{
     public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
         this.teacherID = teacherID;
         this.sectionList = sectionList;
-
+        dc = new DatabaseConnector();
     }
 
     public void setSections(Sections s){this.s = s;}

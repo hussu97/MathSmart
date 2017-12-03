@@ -1,5 +1,8 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
  * Created by H_Abb on 11/2/2017.
  */
 
-public class Student extends User {
+public class Student implements Parcelable {
     private String sectionID;
     private String studentID;
     private ArrayList<Assignment> assignmentList;
@@ -25,13 +28,21 @@ public class Student extends User {
 
     //Constructor
     public Student(String username){
-        super(username);
-        this.studentID=super.userID;
-        this.dc=super.dc;
         this.sectionID=dc.getSectionID(studentID);
         this.overallScore=dc.getOverallScore(studentID);
         this.assignmentList= new ArrayList<Assignment>();
         this.totalQuestionsSolved=dc.getTotalQuestionsSolved(studentID);
+    }
+
+    public Student(Parcel in){
+        studentID = in.readString();
+        sectionID = in.readString();
+        overallScore = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public Student(){
@@ -114,4 +125,23 @@ public class Student extends User {
     public double getOverallScore(String studentID){
         return dc.getOverallScore(studentID);
     }
+
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(studentID);
+        parcel.writeString(sectionID);
+        parcel.writeDouble(overallScore);
+    }
+
+
+    // This is to de-serialize the object
+    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>(){
+        public Student createFromParcel(Parcel in) {
+            return new Student(in);
+        }
+        public Student[] newArray(int size) {
+            return new Student[size];
+        }
+    };
+
+
 }
