@@ -28,14 +28,9 @@ public class Teacher extends User{
 
     public Teacher(){}
 
-    public Teacher(String teacherID, HashMap<String, Boolean> sectionList, DatabaseConnector dc, HashMap<String, Assignment> availableAssignments) {
+    public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
         this.teacherID = teacherID;
         this.sectionList = sectionList;
-        this.dc = dc;
-        this.availableAssignments = availableAssignments;
-        this.sectionID = "";
-        this.question = new Question();
-        this.s = new Sections();
     }
 
     public void setSections(Sections s){this.s = s;}
@@ -51,7 +46,9 @@ public class Teacher extends User{
     public void setQuestion(Question question) {this.question = question;}
 
     public ArrayList<Assignment> getAvailableAssignments() {
+        if (availableAssignments!=null)
         return new ArrayList<>(availableAssignments.values());
+        else return null;
     }
 
     public void setAvailableAssignmentsFrom(ArrayList<Assignment> availableAssignments) {

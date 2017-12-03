@@ -63,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         a = new Assignment("name", "fractions", 3, "3-2-2018","", str);
         //Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
         DatabaseConnector c = new DatabaseConnector();
-        //c.addQuestion(q);
         c.addAssignment(a);
+        //c.addQuestion(q);
         //ah = new AssignmentHandler(a, "123", 4.23,15);
         //ah.saveAssignment();
         s = new Student();
@@ -73,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
         sectionList.put("sectionA",true);
         HashMap<String, Assignment> assList= new HashMap<>();
         assList.put(a.getAssignmentID(),a);
- //       Teacher t = new Teacher("43Ph0AS85QQwxzKG2mpyucpEp2u2",sectionList,c, assList);
- //       c.addTeacher(t);
+        Teacher t = new Teacher("43Ph0AS85QQwxzKG2mpyucpEp2u2",sectionList);
+        c.addTeacher(t);
     }
 
     @Override
