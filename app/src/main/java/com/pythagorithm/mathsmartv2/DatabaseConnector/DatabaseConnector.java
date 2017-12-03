@@ -55,7 +55,7 @@ public class DatabaseConnector {
     public String login(String username){
         return "";
     }
-    public void loginTeacher(final LoginActivity la, final String uID){
+    public void loginTeacher(final UIConnector uic, final String uID){
         Log.d("Firestore", "Initialized getQuestion...");
         FirebaseFirestore.getInstance().collection(TEACHER_COLLECTION)
                 .whereEqualTo("teacherID", uID)
@@ -67,17 +67,13 @@ public class DatabaseConnector {
                         Log.d("Firestore","Entered onComplete in loginTeacher");
                         if (task.getResult().getDocuments().size()==0){
                             Log.d("Firestore", "Did not find a teacher with uID"+uID);
-                            la.loginFailed();
+                            uic.loginUnsuccessful();
                         }
                         else if (task.isSuccessful()){
                             for (DocumentSnapshot doc : task.getResult()){
                                 Teacher teacher = doc.toObject(Teacher.class);
                                 Log.d("Firestore", "onComplete: "+ doc.getData());
-                                //====================================================================
-                                // Function that gets called in the AssignmentHandler class
-                                //====================================================================
-                                la.startSectionsActivity(teacher);
-
+                                uic.loginSuccessful(teacher);
                             }
                         }
 

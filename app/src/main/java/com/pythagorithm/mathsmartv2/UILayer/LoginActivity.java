@@ -25,6 +25,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import org.w3c.dom.Text;
 
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
     static Student s;
     static Assignment a;
+    UIConnector uiConnector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,23 +60,23 @@ public class LoginActivity extends AppCompatActivity {
         la = this;
         mAuth=FirebaseAuth.getInstance();
 
-        str.put("sectionA", true);
-        str.put("sectionB", true);
-        a = new Assignment("name", "fractions", 3, "3-2-2018","", str);
-        //Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
-        DatabaseConnector c = new DatabaseConnector();
-        c.addAssignment(a);
-        //c.addQuestion(q);
-        //ah = new AssignmentHandler(a, "123", 4.23,15);
-        //ah.saveAssignment();
-        s = new Student();
-        s.fetchAssignmentList();
-        HashMap<String, Boolean> sectionList = new HashMap<>();
-        sectionList.put("sectionA",true);
-        HashMap<String, Assignment> assList= new HashMap<>();
-        assList.put(a.getAssignmentID(),a);
-        Teacher t = new Teacher("43Ph0AS85QQwxzKG2mpyucpEp2u2",sectionList);
-        c.addTeacher(t);
+//        str.put("sectionA", true);
+//        str.put("sectionB", true);
+//        a = new Assignment("name", "fractions", 3, "3-2-2018","", str);
+//        //Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
+//        DatabaseConnector c = new DatabaseConnector();
+//        c.addAssignment(a);
+//        //c.addQuestion(q);
+//        //ah = new AssignmentHandler(a, "123", 4.23,15);
+//        //ah.saveAssignment();
+//        s = new Student();
+//        s.fetchAssignmentList();
+//        HashMap<String, Boolean> sectionList = new HashMap<>();
+//        sectionList.put("sectionA",true);
+//        HashMap<String, Assignment> assList= new HashMap<>();
+//        assList.put(a.getAssignmentID(),a);
+//        Teacher t = new Teacher("43Ph0AS85QQwxzKG2mpyucpEp2u2",sectionList);
+//        c.addTeacher(t);
     }
 
     @Override
@@ -106,7 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             // If user is a teacher
                             else {
-                                c.loginTeacher(la, user.getUid());
+                                Toast.makeText(la, "Loggin teacher in...", Toast.LENGTH_SHORT).show();
+                                uiConnector = new UIConnector(la, user.getUid(), true);
                             }
                         }else {
                             Log.w("FireAuth","Authentication failed");
@@ -116,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
     }
+
+
 
     public static void dispQ(){
         Log.d("Firestore", "found q lol");
@@ -140,6 +145,10 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, Sections.class);
         intent.putExtra("username",teacher.getTeacherID());
         startActivity(intent);
+    }
+
+    public void displayError(String errorMessag){
+        Toast.makeText(this,errorMessag, Toast.LENGTH_LONG).show();
     }
 
 }

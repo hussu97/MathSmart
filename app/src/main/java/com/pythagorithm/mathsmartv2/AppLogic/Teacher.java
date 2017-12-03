@@ -1,5 +1,9 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,13 +14,11 @@ import com.pythagorithm.mathsmartv2.UILayer.Sections;
  * Created by H_Abb on 11/4/2017.
  */
 
-public class Teacher extends User{
+public class Teacher extends User implements Parcelable{
     private String teacherID;
     private HashMap<String, Boolean> sectionList;
-    private DatabaseConnector dc;
     private HashMap<String, Assignment> availableAssignments;
     private String sectionID;
-    private Question question;
     private Sections s;
 
     //Constructor
@@ -26,11 +28,18 @@ public class Teacher extends User{
         this.dc=new DatabaseConnector(teacherID);
     }
 
+    public Teacher(Parcel in){
+        teacherID = in.readString();
+        Bundle sectionsBundle = new Bundle();
+        sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("map");
+    }
+
     public Teacher(){}
 
     public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
         this.teacherID = teacherID;
         this.sectionList = sectionList;
+
     }
 
     public void setSections(Sections s){this.s = s;}
@@ -42,8 +51,6 @@ public class Teacher extends User{
     public void setSectionList(HashMap<String, Boolean> sectionList) {this.sectionList = sectionList;}
     public String getSectionID() {return sectionID;}
     public void setSectionID(String sectionID) {this.sectionID = sectionID;}
-    public Question getQuestion() {return question;}
-    public void setQuestion(Question question) {this.question = question;}
 
     public ArrayList<Assignment> getAvailableAssignments() {
         if (availableAssignments!=null)
@@ -102,6 +109,31 @@ public class Teacher extends User{
         Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
         dc.addAssignment(a);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(teacherID);
+        Bundle sectionsBundle = new Bundle();
+        sectionsBundle.putSerializable("map", sectionList);
+        parcel.writeBundle(sectionsBundle);
+    }
+
+    // This is to de-serialize the object
+    public static final Parcelable.Creator<Teacher> CREATOR = new Parcelable.Creator<Teacher>(){
+        public Teacher createFromParcel(Parcel in) {
+            return new Teacher(in);
+        }
+        public Teacher[] newArray(int size) {
+            return new Teacher[size];
+        }
+    };
+}
+
 //    public Assignment editAssignment(String sectionID){
 //        for(Assignment a:availableAssignments)
 //            for(String secID:a.getSectionList())
@@ -117,4 +149,4 @@ public class Teacher extends User{
 //        }
 //    }
 
-}
+
