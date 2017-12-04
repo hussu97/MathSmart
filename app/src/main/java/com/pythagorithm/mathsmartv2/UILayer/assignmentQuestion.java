@@ -167,13 +167,11 @@ public class assignmentQuestion extends AppCompatActivity {
             row3.setBackgroundResource(0);
             row4.setBackgroundResource(0);
             count++;
-            if (count == 5) {
-                nxtbtn.setText("Submit Assingment");
-
-            }
             if (count >= 6) {
                 Intent intent = new Intent(this, Assignments.class);
                 startActivity(intent);
+                reportStudent r =new reportStudent();
+                r.updateUI();
             } else {
                 qstnNumber.setText("Question #" + count);
             }

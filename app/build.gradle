@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.pythagorithm.mathsmartv2"
@@ -26,6 +26,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.google.firebase:firebase-core:11.6.0'
@@ -34,6 +35,7 @@ dependencies {
     compile 'io.github.kexanie.library:MathView:0.0.6'
     compile 'com.google.firebase:firebase-auth:11.6.0'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

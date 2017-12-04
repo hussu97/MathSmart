@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,38 +20,40 @@ import com.pythagorithm.mathsmartv2.R;
 public class Assignments extends AppCompatActivity {
     private ViewGroup myRoot1;
     private ViewGroup myRoot2;
-    private Student student;
+    //private Student student;
     private DatabaseConnector dc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
 
-        dc = new DatabaseConnector();
+        //dc = new DatabaseConnector();
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
 
-        student = (Student)intent.getParcelableExtra("student");
+        //student = intent.getParcelableExtra("student");
 
-        student.setAssignmentsActivity(this);
+        //student.setAssignmentsActivity(this);
 
         myRoot1 = (ViewGroup) findViewById(R.id.pendingAssignmentsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.completedAssingmentsHolder);
 
+        displayCompleteAssingments();
+        displayPendingAssingments();
         Toast.makeText(this,getIntent().getStringExtra("username"),
                 Toast.LENGTH_SHORT).show();
 
     }
 
     private void getAssignments(){
-        dc.getAvailableAssignments(student);
-        dc.getCompletedAssignments(student);
+        //dc.getAvailableAssignments(student);
+        //dc.getCompletedAssignments(student);
         Toast.makeText(this, "Getting assignments...",Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onBackPressed() {
-    }
+    public void onBackPressed() {}
+
     public void clicked(View v){
 
         TextView assTitle = (TextView) v.findViewById(R.id.assTitle);
@@ -70,19 +73,24 @@ public class Assignments extends AppCompatActivity {
 
     }
     public void logout(View v){
-
-
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
-
         startActivity(intent);
-
+    }
+    public void assignmentClicked(View v){
+        Intent intent = new Intent(this, Assignments.class);
+        startActivity(intent);
+    }
+    public void reportClicked(View v){
+        Intent intent = new Intent(this, reportStudent.class);
+        startActivity(intent);
     }
     public void displayPendingAssingments(){
 
-        String dates[]={student.getStudentID(),"Nov 28 2017","Dec 2 2017"};
+        String dates[]={"Dec 20 2017","Dec 25 2017","Dec 28 2017"};
         String topics[]={"Multiplication","Algebra","Fractions"};
-        for (int i = 1; i < 1; i++) {
+        Log.d("Firestore","Entered pending assignments");
+        for (int i = 1; i < 4; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignment_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
@@ -95,17 +103,10 @@ public class Assignments extends AppCompatActivity {
             assDesc.setText("Description " + i);
             //assDesc.setPadding(0,0,20,0);
             assDesc.setTextColor(Color.BLACK);
-
-            if(i<4){
-                assTopic.setText(topics[i-1]);
-                assTopic.setTextColor(Color.GRAY);
-                assDueDate.setText(dates[i-1]);
-                assDueDate.setTextColor(Color.GRAY);
-            }
-            else{
-                assTopic.setText("");
-                assDueDate.setText("");
-            }
+            assTopic.setText(topics[i-1]);
+            assTopic.setTextColor(Color.GRAY);
+            assDueDate.setText(dates[i-1]);
+            assDueDate.setTextColor(Color.GRAY);
             inflatedLayout.setPadding(0,0,25,0);
             myRoot1.addView(inflatedLayout);
             //R.id.editID
@@ -114,9 +115,10 @@ public class Assignments extends AppCompatActivity {
 
     }
     public void displayCompleteAssingments(){
-        String dates[]={"Nov 5 2017","Nov 7 2017"};
-        String topics[]={"Addition","Subtraction",};
-        for (int i = 1; i < 0; i++) {
+        String topics[]={"fractions,addition,multiplication,algebra,fractions"};
+        String dates[]={"Nov 5 2017","Nov 7 2017","Nov 20 2017","Nov 25 2017","Dec 1 2017"};
+        Log.d("Firestore","Entered complete assignments");
+        for (int i = 1; i < 6; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentcompleted_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
@@ -138,7 +140,6 @@ public class Assignments extends AppCompatActivity {
                 assDueDate.setTextColor(Color.GRAY);
             }
             myRoot2.addView(inflatedLayout);
-            //R.id.editID
 
         }
 

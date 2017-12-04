@@ -12,6 +12,9 @@
             android:name=".UILayer.Assignments"
             android:screenOrientation="landscape" />
         <activity
+            android:name=".UILayer.reportStudent"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".UILayer.assignmentPreview"
             android:screenOrientation="landscape" />
         <activity
@@ -32,7 +35,8 @@
         <activity
             android:name=".UILayer.Sections"
             android:screenOrientation="landscape" />
-        <activity android:name=".UILayer.addAssignment"></activity>
+        <activity android:name=".UILayer.addAssignment"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ public class Student implements Parcelable {
     private ArrayList<Assignment> assignmentList;
     private ArrayList<String>currAssignmentQuestions;
     private ArrayList<String> completedAssignments;
+    private ArrayList<String> completedAssignmentScore;
 
     public ArrayList<String> getCompletedAssignments() {
         return completedAssignments;
@@ -41,7 +42,6 @@ public class Student implements Parcelable {
     //Constructor
     public Student(String username){
         this.sectionID=dc.getSectionID(studentID);
-        this.overallScore=dc.getOverallScore(studentID);
         this.assignmentList= new ArrayList<Assignment>();
         this.totalQuestionsSolved=dc.getTotalQuestionsSolved(studentID);
     }
@@ -66,18 +66,9 @@ public class Student implements Parcelable {
         return 0;
     }
 
-    public Student(){
-        sectionID = "sectionA";
-        studentID = "5s5R52Ct8mSKN1vndbuOQNlOZI53";
-        overallScore=3;
-        dc = new DatabaseConnector();
-    }
-
     //getters and setters
     public String getSectionID() {return sectionID;}
-    public void setSectionID(String sectionID) {this.sectionID = sectionID;}
     public String getStudentID() {return studentID;}
-    public void setStudentID(String studentID) {this.studentID = studentID;}
     public void setAssignmentList(ArrayList<Assignment> assignmentList) {
         this.assignmentList = assignmentList;
         Log.d("Firestore","changed assignment list to new assignment list with "+ assignmentList.size()+ " assignments");
@@ -94,6 +85,8 @@ public class Student implements Parcelable {
     public void setMin(int min) {this.min = min;}
     public AssignmentHandler getaH() {return aH;}
     public void setaH(AssignmentHandler aH) {this.aH = aH;}
+    public ArrayList<String> getCompletedAssignmentScore() {return completedAssignmentScore;}
+    public void setCompletedAssignmentScore(ArrayList<String> completedAssignmentScore) {this.completedAssignmentScore = completedAssignmentScore;}
 
 
     public void fetchAssignmentList() {
@@ -101,6 +94,10 @@ public class Student implements Parcelable {
         Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
     }
 
+    public void addAssignmentScore(ArrayList<String> x){
+        for(String s:x)
+            completedAssignmentScore.add(s);
+    }
     public void startAssignment(Assignment assignment){
 
         dc.getAssignmentProgress(this, studentID, assignment.getAssignmentID());
@@ -140,11 +137,8 @@ public class Student implements Parcelable {
 //    public Question getNextQuestion(Question currQ,int time,boolean answer){
 //        return aH.solveQuestion(currQ,time, answer);
 //    }
-    public double getAssignmentScore(int assignmentNum){
-        return dc.getAssignmentScore(assignmentList.get(assignmentNum).getAssignmentID(),studentID);
-    }
-    public double getOverallScore(String studentID){
-        return dc.getOverallScore(studentID);
+    public void getAssignmentScore(int assignmentNum){
+        dc.getAssignmentScore(assignmentList.get(assignmentNum).getAssignmentID(),this);
     }
 
     public void writeToParcel(Parcel parcel, int i) {
