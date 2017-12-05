@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
+import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.R;
 
@@ -23,13 +24,13 @@ import io.github.kexanie.library.MathView;
 public class assignmentQuestion extends AppCompatActivity {
     Student student;
     Assignment assignment;
+    Question currentQuestion;
     MathView questionFormula;
     MathView answer1;
     MathView answer2;
     MathView answer3;
     MathView answer4;
     String question[][];
-    String correctAnswer[][];
     String wrongAnswer[][][];
     String questionNumm;
     String ans1 = "$$x = 3$$";
@@ -37,36 +38,54 @@ public class assignmentQuestion extends AppCompatActivity {
     String ans3 = "$$x = 8$$";
     String ans4 = "$$x = 5$$";
 
+    boolean correctAnswer = false;
+
     TableRow row1;
     TableRow row2;
     TableRow row3;
     TableRow row4;
 
-    final Random rand=new Random();
+    final Random rand = new Random();
     boolean optionSelected;
     int questionNum;
     int count;
     Button nxtbtn;
     TextView qstnNumber;
+
+    public void setQuestion() {
+        currentQuestion = student.getaH().getCurrentQuestion();
+        questionFormula.setText(currentQuestion.getQuestionStatment());
+        answer1.setText(currentQuestion.getCorrectAnswer());
+        row1.setTag("correct");
+        row2.setTag("wrong");
+        answer2.setText(currentQuestion.getWrongAnswer1());
+//        answer3.setText(wrongAnswer[questionNum][count-1][1]);
+//        answer4.setText(wrongAnswer[questionNum][count-1][2]);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_question);
         Bundle recieved = getIntent().getExtras();
         AssignmentProgress ap = recieved.getParcelable("assignmentProgress");
-        student =(Student) recieved.getParcelable("student");
-        assignment = (Assignment)recieved.getParcelable("assignment");
+
+        student = (Student) recieved.getParcelable("student");
+
+        assignment = (Assignment) recieved.getParcelable("assignment");
         if (ap == null)
             student.createAssignmentHandler(false, null, assignment);
         else
-            student.createAssignmentHandler(true, ap,assignment);
+            student.createAssignmentHandler(true, ap, assignment);
+        student.getaH().setAssignmentQuestion(this);
 
-        Log.d("assignmentQuestion","recieved assignment "+assignment.getAssignmentID());
-//        questionFormula = (MathView) findViewById(R.id.questionFormula);
-//        answer1 = (MathView) findViewById(R.id.answer1);
-//        answer2 = (MathView) findViewById(R.id.answer2);
-//        answer3 = (MathView) findViewById(R.id.answer3);
-//        answer4 = (MathView) findViewById(R.id.answer4);
+        Log.d("assignmentQuestion", "received assignment " + assignment.getAssignmentID());
+        questionFormula = (MathView) findViewById(R.id.questionFormula);
+        answer1 = (MathView) findViewById(R.id.answer1);
+        answer2 = (MathView) findViewById(R.id.answer2);
+        answer3 = (MathView) findViewById(R.id.answer3);
+        answer4 = (MathView) findViewById(R.id.answer4);
 //        question=new String[4][5];
 //        correctAnswer=new String [4][5];
 //        wrongAnswer=new String [4][5][3];
@@ -145,11 +164,11 @@ public class assignmentQuestion extends AppCompatActivity {
 //        wrongAnswer[2][4][0]="$$\\frac{14}{33}$$";
 //        wrongAnswer[2][4][1]="$$\\frac{4}{17}$$";
 //        wrongAnswer[2][4][2]="$$\\frac{17}{64}$$";
-//        row1 = (TableRow) findViewById(R.id.row1);
-//        row2 = (TableRow) findViewById(R.id.row2);
-//        row3 = (TableRow) findViewById(R.id.row3);
-//        row4 = (TableRow) findViewById(R.id.row4);
-//        questionNumm=getIntent().getStringExtra("assignmentNum");
+        row1 = (TableRow) findViewById(R.id.row1);
+        row2 = (TableRow) findViewById(R.id.row2);
+        row3 = (TableRow) findViewById(R.id.row3);
+        row4 = (TableRow) findViewById(R.id.row4);
+        questionNumm = getIntent().getStringExtra("assignmentNum");
 //        questionNum=Integer.valueOf(questionNumm.substring(questionNumm.length()-1));
 //        questionNum--;
 //        count = 1;
@@ -160,28 +179,31 @@ public class assignmentQuestion extends AppCompatActivity {
 //        answer4.setText(wrongAnswer[questionNum][count-1][2]);
 
 //        optionSelected=false;
-//        nxtbtn = (Button) findViewById(R.id.nxtbtn);
+        nxtbtn = (Button) findViewById(R.id.nxtbtn);
 //        qstnNumber = (TextView) findViewById(R.id.questionNumber);
 //        qstnNumber.setText("Question #1");
     }
 
     public void optionSelect(View v) {
-//        optionSelected=true;
-//        row1.setBackgroundResource(0);
-//        row2.setBackgroundResource(0);
-//        row3.setBackgroundResource(0);
-//        row4.setBackgroundResource(0);
-//        v.setBackgroundResource(R.drawable.border);
-//
-//    }
-//
-//    public void nextQuestionBtn(View v){
-//        if(optionSelected) {
-//            int version=rand.nextInt(4);
-//            row1.setBackgroundResource(0);
-//            row2.setBackgroundResource(0);
-//            row3.setBackgroundResource(0);
-//            row4.setBackgroundResource(0);
+        optionSelected = true;
+        row1.setBackgroundResource(0);
+        row2.setBackgroundResource(0);
+        row3.setBackgroundResource(0);
+        row4.setBackgroundResource(0);
+        v.setBackgroundResource(R.drawable.border);
+        if (v.getTag().equals("correct")) correctAnswer = true;
+        else correctAnswer = false;
+    }
+
+    //
+    public void nextQuestionBtn(View v) {
+        if (optionSelected) {
+            int version = rand.nextInt(4);
+            row1.setBackgroundResource(0);
+            row2.setBackgroundResource(0);
+            row3.setBackgroundResource(0);
+            row4.setBackgroundResource(0);
+            student.getaH().solveQuestion(4, correctAnswer);
 //            count++;
 //            if (count == 5) {
 //                nxtbtn.setText("Submit Assingment");
@@ -229,5 +251,7 @@ public class assignmentQuestion extends AppCompatActivity {
 //    }
 //
 
+
+        }
     }
 }

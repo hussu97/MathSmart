@@ -131,7 +131,7 @@ public class DatabaseConnector {
 
             Log.d("Firestore", "Initialized getQuestion...");
             FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)
-                    .whereEqualTo("weight", weight)
+                    .whereGreaterThanOrEqualTo("weight", weight)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 

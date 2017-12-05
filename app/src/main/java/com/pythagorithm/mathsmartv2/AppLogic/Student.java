@@ -82,6 +82,7 @@ public class Student implements Parcelable {
         return assignmentsActivity;
     }
 
+
     public void setAssignmentsActivity(Assignments assignmentsActivity) {
         this.assignmentsActivity = assignmentsActivity;
     }
@@ -157,7 +158,6 @@ public class Student implements Parcelable {
 //                    aH = new AssignmentHandler(a, studentID, (double) overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), 0/*duno lol*/);
 //                }
 //                else {
-//                    // TODO: questions attempted for what exactly
 //                    aH = new AssignmentHandler(a, studentID,overallScore,0);
 //                }
 //               // LoginActivity.assignmentHandlerReady(aH);

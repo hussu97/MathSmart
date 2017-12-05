@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
+import com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion;
 
 import java.util.ArrayList;
 
@@ -42,10 +43,19 @@ public class AssignmentHandler  {
     private boolean alt;
     private int nextQWeight;
 
+    private assignmentQuestion assignmentQuestion;
+
+    public com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion getAssignmentQuestion() {
+        return assignmentQuestion;
+    }
+
+    public void setAssignmentQuestion(com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion assignmentQuestion) {
+        this.assignmentQuestion = assignmentQuestion;
+    }
 
     /*
-    Constructor: Initializes studentID to upload quizScore
-     */
+        Constructor: Initializes studentID to upload quizScore
+         */
     //Starting new Assignment
     public AssignmentHandler(Assignment assignment,String studentID,double overallScore,int totalQuestionsAttempted){
         Log.d("Firestore", "Assignment handler for assignment "+assignment.getAssignmentID()+" created for the first time");
@@ -89,7 +99,7 @@ public class AssignmentHandler  {
         questionAvailable = true;
         this.currentQuestion = currentQuestion;
         Log.d("Firestore", "Setting current question");
-        LoginActivity.dispQ();
+        assignmentQuestion.setQuestion();
     }
     public ArrayList<String> getCompletedQuestions() {return completedQuestions;}
     public void setCompletedQuestions(ArrayList<String> completedQuestions) {this.completedQuestions = completedQuestions;}
