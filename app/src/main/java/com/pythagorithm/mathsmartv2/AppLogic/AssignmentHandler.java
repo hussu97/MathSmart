@@ -1,5 +1,8 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
  * Created by H_Abb on 11/3/2017.
  */
 
-public class AssignmentHandler {
+public class AssignmentHandler  {
     /*
     CONSTANTS for calculating score and for defining number of difficulties and versions
      */
@@ -38,6 +41,7 @@ public class AssignmentHandler {
     private int scoreMinus;
     private boolean alt;
     private int nextQWeight;
+
 
     /*
     Constructor: Initializes studentID to upload quizScore

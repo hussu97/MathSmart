@@ -20,6 +20,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
+import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,11 +37,16 @@ public class DatabaseConnector {
     private final String STUDENT_COLLECTION = "STUDENTS";
     private final String COMPLETED_ASSIGNMENTS = "COMPLETED_ASSIGNMENTS";
 
+    private assignmentPreview assignmentPreview;
+
 
     public DatabaseConnector(String userID){
         this.ID=userID;
     }
     public DatabaseConnector(){}
+    public DatabaseConnector(assignmentPreview ap){
+        assignmentPreview = ap;
+    }
 
     public final String QUESTIONS_COLLECTION = "QUESTIONS";
     public final String ASSIGNMENT_COLLECTION="ASSIGNMENTS";
@@ -313,7 +319,7 @@ public void addTeacher(final Teacher t){
             }
         });
     }
-    public void getAssignmentProgress(final Student s, final String studentID, final String aID){
+    public void getAssignmentProgress( final Student s, final String studentID, final String aID){
         //Change values of completedQuestions, assignmentScore, and min
         //If not available, change value of completedQuestions to 'null'
         FirebaseFirestore.getInstance()
@@ -328,13 +334,11 @@ public void addTeacher(final Teacher t){
                         Log.d("Firestore","Entered onComplete to get assignment progress");
                         if (task.getResult().getDocuments().size()==0){
                             Log.d("Firestore", "Did not find assignment progress for assignment "+aID+" for student: "+studentID);
-                            s.createAssignmentHandler(false,new AssignmentProgress(),aID);
+                            assignmentPreview.showButton(null);
                         }
                         for (DocumentSnapshot doc : task.getResult()){
-                            Assignment a = doc.toObject(Assignment.class);
-                            assignmentList.add(a);
                             Log.d("Firestore", "found progress for student with studentID: "+studentID+" for assignment "+ aID);
-                            s.createAssignmentHandler(true, doc.toObject(AssignmentProgress.class), aID);
+                            assignmentPreview.showButton(doc.toObject(AssignmentProgress.class));
                         }
 
                     }

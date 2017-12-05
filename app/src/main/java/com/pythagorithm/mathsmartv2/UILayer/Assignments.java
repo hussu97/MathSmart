@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
+import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
@@ -33,6 +35,8 @@ public class Assignments extends AppCompatActivity {
         student = (Student)intent.getParcelableExtra("student");
 
         student.setAssignmentsActivity(this);
+
+        getAssignments();
 
         myRoot1 = (ViewGroup) findViewById(R.id.pendingAssignmentsHolder);
         myRoot2 = (ViewGroup) findViewById(R.id.completedAssingmentsHolder);
@@ -57,18 +61,37 @@ public class Assignments extends AppCompatActivity {
         TextView assDesc = (TextView) v.findViewById(R.id.assDesc);
         TextView assTopic = (TextView) v.findViewById(R.id.Descrip1);
         TextView assDueDate = (TextView) v.findViewById(R.id.Descrip2);
-        if(assTitle.getText().toString().trim().endsWith("2")||assTitle.getText().toString().trim().endsWith("3")||
-                assTitle.getText().toString().trim().endsWith("1"))
-        {
-            Intent intent = new Intent(this, assignmentPreview.class);
-            intent.putExtra("assignmentnumber", assTitle.getText().toString());
-            intent.putExtra("assignmentdescription", assDesc.getText().toString());
-            intent.putExtra("assignmenttopic", assTopic.getText().toString());
-            intent.putExtra("assignmentduedate", assDueDate.getText().toString());
-            startActivity(intent);
+        String title = assTitle.getText().toString();
+
+        Intent newIntent = new Intent(this, assignmentPreview.class);
+        newIntent.putExtra("student", student);
+
+        Assignment assignmentToSend = new Assignment();
+        for (int i =0; i< student.getAssignmentList().size(); i++){
+            if (student.getAssignmentList().get(i).getAssignmentID().equals(v.getTag().toString()))
+                assignmentToSend = student.getAssignmentList().get(i);
         }
+        newIntent.putExtra("assignment",assignmentToSend);
+        startActivity(newIntent);
 
     }
+
+    public void startAssignment(){
+
+    }
+
+//        if(assTitle.getText().toString().trim().endsWith("2")||assTitle.getText().toString().trim().endsWith("3")||
+//                assTitle.getText().toString().trim().endsWith("1"))
+//        {
+//            Intent intent = new Intent(this, assignmentPreview.class);
+//            intent.putExtra("assignmentnumber", assTitle.getText().toString());
+//            intent.putExtra("assignmentdescription", assDesc.getText().toString());
+//            intent.putExtra("assignmenttopic", assTopic.getText().toString());
+//            intent.putExtra("assignmentduedate", assDueDate.getText().toString());
+//            startActivity(intent);
+//        }
+
+
     public void logout(View v){
 
 
@@ -80,49 +103,43 @@ public class Assignments extends AppCompatActivity {
     }
     public void displayPendingAssingments(){
 
-        String dates[]={student.getStudentID(),"Nov 28 2017","Dec 2 2017"};
-        String topics[]={"Multiplication","Algebra","Fractions"};
-        for (int i = 1; i < 1; i++) {
+
+        for (int i = 0; i < student.getAssignmentList().size(); i++) {
+            Assignment currAssignment = student.getAssignmentList().get(i);
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignment_box, null, false);
+            inflatedLayout.setTag(currAssignment.getAssignmentID());
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
             TextView assTopic = (TextView)inflatedLayout.findViewById(R.id.Descrip1);
             TextView assDueDate = (TextView) inflatedLayout.findViewById(R.id.Descrip2);
-            assTitle.setText("Assingment " + i);
+            assTitle.setText(currAssignment.getAssignmentName());
             //assTitle.setPadding(0,0,20,0);
             assTitle.setTextColor(Color.BLACK);
 
-            assDesc.setText("Description " + i);
+            assDesc.setText(currAssignment.getAssignmentTopic());
             //assDesc.setPadding(0,0,20,0);
             assDesc.setTextColor(Color.BLACK);
 
-            if(i<4){
-                assTopic.setText(topics[i-1]);
-                assTopic.setTextColor(Color.GRAY);
-                assDueDate.setText(dates[i-1]);
-                assDueDate.setTextColor(Color.GRAY);
-            }
-            else{
-                assTopic.setText("");
-                assDueDate.setText("");
-            }
+            assTopic.setText(currAssignment.getAssignmentTopic());
+            assTopic.setTextColor(Color.GRAY);
+            assDueDate.setText(currAssignment.getDueDate());
+            assDueDate.setTextColor(Color.GRAY);
+
             inflatedLayout.setPadding(0,0,25,0);
             myRoot1.addView(inflatedLayout);
             //R.id.editID
-
         }
 
     }
     public void displayCompleteAssingments(){
-        String dates[]={"Nov 5 2017","Nov 7 2017"};
-        String topics[]={"Addition","Subtraction",};
-        for (int i = 1; i < 0; i++) {
+        for (int i = 1; i < student.getCompletedAssignments().size(); i++) {
+            String compAss = student.getCompletedAssignments().get(i);
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentcompleted_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
             TextView assTopic = (TextView)inflatedLayout.findViewById(R.id.Descrip1);
             TextView assDueDate = (TextView) inflatedLayout.findViewById(R.id.Descrip2);
-            assTitle.setText("Assingment " + i);
+            assTitle.setText(compAss);
             //assTitle.setPadding(0,0,20,0);
             assTitle.setTextColor(Color.BLACK);
 
@@ -131,12 +148,6 @@ public class Assignments extends AppCompatActivity {
             assDesc.setTextColor(Color.BLACK);
             inflatedLayout.setPadding(0,0,25,0);
 
-            if(i<3){
-                assTopic.setText(topics[i-1]);
-                assTopic.setTextColor(Color.GRAY);
-                assDueDate.setText(dates[i-1]);
-                assDueDate.setTextColor(Color.GRAY);
-            }
             myRoot2.addView(inflatedLayout);
             //R.id.editID
 

@@ -31,6 +31,13 @@ public class Teacher  implements Parcelable{
         sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("map");
     }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(teacherID);
+        Bundle sectionsBundle = new Bundle();
+        sectionsBundle.putSerializable("map", sectionList);
+        parcel.writeBundle(sectionsBundle);
+    }
     public Teacher(){}
 
     public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
@@ -112,13 +119,7 @@ public class Teacher  implements Parcelable{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(teacherID);
-        Bundle sectionsBundle = new Bundle();
-        sectionsBundle.putSerializable("map", sectionList);
-        parcel.writeBundle(sectionsBundle);
-    }
+
 
     // This is to de-serialize the object
     public static final Parcelable.Creator<Teacher> CREATOR = new Parcelable.Creator<Teacher>(){

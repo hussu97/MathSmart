@@ -8,7 +8,9 @@ import android.util.Log;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.Assignments;
 import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
+import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -22,12 +24,28 @@ public class Student implements Parcelable {
     private ArrayList<String>currAssignmentQuestions;
     private ArrayList<String> completedAssignments;
 
+    private assignmentPreview assignmentPreview;
+
+    public com.pythagorithm.mathsmartv2.UILayer.assignmentPreview getAssignmentPreview() {
+        return assignmentPreview;
+    }
+
+    public void setAssignmentPreview(com.pythagorithm.mathsmartv2.UILayer.assignmentPreview assignmentPreview) {
+        this.assignmentPreview = assignmentPreview;
+    }
+
     public ArrayList<String> getCompletedAssignments() {
         return completedAssignments;
     }
 
+    public ArrayList<Assignment> getAssignmentList() {
+        return assignmentList;
+    }
+
     public void setCompletedAssignments(ArrayList<String> completedAssignments) {
         this.completedAssignments = completedAssignments;
+        assignmentsActivity.displayCompleteAssingments();
+
     }
 
     private int totalQuestionsSolved;
@@ -46,10 +64,18 @@ public class Student implements Parcelable {
         this.totalQuestionsSolved=dc.getTotalQuestionsSolved(studentID);
     }
 
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(studentID);
+        parcel.writeString(sectionID);
+        parcel.writeDouble(overallScore);
+//        parcel.writeSerializable(assignmentList);
+    }
+
     public Student(Parcel in){
         studentID = in.readString();
         sectionID = in.readString();
         overallScore = in.readDouble();
+ //       assignmentList = (ArrayList<Assignment>)in.readSerializable();
     }
 
     public Assignments getAssignmentsActivity() {
@@ -58,7 +84,6 @@ public class Student implements Parcelable {
 
     public void setAssignmentsActivity(Assignments assignmentsActivity) {
         this.assignmentsActivity = assignmentsActivity;
-        assignmentsActivity.displayCompleteAssingments();
     }
 
     @Override
@@ -118,21 +143,26 @@ public class Student implements Parcelable {
 //            return null;
     }
 
-    public void createAssignmentHandler(boolean found, AssignmentProgress ap, String aID){
+
+    public void createAssignmentHandler(boolean found, AssignmentProgress ap,Assignment assignment){
         Assignment a = null;
-        for (int i =0;i < assignmentList.size(); i++) {
-            if (assignmentList.get(i).getAssignmentID().equals(aID)) {
-                a = assignmentList.get(i);
-                if (found) {
-                    aH = new AssignmentHandler(a, studentID, (double) overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), 0/*duno lol*/);
-                }
-                else {
-                    // TODO: questions attempted for what exactly
-                    aH = new AssignmentHandler(a, studentID,overallScore,0);
-                }
-                LoginActivity.assignmentHandlerReady(aH);
-            }
-        }
+        if (found)
+            aH = new AssignmentHandler(assignment, studentID, overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
+        else
+            aH = new AssignmentHandler(assignment,studentID,overallScore,0);
+//        for (int i =0;i < assignmentList.size(); i++) {
+//            if (assignmentList.get(i).getAssignmentID().equals(aID)) {
+//                a = assignmentList.get(i);
+//                if (found) {
+//                    aH = new AssignmentHandler(a, studentID, (double) overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), 0/*duno lol*/);
+//                }
+//                else {
+//                    // TODO: questions attempted for what exactly
+//                    aH = new AssignmentHandler(a, studentID,overallScore,0);
+//                }
+//               // LoginActivity.assignmentHandlerReady(aH);
+//            }
+//        }
     }
 //    public boolean saveAssignment(){
 //        return aH.saveAssignment();
@@ -147,11 +177,7 @@ public class Student implements Parcelable {
         return dc.getOverallScore(studentID);
     }
 
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(studentID);
-        parcel.writeString(sectionID);
-        parcel.writeDouble(overallScore);
-    }
+
 
 
     // This is to de-serialize the object

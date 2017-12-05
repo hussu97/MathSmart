@@ -1,5 +1,9 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -8,7 +12,7 @@ import java.util.HashMap;
  * Created by H_Abb on 11/2/2017.
  */
 
-public class Assignment {
+public class Assignment implements Parcelable{
     private String assignmentID;
 
     private String assignmentName;
@@ -32,6 +36,47 @@ public class Assignment {
         this.submissionPeriod = submissionPeriod;
         this.sectionList = sectionList;
     }
+
+    public Assignment(Parcel in){
+        assignmentID = in.readString();
+        assignmentName = in.readString();
+        assignmentTopic = in.readString();
+        minCorrectAnswers = in.readInt();
+        dueDate = in.readString();
+        submissionPeriod = in.readString();
+        Bundle sectionsBundle = in.readBundle();
+        sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("sections");
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(assignmentID);
+        parcel.writeString(assignmentName);
+        parcel.writeString(assignmentTopic);
+        parcel.writeInt(minCorrectAnswers);
+        parcel.writeString(dueDate);
+        parcel.writeString(submissionPeriod);
+        Bundle sectionsBundle = new Bundle();
+        sectionsBundle.putSerializable("sections",sectionList);
+        parcel.writeBundle(sectionsBundle);
+
+    }
+
+
+    // This is to de-serialize the object
+    public static final Parcelable.Creator<Assignment> CREATOR = new Parcelable.Creator<Assignment>(){
+        public Assignment createFromParcel(Parcel in) {
+            return new Assignment(in);
+        }
+        public Assignment[] newArray(int size) {
+            return new Assignment[size];
+        }
+    };
+
     public String genRandom(){
         MessageDigest instance = null;
         try {

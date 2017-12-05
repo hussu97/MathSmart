@@ -3,22 +3,30 @@ package com.pythagorithm.mathsmartv2.UILayer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.R;
 
 public class addAssignment extends AppCompatActivity {
     Spinner topicSpinner;
     Spinner ansSpinner;
     Spinner secSpinner;
+    Assignment assignment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assignment);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        Bundle r = getIntent().getExtras();
+        assignment = r.getParcelable("assignment");
+
+        Log.d("r", "recieved " + assignment.getAssignmentID());
 
         topicSpinner = (Spinner) findViewById(R.id.topicSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(

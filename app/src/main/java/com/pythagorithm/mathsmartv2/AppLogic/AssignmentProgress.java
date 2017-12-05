@@ -1,5 +1,9 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,15 +12,52 @@ import java.util.Map;
 /**
  * Created by b00061342 on 11/13/2017.
  */
-public class AssignmentProgress {
+public class AssignmentProgress implements Parcelable {
     String studentID;
     String assignmentID;
-    Map<String,Object> completedQuestions;
+    HashMap<String,Object> completedQuestions;
     double assignmentScore;
     int questionsLeft; // minimum questions to complete assignment
     double overallScore; // weight the student reached
     //TODO: add questionsAttempted to logic
     int questionsAttempted;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(studentID);
+        parcel.writeString(assignmentID);
+        Bundle comp = new Bundle();
+        comp.putSerializable("comp",completedQuestions);
+        parcel.writeBundle(comp);
+        parcel.writeDouble(assignmentScore);
+        parcel.writeInt(questionsLeft);
+        parcel.writeDouble(overallScore);
+    }
+
+    public AssignmentProgress(Parcel in){
+        studentID = in.readString();
+        assignmentID = in.readString();
+        Bundle comp = in.readBundle();
+        completedQuestions = (HashMap<String, Object>)comp.getSerializable("comp");
+        assignmentScore = in.readDouble();
+        questionsLeft = in.readInt();
+        overallScore = in.readDouble();
+    }
+
+    // This is to de-serialize the object
+    public static final Parcelable.Creator<AssignmentProgress> CREATOR = new Parcelable.Creator<AssignmentProgress>(){
+        public AssignmentProgress createFromParcel(Parcel in) {
+            return new AssignmentProgress(in);
+        }
+        public AssignmentProgress[] newArray(int size) {
+            return new AssignmentProgress[size];
+        }
+    };
+
 
     public AssignmentProgress() {
     }

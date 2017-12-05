@@ -12,7 +12,7 @@ import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
  * Created by H_Abb on 11/6/2017.
  */
 
-public class UIConnector {
+public  class  UIConnector  {
     private Teacher teacher;
     private Student student;
     AssignmentHandler aH;
