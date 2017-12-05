@@ -74,11 +74,5 @@
             android:onClick="clicked"
             android:text="Start Assignment" />
 
-        <Button
-            android:id="@+id/prepareButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            tools:text="Prepare Assignment" />
     </TableRow>
 </TableLayout>

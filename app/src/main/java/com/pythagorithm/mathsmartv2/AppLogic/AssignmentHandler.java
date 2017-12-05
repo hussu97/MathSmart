@@ -61,7 +61,7 @@ public class AssignmentHandler  {
         Log.d("Firestore", "Assignment handler for assignment "+assignment.getAssignmentID()+" created for the first time");
         this.studentID=studentID;
         this.assignment=assignment;
-        this.overallScore=overallScore;
+        this.currentScore = this.overallScore=overallScore;
         this.min=assignment.getMinCorrectAnswers();
         this.completedQuestions=new ArrayList<>();
         this.assignmentScore=0;
@@ -80,7 +80,7 @@ public class AssignmentHandler  {
         this.assignment=assignment;
         this.completedQuestions=completedQuestions;
         this.assignmentScore=assignmentScore;
-        this.overallScore=overallScore;
+        this.currentScore = this.overallScore=overallScore;
         this.min=min;
         this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);

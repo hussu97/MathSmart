@@ -39,7 +39,6 @@ public class assignmentPreview extends AppCompatActivity {
         assTopic=(TextView) findViewById((R.id.assTopic));
         assDueDate=(TextView) findViewById((R.id.assDue));
         assNumQuestions=(TextView) findViewById((R.id.assCorrectAnswers));
-        prepareButton = (Button) findViewById(R.id.prepareButton);
         btn = (Button) findViewById(R.id.startAssignmentButton);
         dc = new DatabaseConnector(this);
         assignment = getIntent().getParcelableExtra("assignment");
@@ -47,16 +46,15 @@ public class assignmentPreview extends AppCompatActivity {
         assTopic.setText(assignment.getAssignmentTopic());
         assDueDate.setText(assignment.getDueDate());
         btn.setVisibility(View.INVISIBLE);
-        prepareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dc.getAssignmentProgress( student, student.getStudentID(), assignment.getAssignmentID());
-                Log.d("AssignmentPreview","getting assignment progress");
-            }
-        });
+        dc.getAssignmentProgress( student, student.getStudentID(), assignment.getAssignmentID());
+
+
     }
 
     public void showButton(AssignmentProgress a){
+        if(a != null){
+            btn.setText("Resume Assignment");
+        }
         btn.setVisibility(View.VISIBLE);
         ap = a;
     }
@@ -70,7 +68,7 @@ public class assignmentPreview extends AppCompatActivity {
             toSend.putParcelable("student", student);
             toSend.putParcelable("assignmentProgress", ap);
             intent.putExtras(toSend);
-            startActivity(intent);
+            startActivityForResult(intent,3);
         }
 
     }

@@ -72,7 +72,7 @@ public class Assignments extends AppCompatActivity {
                 assignmentToSend = student.getAssignmentList().get(i);
         }
         newIntent.putExtra("assignment",assignmentToSend);
-        startActivity(newIntent);
+        startActivityForResult(newIntent,3);
 
     }
 
@@ -132,7 +132,7 @@ public class Assignments extends AppCompatActivity {
 
     }
     public void displayCompleteAssingments(){
-        for (int i = 1; i < student.getCompletedAssignments().size(); i++) {
+        for (int i = 0; i < student.getCompletedAssignments().size(); i++) {
             String compAss = student.getCompletedAssignments().get(i);
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentcompleted_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);

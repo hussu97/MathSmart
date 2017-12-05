@@ -131,7 +131,8 @@ public class DatabaseConnector {
 
             Log.d("Firestore", "Initialized getQuestion...");
             FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)
-                    .whereGreaterThanOrEqualTo("weight", weight)
+                    //.whereGreaterThanOrEqualTo("weight", (double)weight)
+                    .whereEqualTo("weight", weight)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -143,20 +144,32 @@ public class DatabaseConnector {
                                 assignmentHandler.getNextQuestion();
                             }
                             else if (task.isSuccessful()){
+                                int count = task.getResult().size();
                                 for (DocumentSnapshot doc : task.getResult()){
-                                    if (Arrays.asList(completedQuestion).contains(doc.getId())){
+                                    Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Success.");
+                                    Question q = doc.toObject(Question.class);
+                                    if (Arrays.asList(completedQuestion).contains(q.getQuestionID())){
                                         Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Not needed.");
-                                        assignmentHandler.getNextQuestion();
+                                        if (count==0){
+                                            assignmentHandler.getNextQuestion();
+                                            Log.d("Firestore","did not find a question and calling getNextQuestion()");
+                                        }
+
                                     }
                                     else {
-                                        Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Success.");
-                                        Question q = doc.toObject(Question.class);
-                                        Log.d("Firestore", "onComplete: "+ doc.getData());
+
+                                       // if (q.getWeight()==weight){
+                                            assignmentHandler.setCurrentQuestion(q);
+                                            Log.d("Firestore","set question with weight = "+weight);
+                                            return;
+                                     //   }
+                                        //    Log.d("Firestore", "onComplete: "+ doc.getData());
                                         //====================================================================
                                         // Function that gets called in the AssignmentHandler class
                                         //====================================================================
-                                        assignmentHandler.setCurrentQuestion(q);
+
                                     }
+                                    count--;
                                 }
                             }
 
@@ -234,42 +247,77 @@ public void addTeacher(final Teacher t){
     }
 
     public void completeAssignment(final String studentID, final String assignmentID){
+        final HashMap<String,Boolean> compAssignment=new HashMap<>();
+        compAssignment.put(assignmentID,true);
         FirebaseFirestore.getInstance().collection(STUDENT_COLLECTION)
-                .document(studentID)
-                .collection(COMPLETED_ASSIGNMENTS)
-                .add(assignmentID)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .whereEqualTo("studentID", studentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Firestore", "added assignment "+ assignmentID+ " to completed assignments of student"+studentID);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        FirebaseFirestore.getInstance()
+                                .collection(STUDENT_COLLECTION)
+                                .document(doc.getId())
+                                .collection(COMPLETED_ASSIGNMENTS)
+                                .add(compAssignment)
+                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        Log.d("Firestore","Completed assignment "+assignmentID+" added to "+studentID);
+                                    }
+                                });
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Firestore", "did not add assignment "+ assignmentID+ " to completed assignments of student"+studentID);
-            }
-        });
+                });
+//                .get()
+//                .add(compAssignment)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("Firestore", "added assignment "+ assignmentID+ " to completed assignments of student"+studentID);
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.d("Firestore", "did not add assignment "+ assignmentID+ " to completed assignments of student"+studentID);
+//            }
+//        });
     }
 
     public void getCompletedAssignments(final Student student){
         FirebaseFirestore.getInstance()
                 .collection(STUDENT_COLLECTION)
-                .document(student.getStudentID())
-                .collection(COMPLETED_ASSIGNMENTS)
+                .whereEqualTo("studentID",student.getStudentID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        ArrayList<String> assignmentIds = new ArrayList<String>();
-                        Log.d("Firestore","Entered onComplete to find completed assignments for student with SID: "+student.getStudentID());
-                        if (task.getResult().getDocuments().size()==0){
-                            Log.d("Firestore", "Did not find any completed assignments for student "+student.getStudentID());
-                        }
-                        for (DocumentSnapshot doc : task.getResult()){
-                            assignmentIds.add(doc.getData().get(String.class).toString());
-                            Log.d("Firestore", "found complete assignment AID:"+(doc.getData().get(String.class).toString()));
-                        }
-                        student.setCompletedAssignments(assignmentIds);
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        FirebaseFirestore.getInstance()
+                                .collection(STUDENT_COLLECTION)
+                                .document(doc.getId())
+                                .collection(COMPLETED_ASSIGNMENTS)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        ArrayList<String> assignmentIds = new ArrayList<String>();
+                                        Log.d("Firestore","Entered onComplete to find completed assignments for student with SID: "+student.getStudentID());
+                                        if (task.getResult().getDocuments().size()==0){
+                                            Log.d("Firestore", "Did not find any completed assignments for student "+student.getStudentID());
+                                        }
+                                        else
+                                        for (DocumentSnapshot doc : task.getResult()){
+                                            String json = doc.getData().toString();
+                                            int eqChar = json.indexOf('=');
+                                            String id = json.substring(1, eqChar);
+                                            assignmentIds.add(id);
+                                            Log.d("Firestore", "found complete assignment AID: " +id);
+                                        }
+                                        student.setCompletedAssignments(assignmentIds);
+                                    }
+                }               );
+
                     }
                 });
     }

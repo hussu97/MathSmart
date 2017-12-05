@@ -1,5 +1,6 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -47,18 +48,23 @@ public class assignmentQuestion extends AppCompatActivity {
 
     final Random rand = new Random();
     boolean optionSelected;
+    boolean done;
     int questionNum;
     int count;
     Button nxtbtn;
     TextView qstnNumber;
 
+    private String mathviewify(String questionStatement){
+        return "$$" + questionStatement + "$$";
+    }
+
     public void setQuestion() {
         currentQuestion = student.getaH().getCurrentQuestion();
-        questionFormula.setText(currentQuestion.getQuestionStatment());
-        answer1.setText(currentQuestion.getCorrectAnswer());
+        questionFormula.setText(mathviewify(currentQuestion.getQuestionStatment()));
+        answer1.setText(mathviewify(currentQuestion.getCorrectAnswer()));
         row1.setTag("correct");
         row2.setTag("wrong");
-        answer2.setText(currentQuestion.getWrongAnswer1());
+        answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
 //        answer3.setText(wrongAnswer[questionNum][count-1][1]);
 //        answer4.setText(wrongAnswer[questionNum][count-1][2]);
 
@@ -71,6 +77,7 @@ public class assignmentQuestion extends AppCompatActivity {
         Bundle recieved = getIntent().getExtras();
         AssignmentProgress ap = recieved.getParcelable("assignmentProgress");
 
+        done = false;
         student = (Student) recieved.getParcelable("student");
 
         assignment = (Assignment) recieved.getParcelable("assignment");
@@ -194,16 +201,26 @@ public class assignmentQuestion extends AppCompatActivity {
         if (v.getTag().equals("correct")) correctAnswer = true;
         else correctAnswer = false;
     }
-
+    void finishAssignment(){
+        done = true;
+        Toast.makeText(this, "Done",Toast.LENGTH_LONG).show();
+        nxtbtn.setText("Submit Assignment");
+    }
     //
     public void nextQuestionBtn(View v) {
+        if(done){
+            finish();
+        }
         if (optionSelected) {
             int version = rand.nextInt(4);
             row1.setBackgroundResource(0);
             row2.setBackgroundResource(0);
             row3.setBackgroundResource(0);
             row4.setBackgroundResource(0);
-            student.getaH().solveQuestion(4, correctAnswer);
+            if(student.getaH().solveQuestion(4, correctAnswer)){
+                finishAssignment();
+            }
+            optionSelected=false;
 //            count++;
 //            if (count == 5) {
 //                nxtbtn.setText("Submit Assingment");

@@ -89,8 +89,7 @@ public class Assignment implements Parcelable{
         for (int i = 0; i < messageDigest.length; i++) {
             String hex = Integer.toHexString(0xFF & messageDigest[i]);
             if (hex.length() == 1) {
-                // could use a for loop, but we're only dealing with a single
-                // byte
+                // could use a for loop, but we're only dealing with a single                // byte
                 hexString.append('0');
             }
             hexString.append(hex);
@@ -113,3 +112,4 @@ public class Assignment implements Parcelable{
     public HashMap<String, Boolean> getSectionList() {return sectionList;}
     public void setSectionList(HashMap<String, Boolean> sectionList) {this.sectionList = sectionList;}
 }
+
