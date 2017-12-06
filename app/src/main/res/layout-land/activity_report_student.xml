@@ -29,9 +29,9 @@
         android:id="@+id/piechart"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/assCompTxt2"
-        android:layout_toEndOf="@+id/assCompTxt2"
         android:padding="8dp"
         app:egLegendTextSize="18sp"
-        app:egOpenClockwise="false" />
+        />
 </RelativeLayout>
