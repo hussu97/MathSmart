@@ -315,6 +315,7 @@ public void addTeacher(final Teacher t){
                                             Log.d("Firestore", "found complete assignment AID: " +id);
                                         }
                                         student.setCompletedAssignments(assignmentIds);
+                                        getAvailableAssignments(student);
                                     }
                 }               );
 

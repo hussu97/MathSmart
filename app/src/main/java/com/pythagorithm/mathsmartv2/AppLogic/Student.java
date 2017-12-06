@@ -3,6 +3,7 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
@@ -34,7 +35,12 @@ public class Student implements Parcelable {
         this.assignmentPreview = assignmentPreview;
     }
 
-    public ArrayList<String> getCompletedAssignments() {
+    public void fetchCompletedAssignmentList(){
+        dc.getCompletedAssignments(this);
+    }
+
+    public ArrayList<String> getCompletedAssignments()
+    {
         return completedAssignments;
     }
 
@@ -44,8 +50,12 @@ public class Student implements Parcelable {
 
     public void setCompletedAssignments(ArrayList<String> completedAssignments) {
         this.completedAssignments = completedAssignments;
-        assignmentsActivity.displayCompleteAssingments();
 
+    }
+
+    public void displayAssignmentLists(){
+        assignmentsActivity.displayCompleteAssingments();
+        assignmentsActivity.displayPendingAssingments();
     }
 
     private int totalQuestionsSolved;
@@ -62,6 +72,7 @@ public class Student implements Parcelable {
         this.overallScore=dc.getOverallScore(studentID);
         this.assignmentList= new ArrayList<Assignment>();
         this.totalQuestionsSolved=dc.getTotalQuestionsSolved(studentID);
+        dc = new DatabaseConnector();
     }
 
     public void writeToParcel(Parcel parcel, int i) {
@@ -75,6 +86,7 @@ public class Student implements Parcelable {
         studentID = in.readString();
         sectionID = in.readString();
         overallScore = in.readDouble();
+        dc = new DatabaseConnector();
  //       assignmentList = (ArrayList<Assignment>)in.readSerializable();
     }
 
@@ -108,7 +120,7 @@ public class Student implements Parcelable {
         this.assignmentList = assignmentList;
         Log.d("Firestore","changed assignment list to new assignment list with "+ assignmentList.size()+ " assignments");
         // UI.showassignments
-        assignmentsActivity.displayPendingAssingments();
+        displayAssignmentLists();
     }
     public ArrayList<String> getCurrAssignmentQuestions() {return currAssignmentQuestions;}
     public void setCurrAssignmentQuestions(ArrayList<String> currAssignmentQuestions) {this.currAssignmentQuestions = currAssignmentQuestions;}
@@ -122,8 +134,8 @@ public class Student implements Parcelable {
     public void setaH(AssignmentHandler aH) {this.aH = aH;}
 
 
-    public void fetchAssignmentList() {
-        dc.getAvailableAssignments(this);
+    public void fetchAssignmentLists() {
+        dc.getCompletedAssignments(this);
         Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
     }
 
