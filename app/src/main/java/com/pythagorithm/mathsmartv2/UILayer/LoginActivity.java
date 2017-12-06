@@ -150,5 +150,5 @@ public class LoginActivity extends AppCompatActivity {
     public void displayError(String errorMessag){
         Toast.makeText(this,errorMessag, Toast.LENGTH_LONG).show();
     }
-
+//l
 }
