@@ -60,7 +60,7 @@ public class Question {
 
     String questionID;
     String questionStatment;
-    String correctAnswer, wrongAnswer1, topic;
+    String correctAnswer, wrongAnswer1,wrongAnswer2,wrongAnswer3, topic;
 
     int weight;
 
@@ -76,6 +76,16 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    public Question( String topic, String questionStatment, String correctAnswer, String wrongAnswer1,String wrongAnswer2,String wrongAnswer3, int weight) {
+        this.questionID =genRandom();
+        this.wrongAnswer1 = wrongAnswer1;
+        this.wrongAnswer2=wrongAnswer2;
+        this.wrongAnswer3=wrongAnswer3;
+        this.questionStatment = questionStatment;
+        this.weight = weight;
+        this.topic = topic;
+        this.correctAnswer = correctAnswer;
+    }
     public String getQuestionID() {
         return questionID;
     }

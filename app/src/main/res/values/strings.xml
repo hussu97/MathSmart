@@ -3,7 +3,9 @@
     <string-array name="topics">
         <item>Algebra</item>
         <item>Geometry</item>
-        <item>Trigonometry</item>
+        <item>Addition</item>
+        <item>Multiplication</item>
+        <item>Fractions</item>
     </string-array>
     <string-array name="answers">
         <item>1</item>
@@ -22,15 +24,6 @@
         <item>14</item>
         <item>15</item>
     </string-array>
-    <string-array name="sections">
-        <item>Section 1A</item>
-        <item>Section 1B</item>
-        <item>Section 1C</item>
-        <item>Section 1D</item>
-        <item>Section 1E</item>
-
-    </string-array>
-
     <string-array name="difficulty">
         <item>1</item>
         <item>2</item>

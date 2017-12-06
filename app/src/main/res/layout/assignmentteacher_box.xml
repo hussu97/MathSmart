@@ -6,16 +6,16 @@
     android:clickable="true">
 
     <TextView
+        android:id="@+id/teacherAssignmentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/assTitle" />
+        android:text="New Text" />
 
     <TextView
+        android:id="@+id/teacherAssignmentDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/assDesc" />
+        android:text="New Text" />
 
     <TextView
         android:layout_width="wrap_content"

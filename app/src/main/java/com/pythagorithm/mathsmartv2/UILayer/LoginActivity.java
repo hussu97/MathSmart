@@ -20,14 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
-import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -138,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startSectionsActivity(Teacher teacher){
+        Log.d("Hussu","Teacher going to sections activity");
         Intent intent = new Intent(LoginActivity.this, Sections.class);
         intent.putExtra("teacher", teacher);
         startActivity(intent);
