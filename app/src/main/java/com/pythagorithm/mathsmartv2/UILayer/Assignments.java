@@ -71,6 +71,15 @@ public class Assignments extends AppCompatActivity {
 
     }
 
+    public void startReportsActivity(View v){
+
+
+        Intent newIntent = new Intent(this, reportStudent.class);
+
+        startActivity(newIntent);
+
+    }
+
     public void startAssignment(){
 
     }
