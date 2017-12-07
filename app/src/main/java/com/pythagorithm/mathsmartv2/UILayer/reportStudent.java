@@ -1,8 +1,8 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +39,7 @@ public class reportStudent extends AppCompatActivity {
         showBarChart(map2);
     }
 
-    private void showPieChart(HashMap<String,Integer> vals){
+    public void showPieChart(HashMap<String,Integer> vals){
         PieChart mPieChart = (PieChart) findViewById(R.id.piechart);
         ViewGroup myRoot1 = (ViewGroup) findViewById(R.id.legendLayout);
         int alg = vals.get("Algebra");
@@ -74,7 +74,7 @@ public class reportStudent extends AppCompatActivity {
         mPieChart.startAnimation();
     }
 
-    private void showBarChart(HashMap<String,Float> vals){
+    public void showBarChart(HashMap<String,Float> vals){
         BarChart mBarChart = (BarChart) findViewById(R.id.barchart);
         ViewGroup myRoot1 = (ViewGroup) findViewById(R.id.legendBarLayout);
 
@@ -111,5 +111,9 @@ public class reportStudent extends AppCompatActivity {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
+    }
+
+    public void backBtnClicked(View v){
+        finish();
     }
 }

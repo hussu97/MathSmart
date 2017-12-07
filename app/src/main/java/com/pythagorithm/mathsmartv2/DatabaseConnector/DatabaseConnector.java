@@ -473,7 +473,9 @@ public void addTeacher(final Teacher t){
 
     }
 
+    public void getTopicScores(HashMap<String,Boolean>hm){
 
+    }
     public double getAssignmentScore(String aID,String studentID){
         return 0;
     }

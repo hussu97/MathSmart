@@ -87,6 +87,7 @@
         android:layout_alignEnd="@+id/legendBarLayout"
         android:layout_below="@+id/legendBarLayout"
         android:layout_marginEnd="17dp"
+        android:onClick="backBtnClicked"
         android:text="Back" />
 
 </RelativeLayout>
