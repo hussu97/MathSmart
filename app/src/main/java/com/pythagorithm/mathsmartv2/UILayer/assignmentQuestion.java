@@ -1,6 +1,7 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
-import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
@@ -49,6 +49,7 @@ public class assignmentQuestion extends AppCompatActivity {
     final Random rand = new Random();
     boolean optionSelected;
     boolean done;
+    boolean exit;
     int questionNum;
     int count;
     Button nxtbtn;
@@ -67,7 +68,7 @@ public class assignmentQuestion extends AppCompatActivity {
         answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
 //        answer3.setText(wrongAnswer[questionNum][count-1][1]);
 //        answer4.setText(wrongAnswer[questionNum][count-1][2]);
-optionSelected = false;
+        optionSelected = false;
     }
 
     @Override
@@ -77,6 +78,7 @@ optionSelected = false;
         Bundle recieved = getIntent().getExtras();
         AssignmentProgress ap = recieved.getParcelable("assignmentProgress");
 
+        exit=false;
         done = false;
         student = (Student) recieved.getParcelable("student");
 
@@ -229,5 +231,22 @@ optionSelected = false;
 
 
         }
+        if(exit){
+            Intent returnIntent = new Intent(this, Assignments.class);
+            returnIntent.putExtra("student", student);
+            startActivity(returnIntent);
+        }
+    }
+    public void noQuestionsError(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("No more questions were found, click the exit assignment button to continue").
+                setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        nxtbtn.setText("Exit assignment");
+        exit=true;
     }
 }

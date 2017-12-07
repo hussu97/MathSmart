@@ -2,9 +2,7 @@ package com.pythagorithm.mathsmartv2.UILayer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,10 +11,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentReport;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
-import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
-
-import java.util.Arrays;
 
 public class assignmentPreview extends AppCompatActivity {
     TextView assTitle;
@@ -48,7 +43,7 @@ public class assignmentPreview extends AppCompatActivity {
         btn = (Button) findViewById(R.id.startAssignmentButton);
         student = getIntent().getParcelableExtra("student");
         student.setAssignmentPreview(this);
-        if (nextButtonStatus ==1){
+        if (nextButtonStatus ==FINISH_ASSIGNMENT){
 
             assignmentReport = getIntent().getParcelableExtra("report");
             showResult();

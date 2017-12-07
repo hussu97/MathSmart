@@ -1,8 +1,8 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +41,12 @@ public class reportTeacher extends AppCompatActivity {
         map2.put("Fractions",6.0f);
         map2.put("SexEd", 7.0f);
 
+        HashMap<String,Integer>map3=new HashMap<>();
+        map3.put("Algebra",4);
+        map3.put("Fractions",6);
+        map3.put("Multiplication",10);
         showBarChart(map,map2);
+        showPieChart(map3);
     }
 
     private void showPieChart(HashMap<String,Integer> vals){
