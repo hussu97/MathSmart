@@ -36,6 +36,7 @@ public class DatabaseConnector {
     private AssignmentHandler assignmentHandler;
     private final String STUDENT_COLLECTION = "STUDENTS";
     private final String COMPLETED_ASSIGNMENTS = "COMPLETED_ASSIGNMENTS";
+    private final String ASSIGNMENT_REPORTS = "ASSIGNMENT_REPORTS";
 
 
     public DatabaseConnector(String userID){
@@ -265,7 +266,7 @@ public void addTeacher(final Teacher t){
                                 });
                     }
                 });
-        FirebaseFirestore.getInstance().collection(QUESTION_SCORES_COLLECTION)
+        FirebaseFirestore.getInstance().collection(ASSIGNMENT_REPORTS)
                 .add(assignmentReport)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                    If teacher, starts sections activity and teacher continues from there
                    False: If username/password incorrect, and error message is shown
      */
-    public void onBtnClick(View v){
+    public void LoginButtonClick(View v){
         //Start loading screen dialogue
         String usrname=username.getText().toString().toLowerCase().trim().concat("@mathsmart.edu");
         mAuth.signInWithEmailAndPassword(username.getText().toString().toLowerCase().trim(),password.getText().toString().trim())

@@ -63,7 +63,7 @@
             android:text="login"
             android:id="@+id/LoginButton"
             android:layout_gravity="center_horizontal"
-            android:onClick="onBtnClick" />
+            android:onClick="LoginButtonClick" />
     </LinearLayout>
 
 </LinearLayout>
