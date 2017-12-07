@@ -1,5 +1,6 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.R;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.charts.PieChart;
@@ -26,31 +28,16 @@ public class reportTeacher extends AppCompatActivity {
     private String topicSet[];
     private Teacher teacher;
     private HashMap<String,Float> vals;
+    private UIConnector uic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_teacher);
         teacher = (Teacher)getIntent().getParcelableExtra("teacher");
+        uic=new UIConnector(this);
         teacher.getTopicScores();
-        HashMap<Integer,String> map = new HashMap<>();
-        map.put(0,"Algebra");
-        map.put(1,"Multiplication");
-        map.put(2, "Fractions");
-        map.put(3, "SexEd");
-        //
+        teacher.getAssignmentCreated();
 
-        HashMap<String,Float> map2 = new HashMap<>();
-        map2.put("Algebra",5.0f);
-        map2.put("Multiplication",10.0f);
-        map2.put("Fractions",6.0f);
-        map2.put("SexEd", 7.0f);
-
-        HashMap<String,Integer>map3=new HashMap<>();
-        map3.put("Algebra",4);
-        map3.put("Fractions",6);
-        map3.put("Multiplication",10);
-        showBarChart(map,map2);
-        showPieChart(map3);
     }
 
     public void showPieChart(HashMap<String,Integer> vals){
@@ -107,6 +94,8 @@ public class reportTeacher extends AppCompatActivity {
     }
 
     public void backBtnClicked(View v){
-        finish();
+        Intent newIntent = new Intent(this, Sections.class);
+        newIntent.putExtra("teacher",teacher);
+        startActivity(newIntent);
     }
 }

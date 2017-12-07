@@ -1,14 +1,18 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.R;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.charts.PieChart;
@@ -17,93 +21,68 @@ import org.eazegraph.lib.models.PieModel;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Random;
 
 public class reportStudent extends AppCompatActivity {
 
+    private String[] topicSet;
+    private String[] timeSet;
+    private UIConnector uic;
+    private Student student;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_student);
+        student = (Student)getIntent().getParcelableExtra("student");
+        uic=new UIConnector(this);
+        student.getAvgTime();
+        student.getAssignmentscompletedScores();
 
-        HashMap<String,Integer> map = new HashMap<>();
-        map.put("Algebra",5);
-        map.put("Multiplication",10);
-        map.put("Fractions",6);
-
-        showPieChart(map);
-
-        HashMap<String,Float> map2 = new HashMap<>();
-        map2.put("Algebra",5.0f);
-        map2.put("Multiplication",10.0f);
-        map2.put("Fractions",6.0f);
-        showBarChart(map2);
     }
 
     public void showPieChart(HashMap<String,Integer> vals){
+        Random rnd=new Random();
         PieChart mPieChart = (PieChart) findViewById(R.id.piechart);
         ViewGroup myRoot1 = (ViewGroup) findViewById(R.id.legendLayout);
-        int alg = vals.get("Algebra");
-        int mult = vals.get("Multiplication");
-        int frac = vals.get("Fractions");
-        int sum = alg + mult + frac;
-        float algPCNT = (float) alg/sum * 100;
-        float multPCNT = (float) mult/sum * 100;
-        float fracPCNT = (float) frac/sum * 100;
-
-        mPieChart.addPieSlice(new PieModel("Algebra", alg , Color.parseColor("#FE6DA8")));
-        mPieChart.addPieSlice(new PieModel("Multiplication", mult , Color.parseColor("#56B7F1")));
-        mPieChart.addPieSlice(new PieModel("Fractions", frac , Color.parseColor("#FED70E")));
-
-        View inflatedLayout = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#FE6DA8"));
-        ((TextView) inflatedLayout.findViewById(R.id.itemText)).setText("Algebra" + "   " + round(algPCNT,2) + "%");
-        inflatedLayout.setPadding(10,5,0,0);
-        View inflatedLayout2 = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout2.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#56B7F1"));
-        ((TextView) inflatedLayout2.findViewById(R.id.itemText)).setText("Multiplication" + "   " + round(multPCNT,2) + "%");
-        inflatedLayout2.setPadding(10,5,0,0);
-
-        View inflatedLayout3 = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout3.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#FED70E"));
-        ((TextView) inflatedLayout3.findViewById(R.id.itemText)).setText("Fractions" + "   " + round(fracPCNT, 2) + "%");
-        inflatedLayout3.setPadding(10,5,0,5);
-
-        myRoot1.addView(inflatedLayout);
-        myRoot1.addView(inflatedLayout2);
-        myRoot1.addView(inflatedLayout3);
+        float[] values=new float[vals.size()];
+        int[]colors= new int[vals.size()];
+        topicSet=vals.keySet().toArray(new String[vals.size()]);
+        int sum=0;
+        for(int i=0;i<vals.size();i++){
+            values[i]=(int)vals.values().toArray()[i];
+            Log.d("Hussu","Array at:"+i+" value:"+values[i]);
+            sum+=values[i];
+        }
+        for(int i=0;i<vals.size();i++){
+            values[i]=(float)values[i]/sum*100;
+            Log.d("Hussu","Array at:"+i+" value:"+values[i]);
+            colors[i]=Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            mPieChart.addPieSlice(new PieModel(topicSet[i],values[i],colors[i]));
+            View inflatedLayout = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
+            ((TextView) inflatedLayout.findViewById(R.id.colorSquare)).setBackgroundColor(colors[i]);
+            ((TextView) inflatedLayout.findViewById(R.id.itemText)).setText(topicSet[i] + "   " + round(values[i],2) + "%");
+            inflatedLayout.setPadding(10,5,0,0);
+            myRoot1.addView(inflatedLayout);
+        }
         mPieChart.startAnimation();
     }
 
     public void showBarChart(HashMap<String,Float> vals){
         BarChart mBarChart = (BarChart) findViewById(R.id.barchart);
         ViewGroup myRoot1 = (ViewGroup) findViewById(R.id.legendBarLayout);
-
-        float algTime = vals.get("Algebra");
-        float multTime = vals.get("Multiplication");
-        float fracTime = vals.get("Fractions");
-
-        mBarChart.addBar(new BarModel(algTime, Color.parseColor("#FE6DA8")));
-        mBarChart.addBar(new BarModel(multTime,  Color.parseColor("#56B7F1")));
-        mBarChart.addBar(new BarModel(fracTime, Color.parseColor("#FED70E")));
-
-
-        View inflatedLayout = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#FE6DA8"));
-        ((TextView) inflatedLayout.findViewById(R.id.itemText)).setText("Algebra");
-        inflatedLayout.setPadding(10,5,0,0);
-        View inflatedLayout2 = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout2.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#56B7F1"));
-        ((TextView) inflatedLayout2.findViewById(R.id.itemText)).setText("Multiplication");
-        inflatedLayout2.setPadding(10,5,0,0);
-
-        View inflatedLayout3 = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout3.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#FED70E"));
-        ((TextView) inflatedLayout3.findViewById(R.id.itemText)).setText("Fractions");
-        inflatedLayout3.setPadding(10,5,0,5);
-
-        myRoot1.addView(inflatedLayout);
-        myRoot1.addView(inflatedLayout2);
-        myRoot1.addView(inflatedLayout3);
+        int color;
+        timeSet=vals.keySet().toArray(new String[vals.size()]);
+        Random rnd = new Random();
+        for (int i = 0; i<vals.size(); i++){
+            float score = vals.get(timeSet[i]);
+            color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            mBarChart.addBar(new BarModel(score, color));
+            View inflatedLayout = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
+            ((TextView) inflatedLayout.findViewById(R.id.colorSquare)).setBackgroundColor(color);
+            ((TextView) inflatedLayout.findViewById(R.id.itemText)).setText(timeSet[i]);
+            inflatedLayout.setPadding(10,5,0,0);
+            myRoot1.addView(inflatedLayout);
+        }
         mBarChart.startAnimation();
     }
 
@@ -114,6 +93,8 @@ public class reportStudent extends AppCompatActivity {
     }
 
     public void backBtnClicked(View v){
-        finish();
+        Intent newIntent = new Intent(this, Assignments.class);
+        newIntent.putExtra("student",student);
+        startActivity(newIntent);
     }
 }

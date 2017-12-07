@@ -140,6 +140,9 @@ public class Teacher  implements Parcelable{
     public void getTopicScores(){
         dc.getTopicScores(sectionList);
     }
+    public void getAssignmentCreated(){
+        dc.getAssignmentsCreated(teacherID);
+    }
 }
 
 //    public Assignment editAssignment(String sectionID){
