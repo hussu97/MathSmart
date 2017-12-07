@@ -53,27 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.PasswordEditText);
         userWarning = (TextView) findViewById(R.id.warningUserTextView);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        HashMap<String, Boolean> str= new HashMap<String, Boolean>();
         la = this;
         mAuth=FirebaseAuth.getInstance();
 
-//        str.put("sectionA", true);
-//        str.put("sectionB", true);
-//        a = new Assignment("name", "fractions", 3, "3-2-2018","", str);
-//        //Question q = new Question("fractions", "fraction those numbers", "correct", "wrong", 3);
-//        DatabaseConnector c = new DatabaseConnector();
-//        c.addAssignment(a);
-//        //c.addQuestion(q);
-//        //ah = new AssignmentHandler(a, "123", 4.23,15);
-//        //ah.saveAssignment();
-//        s = new Student();
-//        s.fetchAssignmentList();
-//        HashMap<String, Boolean> sectionList = new HashMap<>();
-//        sectionList.put("sectionA",true);
-//        HashMap<String, Assignment> assList= new HashMap<>();
-//        assList.put(a.getAssignmentID(),a);
-//        Teacher t = new Teacher("43Ph0AS85QQwxzKG2mpyucpEp2u2",sectionList);
-//        c.addTeacher(t);
     }
 
     @Override
@@ -88,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void LoginButtonClick(View v){
         //Start loading screen dialogue
-        String usrname=username.getText().toString().toLowerCase().trim().concat("@mathsmart.edu");
+        String usrname=username.getText().toString().toLowerCase();
         mAuth.signInWithEmailAndPassword(username.getText().toString().toLowerCase().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

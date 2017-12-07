@@ -89,24 +89,13 @@ public class Teacher  implements Parcelable{
     public ArrayList<Question> getAvailableQuestions(String topic, String sectionID){
         return dc.getAvailableQuestions(topic,sectionID);
     }
-//    public void createQuestion(String qStatement, String correctAnswer,String wrongAnswer, String topic, int weight){
-//        Question q=new Question(topic,qStatement,correctAnswer, wrongAnswer, weight);
-//        dc.addQuestion(q);
-//    }
+
     public void createQuestion(String qStatement, String correctAnswer,String wrongAnswer1,String wrongAnswer2,String wrongAnswer3, String topic, int weight){
         Log.d("Hussu","Calling create Question");
         Question q=new Question(topic,qStatement,correctAnswer, wrongAnswer1,wrongAnswer2,wrongAnswer3, weight);
         dc.addQuestion(q);
     }
-//    public Question editQuestion(String questionID){
-//        return getQuestion(questionID);
-//    }
-//    private String addQuestion(Question q){
-//        return dc.addQuestion(q);
-//    }
-//    private Question getQuestion(String questionID) {
-//        return dc.getQuestion(questionID);
-//    }
+
     //=========================================================================================================================
     //ASSIGNMENTS
     //=========================================================================================================================
@@ -144,21 +133,5 @@ public class Teacher  implements Parcelable{
         dc.getAssignmentsCreated(teacherID);
     }
 }
-
-//    public Assignment editAssignment(String sectionID){
-//        for(Assignment a:availableAssignments)
-//            for(String secID:a.getSectionList())
-//                if(secID==sectionID)
-//                    return a;
-//        return null;
-//    }
-//    public void updateAssignment(Assignment assignment){
-//        for(Assignment a:availableAssignments) {
-//            if(a.getAssignmentID()==assignment.getAssignmentID()){
-//                a=assignment;
-//            }
-//        }
-//    }
-
 
 

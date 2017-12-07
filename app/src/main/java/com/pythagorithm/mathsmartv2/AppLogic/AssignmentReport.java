@@ -23,6 +23,16 @@ public class AssignmentReport implements Parcelable {
     public AssignmentReport() {
     }
 
+    public AssignmentReport(String studentID, HashMap<String, Boolean> completedQuestions, String assignmentID, String topic, double assignmentScore, int totalQuestionsAttempted) {
+
+        this.studentID = studentID;
+        this.completedQuestions = completedQuestions;
+        this.assignmentID = assignmentID;
+        this.topic = topic;
+        this.assignmentScore = assignmentScore;
+        this.totalQuestionsAttempted = totalQuestionsAttempted;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -61,62 +71,30 @@ public class AssignmentReport implements Parcelable {
         parcel.writeInt(totalQuestionsAttempted);
     }
 
-    public AssignmentReport(String studentID, HashMap<String, Boolean> completedQuestions, String assignmentID, String topic, double assignmentScore, int totalQuestionsAttempted) {
-
-        this.studentID = studentID;
-        this.completedQuestions = completedQuestions;
-        this.assignmentID = assignmentID;
-        this.topic = topic;
-        this.assignmentScore = assignmentScore;
-        this.totalQuestionsAttempted = totalQuestionsAttempted;
-    }
-
     public String getStudentID() {
         return studentID;
     }
-
     public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
-
     public HashMap<String, Boolean> getCompletedQuestions() {
         return completedQuestions;
     }
-
-    public void setCompletedQuestions(HashMap<String, Boolean> completedQuestions) {
-        this.completedQuestions = completedQuestions;
-    }
-
+    public void setCompletedQuestions(HashMap<String, Boolean> completedQuestions) {this.completedQuestions = completedQuestions;}
     public String getAssignmentID() {
         return assignmentID;
     }
-
     public void setAssignmentID(String assignmentID) {
         this.assignmentID = assignmentID;
     }
-
-
     public String getTopic() {
         return topic;
     }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public double getAssignmentScore() {
-        return assignmentScore;
-    }
-
-    public void setAssignmentScore(double assignmentScore) {
-        this.assignmentScore = assignmentScore;
-    }
-
+    public void setTopic(String topic) {this.topic = topic;}
+    public double getAssignmentScore() {return assignmentScore;}
+    public void setAssignmentScore(double assignmentScore) {this.assignmentScore = assignmentScore;}
     public int getTotalQuestionsAttempted() {
         return totalQuestionsAttempted;
     }
-
-    public void setTotalQuestionsAttempted(int totalQuestionsAttempted) {
-        this.totalQuestionsAttempted = totalQuestionsAttempted;
-    }
+    public void setTotalQuestionsAttempted(int totalQuestionsAttempted) {this.totalQuestionsAttempted = totalQuestionsAttempted;}
 }

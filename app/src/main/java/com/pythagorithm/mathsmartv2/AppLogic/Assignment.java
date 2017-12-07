@@ -22,11 +22,13 @@ public class Assignment implements Parcelable{
     private String submissionPeriod;
     private HashMap<String, Boolean> sectionList;
 
-
+/*
+Empty constructor
+ */
     public Assignment() {
     }
 
-    //constructor
+    // Constructor with arguments
     public Assignment(String assignmentName, String assignmentTopic, int minCorrectAnswers, String dueDate, String submissionPeriod, HashMap<String, Boolean> sectionList) {
         this.assignmentID = genRandom();
         this.assignmentName = assignmentName;
@@ -37,6 +39,7 @@ public class Assignment implements Parcelable{
         this.sectionList = sectionList;
     }
 
+    // Constructor used when receiving Assignment objects across Activities (screens)
     public Assignment(Parcel in){
         assignmentID = in.readString();
         assignmentName = in.readString();
@@ -48,11 +51,7 @@ public class Assignment implements Parcelable{
         sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("sections");
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
+    // Used to send Assignment objects across acitivies (screens)
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(assignmentID);
         parcel.writeString(assignmentName);
@@ -66,6 +65,13 @@ public class Assignment implements Parcelable{
 
     }
 
+    // required for sending and receiving objects of this type
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 
     // This is to de-serialize the object
     public static final Parcelable.Creator<Assignment> CREATOR = new Parcelable.Creator<Assignment>(){
@@ -77,6 +83,7 @@ public class Assignment implements Parcelable{
         }
     };
 
+    // Used to generate random ID
     public String genRandom(){
         MessageDigest instance = null;
         try {
@@ -96,6 +103,7 @@ public class Assignment implements Parcelable{
         }
         return hexString.toString();
     }
+
     //setters and getters
     public String getAssignmentID() {return assignmentID;}
     public void setAssignmentID(String assignmentID) {this.assignmentID = assignmentID;}

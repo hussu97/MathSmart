@@ -20,40 +20,6 @@ public class Student implements Parcelable {
     private ArrayList<Assignment> assignmentList;
     private ArrayList<String>currAssignmentQuestions;
     private ArrayList<String> completedAssignments;
-
-    private assignmentPreview assignmentPreview;
-
-    public com.pythagorithm.mathsmartv2.UILayer.assignmentPreview getAssignmentPreview() {
-        return assignmentPreview;
-    }
-
-    public void setAssignmentPreview(com.pythagorithm.mathsmartv2.UILayer.assignmentPreview assignmentPreview) {
-        this.assignmentPreview = assignmentPreview;
-    }
-
-    public void fetchCompletedAssignmentList(){
-        dc.getCompletedAssignments(this);
-    }
-
-    public ArrayList<String> getCompletedAssignments()
-    {
-        return completedAssignments;
-    }
-
-    public ArrayList<Assignment> getAssignmentList() {
-        return assignmentList;
-    }
-
-    public void setCompletedAssignments(ArrayList<String> completedAssignments) {
-        this.completedAssignments = completedAssignments;
-
-    }
-
-    public void displayAssignmentLists(){
-        assignmentsActivity.displayCompleteAssingments();
-        assignmentsActivity.displayPendingAssingments();
-    }
-
     private int totalQuestionsSolved;
     private double currAssignmentScore;
     private double overallScore;
@@ -61,6 +27,9 @@ public class Student implements Parcelable {
     private DatabaseConnector dc;
     private AssignmentHandler aH;
     private Assignments assignmentsActivity;
+
+
+    private assignmentPreview assignmentPreview;
 
     //Constructor
     public Student(String username){
@@ -71,6 +40,14 @@ public class Student implements Parcelable {
         dc = new DatabaseConnector();
     }
 
+    public Student(Parcel in){
+        studentID = in.readString();
+        sectionID = in.readString();
+        overallScore = in.readDouble();
+        dc = new DatabaseConnector();
+        //       assignmentList = (ArrayList<Assignment>)in.readSerializable();
+    }
+
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(studentID);
         parcel.writeString(sectionID);
@@ -78,22 +55,28 @@ public class Student implements Parcelable {
 //        parcel.writeSerializable(assignmentList);
     }
 
-    public Student(Parcel in){
-        studentID = in.readString();
-        sectionID = in.readString();
-        overallScore = in.readDouble();
-        dc = new DatabaseConnector();
- //       assignmentList = (ArrayList<Assignment>)in.readSerializable();
+    public com.pythagorithm.mathsmartv2.UILayer.assignmentPreview getAssignmentPreview() {
+        return assignmentPreview;
     }
 
-    public Assignments getAssignmentsActivity() {
-        return assignmentsActivity;
+    public void displayAssignmentLists(){
+        assignmentsActivity.displayCompleteAssingments();
+        assignmentsActivity.displayPendingAssingments();
+    }
+
+    public void setAssignmentPreview(com.pythagorithm.mathsmartv2.UILayer.assignmentPreview assignmentPreview) {
+        this.assignmentPreview = assignmentPreview;
+    }
+
+    public void fetchCompletedAssignmentList(){
+        dc.getCompletedAssignments(this);
     }
 
 
-    public void setAssignmentsActivity(Assignments assignmentsActivity) {
-        this.assignmentsActivity = assignmentsActivity;
-    }
+
+
+
+
 
     @Override
     public int describeContents() {
@@ -128,6 +111,22 @@ public class Student implements Parcelable {
     public void setMin(int min) {this.min = min;}
     public AssignmentHandler getaH() {return aH;}
     public void setaH(AssignmentHandler aH) {this.aH = aH;}
+    public Assignments getAssignmentsActivity() {
+        return assignmentsActivity;
+    }
+    public void setAssignmentsActivity(Assignments assignmentsActivity) {this.assignmentsActivity = assignmentsActivity;}
+    public ArrayList<String> getCompletedAssignments()
+    {
+        return completedAssignments;
+    }
+    public ArrayList<Assignment> getAssignmentList() {
+        return assignmentList;
+    }
+    public void setCompletedAssignments(ArrayList<String> completedAssignments) {this.completedAssignments = completedAssignments;}
+    public double getAssignmentScore(int assignmentNum){return dc.getAssignmentScore(assignmentList.get(assignmentNum).getAssignmentID(),studentID);}
+    public double getOverallScore(String studentID){
+        return dc.getOverallScore(studentID);
+    }
 
 
     public void fetchAssignmentLists() {
@@ -146,30 +145,7 @@ public class Student implements Parcelable {
             aH = new AssignmentHandler(assignment, studentID, overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
         else
             aH = new AssignmentHandler(assignment,studentID,overallScore,0);
-//        for (int i =0;i < assignmentList.size(); i++) {
-//            if (assignmentList.get(i).getAssignmentID().equals(aID)) {
-//                a = assignmentList.get(i);
-//                if (found) {
-//                    aH = new AssignmentHandler(a, studentID, (double) overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), 0/*duno lol*/);
-//                }
-//                else {
-//                    aH = new AssignmentHandler(a, studentID,overallScore,0);
-//                }
-//               // LoginActivity.assignmentHandlerReady(aH);
-//            }
-//        }
-    }
-//    public boolean saveAssignment(){
-//        return aH.saveAssignment();
-//    }
-//    public Question getNextQuestion(Question currQ,int time,boolean answer){
-//        return aH.solveQuestion(currQ,time, answer);
-//    }
-    public double getAssignmentScore(int assignmentNum){
-        return dc.getAssignmentScore(assignmentList.get(assignmentNum).getAssignmentID(),studentID);
-    }
-    public double getOverallScore(String studentID){
-        return dc.getOverallScore(studentID);
+
     }
 
     public void getAssignmentscompletedScores(){

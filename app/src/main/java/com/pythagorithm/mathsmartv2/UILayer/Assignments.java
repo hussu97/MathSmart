@@ -79,22 +79,6 @@ public class Assignments extends AppCompatActivity {
 
     }
 
-    public void startAssignment(){
-
-    }
-
-//        if(assTitle.getText().toString().trim().endsWith("2")||assTitle.getText().toString().trim().endsWith("3")||
-//                assTitle.getText().toString().trim().endsWith("1"))
-//        {
-//            Intent intent = new Intent(this, assignmentPreview.class);
-//            intent.putExtra("assignmentnumber", assTitle.getText().toString());
-//            intent.putExtra("assignmentdescription", assDesc.getText().toString());
-//            intent.putExtra("assignmenttopic", assTopic.getText().toString());
-//            intent.putExtra("assignmentduedate", assDueDate.getText().toString());
-//            startActivity(intent);
-//        }
-
-
     public void logout(View v){
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);

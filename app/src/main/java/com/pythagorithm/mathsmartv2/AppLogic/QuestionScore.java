@@ -36,79 +36,58 @@ public class QuestionScore {
     public double getScore() {
         return score;
     }
-
     public void setScore(double score) {
         this.score = score;
     }
-
     public String getQuestionScoreID() {
         return questionScoreID;
     }
-
-    public void setQuestionScoreID(String questionScoreID) {
-        this.questionScoreID = questionScoreID;
-    }
-
+    public void setQuestionScoreID(String questionScoreID) {this.questionScoreID = questionScoreID;}
     public String getStudentID() {
         return studentID;
     }
-
     public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
-
     public String getQuestionID() {
         return questionID;
     }
-
     public void setQuestionID(String questionID) {
         this.questionID = questionID;
     }
-
     public String getAssignmentID() {
         return assignmentID;
     }
-
     public void setAssignmentID(String assignmentID) {
         this.assignmentID = assignmentID;
     }
-
     public boolean isCorrect() {
         return correct;
     }
-
     public void setCorrect(boolean correct) {
         this.correct = correct;
     }
-
     public int getTime() {
         return time;
     }
-
     public void setTime(int time) {
         this.time = time;
     }
-
     public Date getDate() {
         return date;
     }
-
     public void setDate(Date date) {
         this.date = date;
     }
-
     public String getTopic() {
         return topic;
     }
-
     public void setTopic(String topic) {
         this.topic = topic;
     }
-
     public int getDifficulty() {
         return difficulty;
     }
-
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }

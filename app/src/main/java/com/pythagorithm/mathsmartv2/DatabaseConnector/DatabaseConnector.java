@@ -345,12 +345,6 @@ public void addTeacher(final Teacher t){
                 });
     }
 
-
-
-//    public String addAssignment(String sectionList[],ArrayList<Assignment> assignmentList){
-//        return "JI";
-//    }
-
     public void addAssignment(final Assignment a){
         FirebaseFirestore.getInstance().collection(ASSIGNMENT_COLLECTION)
                 .add(a)
@@ -401,25 +395,6 @@ public void addTeacher(final Teacher t){
      */
     public void saveAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, int questionsLeft){
         final AssignmentProgress ap = new AssignmentProgress(studentID, aID,completedQuestions, assignmentScore,questionsLeft);
-
-//        FirebaseFirestore.getInstance().collection("assignment-progress")
-//                .whereEqualTo("assignmentID", aID)
-//                .get()
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot documentSnapshots) {
-//                        updateAssignmentProgress(ap,documentSnapshots.getDocuments().get(0).getId());
-//                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: assignment exists and progress will update");
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        createAssignmentProgress(ap);
-//                        Log.d("Firestore","Attempt to save assignment " + aID + " progress: creating assignment progress");
-//                    }
-//        });
-
         FirebaseFirestore.getInstance().collection(ASSIGNMENT_PROGRESS_COLLECTION)
                 .document(aID)
                 .set(ap)

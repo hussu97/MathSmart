@@ -44,13 +44,6 @@ public class AssignmentHandler  {
 
     private assignmentQuestion assignmentQuestion;
 
-    public com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion getAssignmentQuestion() {
-        return assignmentQuestion;
-    }
-
-    public void setAssignmentQuestion( assignmentQuestion assignmentQuestion) {
-        this.assignmentQuestion = assignmentQuestion;
-    }
 
     /*
         Constructor: Initializes studentID to upload quizScore
@@ -87,31 +80,18 @@ public class AssignmentHandler  {
         start();
     }
 
-    //setters and getters
-    public Assignment getAssignment() {return assignment;}
-    public void setAssignment(Assignment assignment) {this.assignment = assignment;}
-    public double getOverallScore() {return overallScore;}
-    public void setOverallScore(double overallScore) {this.overallScore = overallScore;}
-    public double getCurrentScore() {return currentScore;}
-    public void setCurrentScore(double currentScore) {this.currentScore = currentScore;}
-    public Question getCurrentQuestion() {return currentQuestion;}
-    public void setCurrentQuestion(Question currentQuestion) {
-        questionAvailable = true;
-        this.currentQuestion = currentQuestion;
-        Log.d("Firestore", "Setting current question");
-        assignmentQuestion.setQuestion();
-    }
-    public ArrayList<String> getCompletedQuestions() {return completedQuestions;}
-    public void setCompletedQuestions(ArrayList<String> completedQuestions) {this.completedQuestions = completedQuestions;}
-    public double getAssignmentScore() {return assignmentScore;}
-    public void setAssignmentScore(double assignmentScore) {this.assignmentScore = assignmentScore;}
 
     //Functions
     /*
-    Gets available Questions from database for each difficulty in one topic
-     */
-    /*
-    Private function to return the First question of the database
+    Description: Starts an assignmnet solving process and prepares the database elements related to this assignment
+    (progress tracker and next question)
+
+    Precondition: Student user is logged in, student has chosen an assignment, and there is internet connection
+    Postcondition:
+     -  an assignment progress object for this instance of the assignment by this user is created in
+        the database.
+     -  Initiated receiving a new question from the database based on the student's level and the assignment
+        topic
      */
     private void start(){
         Log.d("Firestore", "Assignment handler of aissgnment: "+assignment.getAssignmentID()+" started");
@@ -122,12 +102,12 @@ public class AssignmentHandler  {
     /*
     Function used to generate current question score and send back new question
     Description: Takes in the time and answer of the user and calculates the question score and adds it the database.
-        Also, it will increment the assignment score and either signal ending the assignment or the beginning of the new
-        assignment
+        Also, it will increment the assignment score and either signal ending the assignment or fetches a new question
+        to the student
 
 
-    Preconditions: Question solved is currentQuestion.
-    Postcondition: Creates a new QuestionScore object and updates assignment score and:
+    Preconditions: User selected an answer for currentQuestion
+    Postcondition: Creates a new QuestionScore object and updates assignment score. Returns:
         True: signals the ending of the assignment, or
         False: begins fetching next question
      */
@@ -149,7 +129,7 @@ public class AssignmentHandler  {
 
         //checking whether assignment is complete of not
         if(answer)
-            --min;
+            min--;
         if(min==0) {
             HashMap<String, Boolean> completedQuestions = new HashMap<>();
             for (int i =0; i< this.completedQuestions.size();i++){
@@ -167,10 +147,12 @@ public class AssignmentHandler  {
 
     }
 
-    public AssignmentReport getAssignmentReport() {
-        return assignmentReport;
-    }
-
+/*
+    Description:    initiates the fetching of an appropriate question from the database
+    Precondition:   currentQuestion is null and assignment handler requires a question
+    Postcondition:  a question has been requested based on the parameters the assignment
+                    handler supplied
+ */
     public void getNextQuestion(){
         //getting appropriate question
         Log.d("Firestore", "called getNextQuestion");
@@ -187,6 +169,11 @@ public class AssignmentHandler  {
 
     }
 
+    /*
+    Description: calculates the score of the question solved
+    Precondition: solveQuestion has been called on currentQuestion
+    Postcondition: returns a double indicating the score of the question solved
+     */
     //420 BLAZE IT SHIZZZZZZ
     private double masterFormula(int weight, boolean correct,int time){
         if(correct)
@@ -195,7 +182,35 @@ public class AssignmentHandler  {
             return INCORRECT_ANSWER_COEFF+INCORRECT_ANSWER_WEIGHT_VALUE*weight;
     }
 
+    /*
+    Description: returns the cieling of a double as an integer
+    Precondition: supplied a double number
+    Postcondition: returns the number rounded up to the closes integer
+     */
     private int ceil(double score){
         return (int)Math.ceil(score);
     }
+
+    //setters and getters
+    public Assignment getAssignment() {return assignment;}
+    public void setAssignment(Assignment assignment) {this.assignment = assignment;}
+    public double getOverallScore() {return overallScore;}
+    public void setOverallScore(double overallScore) {this.overallScore = overallScore;}
+    public double getCurrentScore() {return currentScore;}
+    public void setCurrentScore(double currentScore) {this.currentScore = currentScore;}
+    public Question getCurrentQuestion() {return currentQuestion;}
+    public void setCurrentQuestion(Question currentQuestion) {
+        questionAvailable = true;
+        this.currentQuestion = currentQuestion;
+        Log.d("Firestore", "Setting current question");
+        assignmentQuestion.setQuestion();
+    }
+    public ArrayList<String> getCompletedQuestions() {return completedQuestions;}
+    public void setCompletedQuestions(ArrayList<String> completedQuestions) {this.completedQuestions = completedQuestions;}
+    public double getAssignmentScore() {return assignmentScore;}
+    public void setAssignmentScore(double assignmentScore) {this.assignmentScore = assignmentScore;}
+    public AssignmentReport getAssignmentReport() {return assignmentReport;}
+    public com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion getAssignmentQuestion() {return assignmentQuestion;}
+    public void setAssignmentQuestion( assignmentQuestion assignmentQuestion) {this.assignmentQuestion = assignmentQuestion;}
+
 }
