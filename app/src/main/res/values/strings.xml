@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MathSmartV3</string>
+    <string name="app_name">MathSmart</string>
     <string-array name="topics">
         <item>Algebra</item>
         <item>Geometry</item>

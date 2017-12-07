@@ -27,6 +27,7 @@ public class addAssignment extends AppCompatActivity {
     private Spinner secSpinner;
     private String[] sectionSet;
     private Teacher teacher;
+    private EditText assignmentName;
     private EditText assignmentCreateDueDate;
     private EditText assignmentCreateSubmissionPeriod;
     private UIConnector uic;
@@ -38,6 +39,7 @@ public class addAssignment extends AppCompatActivity {
         teacher = (Teacher)getIntent().getParcelableExtra("teacher");
         sectionSet=teacher.getSectionList().keySet().toArray(new String[teacher.getSectionList().size()]);
 
+        assignmentName=(EditText)findViewById((R.id.assignmentCreateTitle));
         assignmentCreateDueDate=(EditText)findViewById(R.id.assignmentCreateDueDate);
         assignmentCreateSubmissionPeriod=(EditText)findViewById((R.id.assignmentCreateSubPeriod));
 
@@ -91,7 +93,7 @@ public class addAssignment extends AppCompatActivity {
         else {
             HashMap<String,Boolean> sections=new HashMap<>();
             sections.put(secSpinner.getSelectedItem().toString(),true);
-            teacher.createAssignment("This is an assignment",
+            teacher.createAssignment(assignmentName.getText().toString().trim(),
                     topicSpinner.getSelectedItem().toString().toLowerCase(),
                     Integer.parseInt(ansSpinner.getSelectedItem().toString()),
                     assignmentCreateDueDate.getText().toString().trim(),
