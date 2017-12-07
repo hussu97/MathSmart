@@ -97,6 +97,14 @@ public class Sections extends AppCompatActivity {
         }
 
     }
+    public void startReportsActivityTeacher(View v){
+
+
+        Intent newIntent = new Intent(this, reportTeacher.class);
+
+        startActivity(newIntent);
+
+    }
     public void logOut(View v){
         FirebaseAuth.getInstance().signOut();
         Log.d("FireAuth",FirebaseAuth.getInstance().getUid());

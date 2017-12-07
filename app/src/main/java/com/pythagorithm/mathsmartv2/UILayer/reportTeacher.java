@@ -16,27 +16,31 @@ import org.eazegraph.lib.models.BarModel;
 import org.eazegraph.lib.models.PieModel;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
-public class reportStudent extends AppCompatActivity {
+public class reportTeacher extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report_student);
+        setContentView(R.layout.activity_report_teacher);
 
-        HashMap<String,Integer> map = new HashMap<>();
-        map.put("Algebra",5);
-        map.put("Multiplication",10);
-        map.put("Fractions",6);
 
-        showPieChart(map);
+        HashMap<Integer,String> map = new HashMap<>();
+        map.put(0,"Algebra");
+        map.put(1,"Multiplication");
+        map.put(2, "Fractions");
+        map.put(3, "SexEd");
 
         HashMap<String,Float> map2 = new HashMap<>();
         map2.put("Algebra",5.0f);
         map2.put("Multiplication",10.0f);
         map2.put("Fractions",6.0f);
-        showBarChart(map2);
+        map2.put("SexEd", 7.0f);
+
+        showBarChart(map,map2);
     }
 
     private void showPieChart(HashMap<String,Integer> vals){
@@ -74,36 +78,27 @@ public class reportStudent extends AppCompatActivity {
         mPieChart.startAnimation();
     }
 
-    private void showBarChart(HashMap<String,Float> vals){
+    private void showBarChart(HashMap<Integer,String> secs, HashMap<String,Float> vals){
         BarChart mBarChart = (BarChart) findViewById(R.id.barchart);
         ViewGroup myRoot1 = (ViewGroup) findViewById(R.id.legendBarLayout);
+        ArrayList<Float> scores = new ArrayList<>();
+        int sections = secs.size();
+        int color;
+        Random rnd = new Random();
 
-        float algTime = vals.get("Algebra");
-        float multTime = vals.get("Multiplication");
-        float fracTime = vals.get("Fractions");
+        for (int i = 0; i<sections; i++){
+            float score = vals.get(secs.get(i));
+            color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            mBarChart.addBar(new BarModel(score, color));
 
-        mBarChart.addBar(new BarModel(algTime, Color.parseColor("#FE6DA8")));
-        mBarChart.addBar(new BarModel(multTime,  Color.parseColor("#56B7F1")));
-        mBarChart.addBar(new BarModel(fracTime, Color.parseColor("#FED70E")));
+            View inflatedLayout = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
+            ((TextView) inflatedLayout.findViewById(R.id.colorSquare)).setBackgroundColor(color);
+            ((TextView) inflatedLayout.findViewById(R.id.itemText)).setText(secs.get(i));
+            inflatedLayout.setPadding(10,5,0,0);
 
+            myRoot1.addView(inflatedLayout);
+        }
 
-        View inflatedLayout = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#FE6DA8"));
-        ((TextView) inflatedLayout.findViewById(R.id.itemText)).setText("Algebra");
-        inflatedLayout.setPadding(10,5,0,0);
-        View inflatedLayout2 = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout2.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#56B7F1"));
-        ((TextView) inflatedLayout2.findViewById(R.id.itemText)).setText("Multiplication");
-        inflatedLayout2.setPadding(10,5,0,0);
-
-        View inflatedLayout3 = LayoutInflater.from(this).inflate(R.layout.legend_item, null, false);
-        ((TextView) inflatedLayout3.findViewById(R.id.colorSquare)).setBackgroundColor(Color.parseColor("#FED70E"));
-        ((TextView) inflatedLayout3.findViewById(R.id.itemText)).setText("Fractions");
-        inflatedLayout3.setPadding(10,5,0,5);
-
-        myRoot1.addView(inflatedLayout);
-        myRoot1.addView(inflatedLayout2);
-        myRoot1.addView(inflatedLayout3);
         mBarChart.startAnimation();
     }
 
