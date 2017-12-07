@@ -1,12 +1,8 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
-import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion;
 
 import java.util.ArrayList;
@@ -49,7 +45,7 @@ public class AssignmentHandler  {
         return assignmentQuestion;
     }
 
-    public void setAssignmentQuestion(com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion assignmentQuestion) {
+    public void setAssignmentQuestion( assignmentQuestion assignmentQuestion) {
         this.assignmentQuestion = assignmentQuestion;
     }
 

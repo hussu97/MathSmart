@@ -116,24 +116,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-
-    public static void dispQ(){
-        Log.d("Firestore", "found q lol");
-
-        ah.solveQuestion(3,true);
-    }
-
-    public static void assignmentHandlerReady(AssignmentHandler a){
-        ah = a;
-    }
-
-
-
-    public void loginFailed(){
-        Toast.makeText(this,"Login failed", Toast.LENGTH_SHORT);
-    }
-
     public void startSectionsActivity(Teacher teacher){
         Log.d("Hussu","Teacher going to sections activity");
         Intent intent = new Intent(LoginActivity.this, Sections.class);
