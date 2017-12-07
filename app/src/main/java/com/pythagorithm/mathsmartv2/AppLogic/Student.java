@@ -139,21 +139,8 @@ public class Student implements Parcelable {
         Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
     }
 
-    public void startAssignment(Assignment assignment){
-
-        dc.getAssignmentProgress(this, studentID, assignment.getAssignmentID());
-//        if(assignmentNum<assignmentList.size()) {
-//            dc.getAssignmentProgress(assignmentList.get(assignmentNum).getAssignmentID(),studentID,currAssignmentQuestions,currAssignmentScore,min);
-//            if(currAssignmentQuestions==null) {
-//                aH = new AssignmentHandler(assignmentList.get(assignmentNum), studentID,overallScore,totalQuestionsSolved);
-//            }
-//            else{
-//                aH=new AssignmentHandler(assignmentList.get(assignmentNum),studentID,overallScore,currAssignmentQuestions,currAssignmentScore,min,totalQuestionsSolved);
-//            }
-//            return aH.getCurrentQuestion();
-//        }
-//        else
-//            return null;
+    public void getAssignmentProgress(String assignmentID, assignmentPreview ap){
+        dc.getAssignmentProgress(this, studentID, assignmentID, ap);
     }
 
 

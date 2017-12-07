@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UILayer.Assignments"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".UILayer.assignmentPreview"
             android:screenOrientation="landscape" />

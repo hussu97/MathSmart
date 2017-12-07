@@ -14,6 +14,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
+import com.pythagorithm.mathsmartv2.AppLogic.AssignmentReport;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.QuestionScore;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
@@ -36,16 +37,11 @@ public class DatabaseConnector {
     private final String STUDENT_COLLECTION = "STUDENTS";
     private final String COMPLETED_ASSIGNMENTS = "COMPLETED_ASSIGNMENTS";
 
-    private assignmentPreview assignmentPreview;
-
 
     public DatabaseConnector(String userID){
         this.ID=userID;
     }
     public DatabaseConnector(){}
-    public DatabaseConnector(assignmentPreview ap){
-        assignmentPreview = ap;
-    }
 
     public final String QUESTIONS_COLLECTION = "QUESTIONS";
     public final String ASSIGNMENT_COLLECTION="ASSIGNMENTS";
@@ -126,11 +122,12 @@ public class DatabaseConnector {
         return new ArrayList<>();
     }
 
-    public void getQuestion(final ArrayList<String> completedQuestion, final int weight, String topic){
+    public void getQuestion(final ArrayList<String> completedQuestion, final int weight, final String topic){
 
             Log.d("Firestore", "Initialized getQuestion...");
             FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)
                     //.whereGreaterThanOrEqualTo("weight", (double)weight)
+                    .whereEqualTo("topic", topic.substring(0, 1).toUpperCase() + topic.substring(1))
                     .whereEqualTo("weight", weight)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -245,7 +242,7 @@ public void addTeacher(final Teacher t){
                 });
     }
 
-    public void completeAssignment(final String studentID, final String assignmentID){
+    public void completeAssignment(final String studentID, final String assignmentID, final AssignmentReport assignmentReport){
         final HashMap<String,Boolean> compAssignment=new HashMap<>();
         compAssignment.put(assignmentID,true);
         FirebaseFirestore.getInstance().collection(STUDENT_COLLECTION)
@@ -268,19 +265,20 @@ public void addTeacher(final Teacher t){
                                 });
                     }
                 });
-//                .get()
-//                .add(compAssignment)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d("Firestore", "added assignment "+ assignmentID+ " to completed assignments of student"+studentID);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.d("Firestore", "did not add assignment "+ assignmentID+ " to completed assignments of student"+studentID);
-//            }
-//        });
+        FirebaseFirestore.getInstance().collection(QUESTION_SCORES_COLLECTION)
+                .add(assignmentReport)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Firestore", "added a score report for assignment "+assignmentReport.getAssignmentID());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error writing error "+assignmentReport.getAssignmentID()+ " ", e);
+                    }
+                });
     }
 
     public void getCompletedAssignments(final Student student){
@@ -370,7 +368,7 @@ public void addTeacher(final Teacher t){
             }
         });
     }
-    public void getAssignmentProgress( final Student s, final String studentID, final String aID){
+    public void getAssignmentProgress(final Student s, final String studentID, final String aID, final assignmentPreview assignmentPreview){
         //Change values of completedQuestions, assignmentScore, and min
         //If not available, change value of completedQuestions to 'null'
         FirebaseFirestore.getInstance()
@@ -474,6 +472,8 @@ public void addTeacher(final Teacher t){
         saveAssignmentProgress(studentID,assignmentID,completedQuestions,assignementScore,questionsLeft);
 
     }
+
+
     public double getAssignmentScore(String aID,String studentID){
         return 0;
     }
