@@ -80,4 +80,13 @@
         app:egFixedBarWidth="true"
         app:egLegendHeight="40dp" />
 
+    <Button
+        android:id="@+id/backButtonTeacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/legendBarLayout"
+        android:layout_below="@+id/legendBarLayout"
+        android:layout_marginEnd="17dp"
+        android:text="Back" />
+
 </RelativeLayout>

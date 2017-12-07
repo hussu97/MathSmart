@@ -106,8 +106,9 @@ public class Sections extends AppCompatActivity {
 
     }
     public void logOut(View v){
-        FirebaseAuth.getInstance().signOut();
         Log.d("FireAuth",FirebaseAuth.getInstance().getUid());
+        FirebaseAuth.getInstance().signOut();
+
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }

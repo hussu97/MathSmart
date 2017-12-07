@@ -6,7 +6,6 @@ import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -182,9 +181,7 @@ public class AssignmentHandler  {
         alt=!alt;
         if (nextQWeight<0||nextQWeight>10){
             Log.d("Firestore", "No questions for assignment: "+assignment.getAssignmentID()+" found");
-            /////////////////////////////////
-            // What happens when no questions are available
-            //////////////////////////////
+            assignmentQuestion.noQuestionsError();
         }
         else dc.getQuestion(completedQuestions, nextQWeight, assignment.getAssignmentTopic());
 

@@ -133,15 +133,6 @@
             android:background="@color/material_blue_grey_800"
             android:padding="8dp" >
 
-            <TextView
-                android:id="@+id/userName2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dr. Raafat"
-                android:textColor="#fff"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
             <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="50dp"
@@ -158,23 +149,14 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/userName"
+                    android:id="@+id/username2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dr. Raafat"
+                    android:text="Welcome teacher"
                     android:textColor="#fff"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="4dp"
-                    android:text="View Profile"
-                    android:textColor="#fff"
-                    android:textSize="12sp" />
             </LinearLayout>
 
         </RelativeLayout>
