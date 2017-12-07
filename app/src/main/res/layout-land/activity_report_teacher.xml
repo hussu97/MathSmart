@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    tools:context="com.pythagorithm.mathsmartv2.UILayer.reportStudent">
+
+    <LinearLayout
+        android:id="@+id/legendBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/barchart"
+        android:layout_alignStart="@+id/barchart"
+        android:layout_below="@+id/barchart"
+        android:layout_marginEnd="21dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/border"
+        android:orientation="vertical"></LinearLayout>
+
+    <TextView
+        android:id="@+id/assCompTxt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView17"
+        android:text="Assignments Created"
+        android:textSize="22dp" />
+
+    <TextView
+        android:id="@+id/assCompTxt3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView17"
+        android:layout_toEndOf="@+id/piechart"
+        android:text="Section Averages"
+        android:textSize="22dp" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="15dp"
+        android:text="My Reports"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="50dp" />
+
+    <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/piechart"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/assCompTxt2"
+        android:padding="8dp"
+        app:egLegendTextSize="18sp">
+
+    </org.eazegraph.lib.charts.PieChart>
+
+    <LinearLayout
+        android:id="@+id/legendLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/piechart"
+        android:layout_below="@+id/piechart"
+        android:layout_marginEnd="21dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/border"
+        android:orientation="vertical"></LinearLayout>
+
+    <org.eazegraph.lib.charts.BarChart xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/barchart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_above="@+id/legendLayout"
+        android:layout_toEndOf="@+id/piechart"
+        android:padding="10dp"
+        app:egBarWidth="20dp"
+        app:egFixedBarWidth="true"
+        app:egLegendHeight="40dp" />
+
+</RelativeLayout>

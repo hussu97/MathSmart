@@ -20,14 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
-import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -80,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-    }
+    public void onBackPressed() {}
     /*
     Function used to login the user into the respective interface
     Description: FireBaseAuth listener created that listens for user pressing the login button
@@ -92,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void onBtnClick(View v){
         //Start loading screen dialogue
+        String usrname=username.getText().toString().toLowerCase().trim().concat("@mathsmart.edu");
         mAuth.signInWithEmailAndPassword(username.getText().toString().toLowerCase().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -119,25 +116,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-
-    public static void dispQ(){
-        Log.d("Firestore", "found q lol");
-
-        ah.solveQuestion(3,true);
-    }
-
-    public static void assignmentHandlerReady(AssignmentHandler a){
-        ah = a;
-    }
-
-
-
-    public void loginFailed(){
-        Toast.makeText(this,"Login failed", Toast.LENGTH_SHORT);
-    }
-
     public void startSectionsActivity(Teacher teacher){
+        Log.d("Hussu","Teacher going to sections activity");
         Intent intent = new Intent(LoginActivity.this, Sections.class);
         intent.putExtra("teacher", teacher);
         startActivity(intent);
@@ -154,5 +134,5 @@ public class LoginActivity extends AppCompatActivity {
     public void displayError(String errorMessag){
         Toast.makeText(this,errorMessag, Toast.LENGTH_LONG).show();
     }
-
+//l
 }

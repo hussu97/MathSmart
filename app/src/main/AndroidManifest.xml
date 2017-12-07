@@ -29,11 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".UILayer.Sections"
             android:screenOrientation="landscape" />
-        <activity android:name=".UILayer.addAssignment"></activity>
+        <activity android:name=".UILayer.addAssignment" />
+        <activity android:name=".UILayer.reportStudent" />
+        <activity android:name=".UILayer.reportTeacher"></activity>
     </application>
 
 </manifest>

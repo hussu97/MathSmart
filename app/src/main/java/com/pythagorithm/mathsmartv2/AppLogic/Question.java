@@ -60,22 +60,40 @@ public class Question {
 
     String questionID;
     String questionStatment;
-    String correctAnswer, wrongAnswer1, topic;
+    String correctAnswer, wrongAnswer1,wrongAnswer2,wrongAnswer3, topic;
 
     int weight;
 
     public Question() {
     }
 
-    public Question( String topic, String questionStatment, String correctAnswer, String wrongAnswer1, int weight) {
+
+    public String getWrongAnswer2() {
+        return wrongAnswer2;
+    }
+
+    public void setWrongAnswer2(String wrongAnswer2) {
+        this.wrongAnswer2 = wrongAnswer2;
+    }
+
+    public String getWrongAnswer3() {
+        return wrongAnswer3;
+    }
+
+    public void setWrongAnswer3(String wrongAnswer3) {
+        this.wrongAnswer3 = wrongAnswer3;
+    }
+
+    public Question(String topic, String questionStatment, String correctAnswer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3, int weight) {
         this.questionID =genRandom();
         this.wrongAnswer1 = wrongAnswer1;
+        this.wrongAnswer2=wrongAnswer2;
+        this.wrongAnswer3=wrongAnswer3;
         this.questionStatment = questionStatment;
         this.weight = weight;
         this.topic = topic;
         this.correctAnswer = correctAnswer;
     }
-
     public String getQuestionID() {
         return questionID;
     }

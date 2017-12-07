@@ -1,36 +1,43 @@
 package com.pythagorithm.mathsmartv2.UILayer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.R;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import io.github.kexanie.library.MathView;
 
 public class addQuestion extends AppCompatActivity {
-    MathView formula;
-    Spinner topicSpinner;
-    Spinner difSpinner;
+    private MathView formula;
+    private Spinner topicSpinner;
+    private Spinner difSpinner;
+    private Teacher teacher;
+    private EditText qStatement;
+    private EditText cAnswer;
+    private EditText wAnswer1;
+    private EditText wAnswer2;
+    private EditText wAnswer3;
+    private UIConnector uic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question);
         formula = (MathView) findViewById(R.id.questionFormula);
-        String tex = "";
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        teacher = (Teacher)getIntent().getParcelableExtra("teacher");
 
-
+        uic=new UIConnector(this);
         topicSpinner = (Spinner) findViewById(R.id.topicSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.topics, R.layout.support_simple_spinner_dropdown_item);
@@ -44,25 +51,31 @@ public class addQuestion extends AppCompatActivity {
         adapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
         difSpinner.setAdapter(adapter2);
+
+        qStatement=(EditText)findViewById(R.id.qEditTxt);
+        cAnswer=(EditText) findViewById(R.id.caEditTxt);
+        wAnswer1=(EditText) findViewById(R.id.waEditTxt1);
+        wAnswer2=(EditText) findViewById(R.id.waEditTxt2);
+        wAnswer3=(EditText) findViewById(R.id.waEditTxt3);
     }
     public void previewBtn(View v){
         EditText previewer= (EditText) findViewById(R.id.qEditTxt);
 
         switch(v.getId()){
             case R.id.qPrev:
-                previewer= (EditText) findViewById(R.id.qEditTxt);
+                previewer= qStatement;
                 break;
             case R.id.caPrev:
-                previewer= (EditText) findViewById(R.id.caEditTxt);
+                previewer= cAnswer;
                 break;
             case R.id.waPrev1:
-                previewer= (EditText) findViewById(R.id.waEditTxt1);
+                previewer= wAnswer1;
                 break;
             case R.id.waPrev2:
-                previewer= (EditText) findViewById(R.id.waEditTxt2);
+                previewer= wAnswer2;
                 break;
             case R.id.waPrev3:
-                previewer= (EditText) findViewById(R.id.waEditTxt3);
+                previewer= wAnswer3;
                 break;
         }
         String displayable = "$$" + previewer.getText().toString() + "$$";
@@ -71,40 +84,43 @@ public class addQuestion extends AppCompatActivity {
 
 
     }
-    public void assclicked(View v){
-        try {
-            Process process = new ProcessBuilder()
-                    .command("logcat", "-c")
-                    .redirectErrorStream(true)
-                    .start();
-        } catch (IOException e) {
+    public void addQuestionClicked(View v){
+        Log.d("Hussu","{"+wAnswer2.getText().toString()+"}");
+        if(qStatement.getText().toString().isEmpty()||
+                cAnswer.getText().toString().isEmpty()||
+                wAnswer1.getText().toString().isEmpty()||
+                wAnswer2.getText().toString().isEmpty()||
+                wAnswer3.getText().toString().isEmpty()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please enter values in all the required fields").
+                    setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {}
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-
-        try {
-            Process process = Runtime.getRuntime().exec("logcat -d");
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            StringBuilder log=new StringBuilder();
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                log.append(line);
-            }
-            TextView tv = (TextView)findViewById(R.id.textView10);
-            if (log.toString().contains("Failed to parse")) //this is the line that contains all the needed information
-            {
-
-                tv.setText("TRUE");
-            }
-            else{
-                tv.setText("FAlse");
-            }
-
+        else {
+            teacher.createQuestion(qStatement.getText().toString().trim(),
+                    cAnswer.getText().toString().trim(),
+                    wAnswer1.getText().toString().trim(),
+                    wAnswer2.getText().toString().trim(),
+                    wAnswer3.getText().toString().trim(),
+                    topicSpinner.getSelectedItem().toString().toLowerCase(),
+                    Integer.parseInt(difSpinner.getSelectedItem().toString()));
         }
-        catch (IOException e) {}
     }
-    public void buttonClicked(View v){
-            Intent intent = new Intent(this, Sections.class);
-            startActivity(intent);
+    public void addedQuestion(){
+        Log.d("Hussu", "Going back to teacher activity");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Question successfully added").
+                setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(addQuestion.this, Sections.class);
+                        intent.putExtra("teacher", teacher);
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

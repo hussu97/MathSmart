@@ -15,8 +15,6 @@ import com.pythagorithm.mathsmartv2.AppLogic.Assignment;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,7 +22,6 @@ public class Sections extends AppCompatActivity {
     private ViewGroup myRoot1;
     private ViewGroup myRoot2;
     private Teacher teacher;
-    Teacher t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,20 +31,18 @@ public class Sections extends AppCompatActivity {
         myRoot2 = (ViewGroup) findViewById(R.id.assingmentsHolder);
         Intent i = getIntent();
         teacher = (Teacher)i.getParcelableExtra("teacher");
-        ((TextView)findViewById(R.id.sectionListTxt)).setText(teacher.getSectionList().get("sectionA").toString());
-        displayPendingAssingments(15);
-        HashMap<String, Boolean> sections = new HashMap<String, Boolean>();
-        sections.put("sectionA", true);
-        t.setSectionList(sections);
-        t.setSections(this);
+        teacher.setSections(this);
+        displaySections(teacher.getSectionList().size());
     }
     public void createBtn(View v){
         if(v.getId() == R.id.button3) {
             Intent intent = new Intent(this, addQuestion.class);
+            intent.putExtra("teacher",teacher);
             startActivity(intent);
         }
         if(v.getId() == R.id.button5){
             Intent intent = new Intent(this, addAssignment.class);
+            intent.putExtra("teacher",teacher);
             startActivity(intent);
         }
 
@@ -57,54 +52,57 @@ public class Sections extends AppCompatActivity {
         TextView secNum = (TextView) findViewById(R.id.sectionAssList);
         TextView secTitle = (TextView) v.findViewById(R.id.secTitle);
         secNum.setText(secTitle.getText().toString()+"'s Assignments");
-        t.getAssignments("sectionA");
+        teacher.getAssignments(secTitle.getText().toString());
     }
     @Override
     public void onBackPressed(){
 
     }
 
-    public void displayPendingAssingments(int number){
+    public void displaySections(int number){
 
+        HashMap<String,Boolean> sectionList=teacher.getSectionList();
         for (int i = 0; i < number; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.section_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.secTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.secDesc);
-            assTitle.setText("Section " + i);
-            //assTitle.setPadding(0,0,20,0);
+            assTitle.setText( sectionList.keySet().toArray()[0].toString());
             assTitle.setTextColor(Color.BLACK);
 
             assDesc.setText("Description " + i);
-            //assDesc.setPadding(0,0,20,0);
             assDesc.setTextColor(Color.BLACK);
             inflatedLayout.setPadding(0,0,25,0);
             myRoot1.addView(inflatedLayout);
-            //R.id.editID
 
         }
 
     }
     public void displaySectionAssingments(ArrayList<Assignment> ass){
-        myRoot2.removeAllViews();
+        Log.d("Hussu","Entered displaySecAss "+ass.size());
         for (int i = 0; i < ass.size(); i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentteacher_box, null, false);
-            TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.assTitle);
-            TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.assDesc);
+            TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.teacherAssignmentTitle);
+            TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.teacherAssignmentDesc);
             TextView assID = (TextView) inflatedLayout.findViewById(R.id.Descrip1);
+            Log.d("Hussu","AssignmentName "+ass.get(i).getAssignmentName());
             assTitle.setText( ass.get(i).getAssignmentName());
-            //assTitle.setPadding(0,0,20,0);
             assTitle.setTextColor(Color.BLACK);
-
-            assDesc.setText(ass.get(i).getAssignmentID());
-            //assDesc.setPadding(0,0,20,0);
+            assDesc.setText(ass.get(i).getAssignmentTopic());
             assDesc.setTextColor(Color.BLACK);
 
             inflatedLayout.setPadding(0,0,25,0);
 
             myRoot2.addView(inflatedLayout);
-            //R.id.editID
 
         }
+
+    }
+    public void startReportsActivityTeacher(View v){
+
+
+        Intent newIntent = new Intent(this, reportTeacher.class);
+
+        startActivity(newIntent);
 
     }
     public void logOut(View v){

@@ -20,7 +20,6 @@ import com.pythagorithm.mathsmartv2.AppLogic.QuestionScore;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
-import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
 import java.util.ArrayList;
@@ -199,23 +198,23 @@ public void addTeacher(final Teacher t){
 }
 
     public void addQuestion(final Question q){
+    Log.d("Hussu","Calling Add Question");
         FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)
                 .add(q)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added question successfully");
-                        UIConnector.addedQuestion(q);
+                        Log.d("Hussu", "added question successfully "+documentReference.getId());
+                        UIConnector.addedQuestion();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("Firestore", "Question was not added successfully");
+                        Log.d("Hussu", "Question was not added successfully");
                     }
         });
-    }
-    public void updateQuestion(Question q){
-
     }
     //=========================================================================================================================
     //ASSIGNMENTS
@@ -322,6 +321,7 @@ public void addTeacher(final Teacher t){
     }
 
     public void getAvailableAssignments(final Teacher teacher, final String sectionID){
+        Log.d("Hussu","Entering availAssignments");
         FirebaseFirestore.getInstance()
                 .collection(ASSIGNMENT_COLLECTION)
                 .whereEqualTo("sectionList."+sectionID,true)
@@ -357,12 +357,14 @@ public void addTeacher(final Teacher t){
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added assignment successfully");
-                        UIConnector.addedAssignment(a);
+                        Log.d("Hussu", "added assignment successfully");
+                        UIConnector.addedAssignment();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d("Firestore", "assignment was not added successfully");
+                Log.d("Hussu", "assignment was not added successfully");
             }
         });
     }

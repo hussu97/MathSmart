@@ -3,13 +3,13 @@ package com.pythagorithm.mathsmartv2.AppLogic;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.Sections;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by H_Abb on 11/4/2017.
@@ -26,13 +26,16 @@ public class Teacher  implements Parcelable{
     //Constructor
 
     public Teacher(Parcel in){
+        Log.d("Hussu","Teacher in parcel");
         teacherID = in.readString();
         Bundle sectionsBundle = in.readBundle();
         sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("map");
+        dc = new DatabaseConnector();
     }
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        Log.d("Hussu","Teacher writeToParcel");
         parcel.writeString(teacherID);
         Bundle sectionsBundle = new Bundle();
         sectionsBundle.putSerializable("map", sectionList);
@@ -43,7 +46,7 @@ public class Teacher  implements Parcelable{
     public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
         this.teacherID = teacherID;
         this.sectionList = sectionList;
-        dc = new DatabaseConnector();
+
     }
 
     public void setSections(Sections s){this.s = s;}
@@ -77,7 +80,7 @@ public class Teacher  implements Parcelable{
             aa.put(availableAssignments.get(i).getAssignmentID(),availableAssignments.get(i));
         }
         this.availableAssignments = aa;
-        // s.displaySectionAssingments(availableAssignments);
+        //s.displaySectionAssingments(availableAssignments);
     }
 
     //=========================================================================================================================
@@ -86,16 +89,18 @@ public class Teacher  implements Parcelable{
     public ArrayList<Question> getAvailableQuestions(String topic, String sectionID){
         return dc.getAvailableQuestions(topic,sectionID);
     }
-    public void createQuestion(String qStatement, String correctAnswer,String wrongAnswer, String topic, int weight){
-        Question q=new Question(topic,qStatement,correctAnswer, wrongAnswer, weight);
+//    public void createQuestion(String qStatement, String correctAnswer,String wrongAnswer, String topic, int weight){
+//        Question q=new Question(topic,qStatement,correctAnswer, wrongAnswer, weight);
+//        dc.addQuestion(q);
+//    }
+    public void createQuestion(String qStatement, String correctAnswer,String wrongAnswer1,String wrongAnswer2,String wrongAnswer3, String topic, int weight){
+        Log.d("Hussu","Calling create Question");
+        Question q=new Question(topic,qStatement,correctAnswer, wrongAnswer1,wrongAnswer2,wrongAnswer3, weight);
         dc.addQuestion(q);
     }
 //    public Question editQuestion(String questionID){
 //        return getQuestion(questionID);
 //    }
-    public void updateQuestion(Question question){
-        dc.updateQuestion(question);
-    }
 //    private String addQuestion(Question q){
 //        return dc.addQuestion(q);
 //    }
@@ -106,10 +111,11 @@ public class Teacher  implements Parcelable{
     //ASSIGNMENTS
     //=========================================================================================================================
     public void getAssignments(String sectionID){
+        this.sectionID=sectionID;
         dc.getAvailableAssignments(this,sectionID);
-        //return dc.getAvailableAssignments(sectionID);
     }
     public void createAssignment(String name, String topic, int numQuestions, String dueDate, String submissionPeriod, HashMap<String, Boolean> sectionList){
+        Log.d("Hussu", "Entering create assignment");
         Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
         dc.addAssignment(a);
     }
