@@ -70,11 +70,9 @@ public class Sections extends AppCompatActivity {
             assTitle.setTextColor(Color.BLACK);
 
             assDesc.setText("Description " + i);
-            //assDesc.setPadding(0,0,20,0);
             assDesc.setTextColor(Color.BLACK);
             inflatedLayout.setPadding(0,0,25,0);
             myRoot1.addView(inflatedLayout);
-            //R.id.editID
 
         }
 
@@ -88,11 +86,8 @@ public class Sections extends AppCompatActivity {
             TextView assID = (TextView) inflatedLayout.findViewById(R.id.Descrip1);
             Log.d("Hussu","AssignmentName "+ass.get(i).getAssignmentName());
             assTitle.setText( ass.get(i).getAssignmentName());
-            //assTitle.setPadding(0,0,20,0);
             assTitle.setTextColor(Color.BLACK);
-
-            assDesc.setText(ass.get(i).getAssignmentID());
-            //assDesc.setPadding(0,0,20,0);
+            assDesc.setText(ass.get(i).getAssignmentTopic());
             assDesc.setTextColor(Color.BLACK);
 
             inflatedLayout.setPadding(0,0,25,0);

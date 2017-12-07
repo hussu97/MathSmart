@@ -81,7 +81,7 @@ public class addAssignment extends AppCompatActivity {
         }
         else if(new Date().after(strDate)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Date has already been passed, Please try again").
+            builder.setMessage("Due Date is outdated, Please try again").
                     setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {}
                     });

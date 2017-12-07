@@ -77,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-    }
+    public void onBackPressed() {}
     /*
     Function used to login the user into the respective interface
     Description: FireBaseAuth listener created that listens for user pressing the login button
@@ -89,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void onBtnClick(View v){
         //Start loading screen dialogue
+        String usrname=username.getText().toString().toLowerCase().trim().concat("@mathsmart.edu");
         mAuth.signInWithEmailAndPassword(username.getText().toString().toLowerCase().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
