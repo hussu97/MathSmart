@@ -174,7 +174,6 @@ public class AssignmentHandler  {
     Precondition: solveQuestion has been called on currentQuestion
     Postcondition: returns a double indicating the score of the question solved
      */
-    //420 BLAZE IT SHIZZZZZZ
     private double masterFormula(int weight, boolean correct,int time){
         if(correct)
             return CORRECT_ANSWER_COEFF+CORRECT_ANSWER_WEIGHT_VALUE*weight+CORRECT_ANSWER_TIME_VALUE*time;
