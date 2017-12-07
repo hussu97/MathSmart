@@ -45,38 +45,13 @@ public class Student implements Parcelable {
         sectionID = in.readString();
         overallScore = in.readDouble();
         dc = new DatabaseConnector();
-        //       assignmentList = (ArrayList<Assignment>)in.readSerializable();
     }
 
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(studentID);
         parcel.writeString(sectionID);
         parcel.writeDouble(overallScore);
-//        parcel.writeSerializable(assignmentList);
     }
-
-    public com.pythagorithm.mathsmartv2.UILayer.assignmentPreview getAssignmentPreview() {
-        return assignmentPreview;
-    }
-
-    public void displayAssignmentLists(){
-        assignmentsActivity.displayCompleteAssingments();
-        assignmentsActivity.displayPendingAssingments();
-    }
-
-    public void setAssignmentPreview(com.pythagorithm.mathsmartv2.UILayer.assignmentPreview assignmentPreview) {
-        this.assignmentPreview = assignmentPreview;
-    }
-
-    public void fetchCompletedAssignmentList(){
-        dc.getCompletedAssignments(this);
-    }
-
-
-
-
-
-
 
     @Override
     public int describeContents() {
@@ -88,6 +63,42 @@ public class Student implements Parcelable {
         studentID = "5s5R52Ct8mSKN1vndbuOQNlOZI53";
         overallScore=3;
         dc = new DatabaseConnector();
+    }
+
+    public void displayAssignmentLists(){
+        assignmentsActivity.displayCompleteAssingments();
+        assignmentsActivity.displayPendingAssingments();
+    }
+
+    // This is to de-serialize the object
+    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>(){
+        public Student createFromParcel(Parcel in) {
+            return new Student(in);
+        }
+        public Student[] newArray(int size) {
+            return new Student[size];
+        }
+    };
+
+    public void fetchAssignmentLists() {
+        dc.getCompletedAssignments(this);
+        Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
+    }
+
+    public void getAssignmentProgress(String assignmentID, assignmentPreview ap){
+        dc.getAssignmentProgress(this, studentID, assignmentID, ap);
+    }
+
+    public void createAssignmentHandler(boolean found, AssignmentProgress ap,Assignment assignment){
+        if (found)
+            aH = new AssignmentHandler(assignment, studentID, overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
+        else
+            aH = new AssignmentHandler(assignment,studentID,overallScore,0);
+
+    }
+
+    public void getAvgTime(){
+        dc.getAvgTime(studentID);
     }
 
     //getters and setters
@@ -127,45 +138,10 @@ public class Student implements Parcelable {
     public double getOverallScore(String studentID){
         return dc.getOverallScore(studentID);
     }
-
-
-    public void fetchAssignmentLists() {
-        dc.getCompletedAssignments(this);
-        Log.d("Firestore","Initiated assignment fetching for student SID: "+studentID);
-    }
-
-    public void getAssignmentProgress(String assignmentID, assignmentPreview ap){
-        dc.getAssignmentProgress(this, studentID, assignmentID, ap);
-    }
-
-
-    public void createAssignmentHandler(boolean found, AssignmentProgress ap,Assignment assignment){
-        Assignment a = null;
-        if (found)
-            aH = new AssignmentHandler(assignment, studentID, overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
-        else
-            aH = new AssignmentHandler(assignment,studentID,overallScore,0);
-
-    }
-
+    public com.pythagorithm.mathsmartv2.UILayer.assignmentPreview getAssignmentPreview() {return assignmentPreview;}
     public void getAssignmentscompletedScores(){
         dc.getAssignmentsCompletedScores(studentID);
     }
-
-    public void getAvgTime(){
-        dc.getAvgTime(studentID);
-    }
-
-
-    // This is to de-serialize the object
-    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>(){
-        public Student createFromParcel(Parcel in) {
-            return new Student(in);
-        }
-        public Student[] newArray(int size) {
-            return new Student[size];
-        }
-    };
-
+    public void setAssignmentPreview(com.pythagorithm.mathsmartv2.UILayer.assignmentPreview assignmentPreview) {this.assignmentPreview = assignmentPreview;}
 
 }

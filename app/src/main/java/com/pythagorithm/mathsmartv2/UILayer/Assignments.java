@@ -139,18 +139,17 @@ public class Assignments extends AppCompatActivity {
             TextView assTopic = (TextView)inflatedLayout.findViewById(R.id.Descrip1);
             TextView assDueDate = (TextView) inflatedLayout.findViewById(R.id.Descrip2);
             assTitle.setText(assignment.getAssignmentName());
-            //assTitle.setPadding(0,0,20,0);
+            assTitle.setPadding(0,0,20,0);
             assTitle.setTextColor(Color.BLACK);
 
             assDesc.setText("Due date: "+(assignment.getDueDate()));
             assTopic.setText(assignment.getAssignmentTopic());
-            //assDesc.setPadding(0,0,20,0);
+            assDesc.setPadding(0,0,20,0);
             assDesc.setTextColor(Color.BLACK);
             assDueDate.setText("");
             inflatedLayout.setPadding(0,0,25,0);
 
             myRoot2.addView(inflatedLayout);
-            //R.id.editID
 
         }
 

@@ -176,28 +176,6 @@ public class DatabaseConnector {
 
     }
 
-//    public Question getQuestion(String qID){
-//        String[] s=new String[4];
-//        return new Question("s",s,"s",4,"s");
-//    }
-
-public void addTeacher(final Teacher t){
-    FirebaseFirestore.getInstance().collection(TEACHER_COLLECTION)
-            .add(t)
-            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Log.d("Firestore", "added teacher ");
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Log.d("Firestore", "teacher was not added successfully");
-        }
-    });
-}
-
     public void addQuestion(final Question q){
     Log.d("Hussu","Calling Add Question");
         FirebaseFirestore.getInstance().collection(QUESTIONS_COLLECTION)

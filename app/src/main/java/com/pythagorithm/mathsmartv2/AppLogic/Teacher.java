@@ -25,6 +25,14 @@ public class Teacher  implements Parcelable{
 
     //Constructor
 
+    public Teacher(){}
+
+    public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
+        this.teacherID = teacherID;
+        this.sectionList = sectionList;
+
+    }
+
     public Teacher(Parcel in){
         Log.d("Hussu","Teacher in parcel");
         teacherID = in.readString();
@@ -41,15 +49,20 @@ public class Teacher  implements Parcelable{
         sectionsBundle.putSerializable("map", sectionList);
         parcel.writeBundle(sectionsBundle);
     }
-    public Teacher(){}
-
-    public Teacher(String teacherID, HashMap<String, Boolean> sectionList) {
-        this.teacherID = teacherID;
-        this.sectionList = sectionList;
-
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setSections(Sections s){this.s = s;}
+    // This is to de-serialize the object
+    public static final Parcelable.Creator<Teacher> CREATOR = new Parcelable.Creator<Teacher>(){
+        public Teacher createFromParcel(Parcel in) {
+            return new Teacher(in);
+        }
+        public Teacher[] newArray(int size) {
+            return new Teacher[size];
+        }
+    };
 
     //Getters and setters
     public String getTeacherID() {return teacherID;}
@@ -58,7 +71,7 @@ public class Teacher  implements Parcelable{
     public void setSectionList(HashMap<String, Boolean> sectionList) {this.sectionList = sectionList;}
     public String getSectionID() {return sectionID;}
     public void setSectionID(String sectionID) {this.sectionID = sectionID;}
-
+    public void setSections(Sections s){this.s = s;}
     public ArrayList<Assignment> getAvailableAssignments() {
         if (availableAssignments!=null)
         return new ArrayList<>(availableAssignments.values());
@@ -74,21 +87,9 @@ public class Teacher  implements Parcelable{
          s.displaySectionAssingments(availableAssignments);
     }
 
-    public void setAvailableAssignments(ArrayList<Assignment> availableAssignments) {
-        HashMap<String, Assignment> aa = new HashMap<>();
-        for (int i =0; i< availableAssignments.size(); i++){
-            aa.put(availableAssignments.get(i).getAssignmentID(),availableAssignments.get(i));
-        }
-        this.availableAssignments = aa;
-        //s.displaySectionAssingments(availableAssignments);
-    }
-
     //=========================================================================================================================
     //QUESTIONS
     //=========================================================================================================================
-    public ArrayList<Question> getAvailableQuestions(String topic, String sectionID){
-        return dc.getAvailableQuestions(topic,sectionID);
-    }
 
     public void createQuestion(String qStatement, String correctAnswer,String wrongAnswer1,String wrongAnswer2,String wrongAnswer3, String topic, int weight){
         Log.d("Hussu","Calling create Question");
@@ -108,24 +109,6 @@ public class Teacher  implements Parcelable{
         Assignment a= new Assignment(name, topic, numQuestions, dueDate,submissionPeriod, sectionList);
         dc.addAssignment(a);
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-
-
-    // This is to de-serialize the object
-    public static final Parcelable.Creator<Teacher> CREATOR = new Parcelable.Creator<Teacher>(){
-        public Teacher createFromParcel(Parcel in) {
-            return new Teacher(in);
-        }
-        public Teacher[] newArray(int size) {
-            return new Teacher[size];
-        }
-    };
-
     public void getTopicScores(){
         dc.getTopicScores(sectionList);
     }

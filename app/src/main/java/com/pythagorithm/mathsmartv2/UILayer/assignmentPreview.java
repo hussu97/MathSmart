@@ -28,7 +28,6 @@ public class assignmentPreview extends AppCompatActivity {
 
     final int FINISH_ASSIGNMENT = 1;
     final int START_ASSIGNMENT = 2;
-    final int RESUME_ASSIGNMENT = 3;
     int nextButtonStatus = START_ASSIGNMENT;
 
     @Override
