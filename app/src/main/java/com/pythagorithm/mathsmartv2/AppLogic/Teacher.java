@@ -136,6 +136,13 @@ public class Teacher  implements Parcelable{
             return new Teacher[size];
         }
     };
+
+    public void getTopicScores(){
+        dc.getTopicScores(sectionList);
+    }
+    public void getAssignmentCreated(){
+        dc.getAssignmentsCreated(teacherID);
+    }
 }
 
 //    public Assignment editAssignment(String sectionID){
@@ -152,5 +159,6 @@ public class Teacher  implements Parcelable{
 //            }
 //        }
 //    }
+
 
 

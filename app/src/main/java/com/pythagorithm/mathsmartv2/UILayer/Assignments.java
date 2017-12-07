@@ -3,7 +3,6 @@ package com.pythagorithm.mathsmartv2.UILayer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +74,7 @@ public class Assignments extends AppCompatActivity {
 
 
         Intent newIntent = new Intent(this, reportStudent.class);
-
+        newIntent.putExtra("student",student);
         startActivity(newIntent);
 
     }

@@ -1,17 +1,13 @@
 package com.pythagorithm.mathsmartv2.AppLogic;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.Assignments;
-import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -176,7 +172,13 @@ public class Student implements Parcelable {
         return dc.getOverallScore(studentID);
     }
 
+    public void getAssignmentscompletedScores(){
+        dc.getAssignmentsCompletedScores(studentID);
+    }
 
+    public void getAvgTime(){
+        dc.getAvgTime(studentID);
+    }
 
 
     // This is to de-serialize the object

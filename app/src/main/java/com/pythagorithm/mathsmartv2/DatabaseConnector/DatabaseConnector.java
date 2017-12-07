@@ -474,7 +474,46 @@ public void addTeacher(final Teacher t){
 
     }
 
+    public void getTopicScores(HashMap<String,Boolean>sectionList){
+        HashMap<Integer,String> map = new HashMap<>();
+        map.put(0,"Algebra");
+        map.put(1,"Multiplication");
+        map.put(2, "Fractions");
+        map.put(3, "SexEd");
+        //
+        Log.d("Hussu","Entering getTopicScores dc");
 
+        HashMap<String,Float> map2 = new HashMap<>();
+        map2.put("Algebra",5.0f);
+        map2.put("Multiplication",10.0f);
+        map2.put("Fractions",6.0f);
+        map2.put("SexEd", 7.0f);
+        UIConnector.showBarChartTeacher(map,map2);
+    }
+    public void getAssignmentsCreated(String teacherID){
+        HashMap<String,Integer>map3=new HashMap<>();
+        map3.put("Algebra",4);
+        map3.put("Fractions",6);
+        map3.put("Multiplication",10);
+
+        Log.d("Hussu","Entering getAssignmentsCreated dc");
+        UIConnector.showPieChartTeacher(map3);
+
+    }
+    public void getAssignmentsCompletedScores(String studentID){
+        HashMap<String,Integer> map = new HashMap<>();
+        map.put("Algebra",5);
+        map.put("Multiplication",10);
+        map.put("Fractions",6);
+        UIConnector.showPieChartStudent(map);
+    }
+    public void getAvgTime(String studentID){
+        HashMap<String,Float> map2 = new HashMap<>();
+        map2.put("Algebra",5.0f);
+        map2.put("Multiplication",10.0f);
+        map2.put("Fractions",6.0f);
+        UIConnector.showBarChartStudent(map2);
+    }
     public double getAssignmentScore(String aID,String studentID){
         return 0;
     }

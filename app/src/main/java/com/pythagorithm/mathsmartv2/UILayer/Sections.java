@@ -98,10 +98,8 @@ public class Sections extends AppCompatActivity {
 
     }
     public void startReportsActivityTeacher(View v){
-
-
         Intent newIntent = new Intent(this, reportTeacher.class);
-
+        newIntent.putExtra("teacher",teacher);
         startActivity(newIntent);
 
     }
