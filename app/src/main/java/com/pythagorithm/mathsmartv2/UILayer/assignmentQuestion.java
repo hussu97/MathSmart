@@ -67,7 +67,7 @@ public class assignmentQuestion extends AppCompatActivity {
         answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
 //        answer3.setText(wrongAnswer[questionNum][count-1][1]);
 //        answer4.setText(wrongAnswer[questionNum][count-1][2]);
-
+optionSelected = false;
     }
 
     @Override
@@ -209,6 +209,11 @@ public class assignmentQuestion extends AppCompatActivity {
     //
     public void nextQuestionBtn(View v) {
         if(done){
+            Intent returnIntent = new Intent(this, assignmentPreview.class);
+            returnIntent.putExtra("result", 1);
+            returnIntent.putExtra("report", student.getaH().getAssignmentReport());
+            returnIntent.putExtra("student", student);
+            startActivity(returnIntent);
             finish();
         }
         if (optionSelected) {
@@ -221,52 +226,6 @@ public class assignmentQuestion extends AppCompatActivity {
                 finishAssignment();
             }
             optionSelected=false;
-//            count++;
-//            if (count == 5) {
-//                nxtbtn.setText("Submit Assingment");
-//
-//            }
-//            if (count >= 6) {
-//                Intent intent = new Intent(this, Assignments.class);
-//                startActivity(intent);
-//            } else {
-//                qstnNumber.setText("Question #" + count);
-//            }
-//            if (count < 6) {
-//                questionFormula.setText(question[questionNum][count - 1]);
-//                switch(version){
-//                    case 0:
-//                        answer1.setText(correctAnswer[questionNum][count-1]);
-//                        answer2.setText(wrongAnswer[questionNum][count-1][0]);
-//                        answer3.setText(wrongAnswer[questionNum][count-1][1]);
-//                        answer4.setText(wrongAnswer[questionNum][count-1][2]);
-//                        break;
-//                    case 1:
-//                        answer2.setText(correctAnswer[questionNum][count-1]);
-//                        answer1.setText(wrongAnswer[questionNum][count-1][0]);
-//                        answer3.setText(wrongAnswer[questionNum][count-1][1]);
-//                        answer4.setText(wrongAnswer[questionNum][count-1][2]);
-//                        break;
-//                    case 2:
-//                        answer3.setText(correctAnswer[questionNum][count-1]);
-//                        answer2.setText(wrongAnswer[questionNum][count-1][0]);
-//                        answer1.setText(wrongAnswer[questionNum][count-1][1]);
-//                        answer4.setText(wrongAnswer[questionNum][count-1][2]);
-//                        break;
-//                    case 3:
-//                        answer4.setText(correctAnswer[questionNum][count-1]);
-//                        answer2.setText(wrongAnswer[questionNum][count-1][0]);
-//                        answer3.setText(wrongAnswer[questionNum][count-1][1]);
-//                        answer1.setText(wrongAnswer[questionNum][count-1][2]);
-//                        break;
-//                    default:
-//                }
-//
-//            }
-//            optionSelected=false;
-//        }
-//    }
-//
 
 
         }

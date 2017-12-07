@@ -141,12 +141,14 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, Sections.class);
         intent.putExtra("teacher", teacher);
         startActivity(intent);
+        finish();
     }
 
     public void startAssignmentsActivity(Student student){
         Intent intent = new Intent(LoginActivity.this, Assignments.class);
         intent.putExtra("student", student);
         startActivity(intent);
+        finish();
     }
 
     public void displayError(String errorMessag){

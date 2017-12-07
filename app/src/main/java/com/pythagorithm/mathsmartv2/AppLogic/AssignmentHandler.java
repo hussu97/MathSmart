@@ -10,6 +10,8 @@ import com.pythagorithm.mathsmartv2.UILayer.LoginActivity;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by H_Abb on 11/3/2017.
@@ -32,11 +34,13 @@ public class AssignmentHandler  {
     private double overallScore;
     private double currentScore;
     private double assignmentScore;
-    private double totalQuestionsAttempted;
+    private int totalQuestionsAttempted;
     private DatabaseConnector dc;
     private Question currentQuestion;
     private boolean questionAvailable;
     private ArrayList<String> completedQuestions;
+
+    private AssignmentReport assignmentReport;
 
     private int scorePlus;
     private int scoreMinus;
@@ -82,6 +86,7 @@ public class AssignmentHandler  {
         this.assignmentScore=assignmentScore;
         this.currentScore = this.overallScore=overallScore;
         this.min=min;
+        totalQuestionsAttempted = 0;
         this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);
         start();
@@ -132,6 +137,7 @@ public class AssignmentHandler  {
         False: begins fetching next question
      */
     public boolean solveQuestion(int time,boolean answer) {
+        totalQuestionsAttempted++;
         overallScore = ((overallScore*totalQuestionsAttempted)+ currentScore)/(totalQuestionsAttempted+1);
         nextQWeight=ceil(overallScore);
         completedQuestions.add(currentQuestion.getQuestionID());
@@ -150,7 +156,13 @@ public class AssignmentHandler  {
         if(answer)
             --min;
         if(min==0) {
-            dc.completeAssignment(studentID, assignment.getAssignmentID());
+            HashMap<String, Boolean> completedQuestions = new HashMap<>();
+            for (int i =0; i< this.completedQuestions.size();i++){
+                completedQuestions.put(this.completedQuestions.get(i), true);
+            }
+            assignmentReport = new AssignmentReport(studentID, completedQuestions, assignment.getAssignmentID(), assignment.getAssignmentTopic(),
+                    assignmentScore, totalQuestionsAttempted);
+            dc.completeAssignment(studentID, assignment.getAssignmentID(),assignmentReport);
             return true;
         }
         else {
@@ -158,6 +170,10 @@ public class AssignmentHandler  {
             return false;
         }
 
+    }
+
+    public AssignmentReport getAssignmentReport() {
+        return assignmentReport;
     }
 
     public void getNextQuestion(){
