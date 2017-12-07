@@ -432,7 +432,6 @@ public class DatabaseConnector {
         map.put(0,"Algebra");
         map.put(1,"Multiplication");
         map.put(2, "Fractions");
-        map.put(3, "SexEd");
         //
         Log.d("Hussu","Entering getTopicScores dc");
 
@@ -440,7 +439,6 @@ public class DatabaseConnector {
         map2.put("Algebra",5.0f);
         map2.put("Multiplication",10.0f);
         map2.put("Fractions",6.0f);
-        map2.put("SexEd", 7.0f);
         UIConnector.showBarChartTeacher(map,map2);
     }
     public void getAssignmentsCreated(String teacherID){
