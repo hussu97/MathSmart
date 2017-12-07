@@ -208,7 +208,7 @@ public void addTeacher(final Teacher t){
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added question successfully");
-                        Log.d("Hussu", "added question successfully");
+                        Log.d("Hussu", "added question successfully "+documentReference.getId());
                         UIConnector.addedQuestion();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
