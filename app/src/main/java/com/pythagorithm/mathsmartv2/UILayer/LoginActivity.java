@@ -26,8 +26,6 @@ import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.R;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
-import java.util.HashMap;
-
 public class LoginActivity extends AppCompatActivity {
 
     private ViewGroup containerLayout;
@@ -71,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     public void LoginButtonClick(View v){
         //Start loading screen dialogue
         String usrname=username.getText().toString().toLowerCase();
-        mAuth.signInWithEmailAndPassword(username.getText().toString().toLowerCase().trim(),password.getText().toString().trim())
+        mAuth.signInWithEmailAndPassword(usrname,password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
