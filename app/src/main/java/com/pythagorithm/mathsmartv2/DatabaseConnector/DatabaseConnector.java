@@ -209,7 +209,7 @@ public void addTeacher(final Teacher t){
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added question successfully");
                         Log.d("Hussu", "added question successfully");
-                        UIConnector.addedQuestion(q);
+                        UIConnector.addedQuestion();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -218,9 +218,6 @@ public void addTeacher(final Teacher t){
                         Log.d("Hussu", "Question was not added successfully");
                     }
         });
-    }
-    public void updateQuestion(Question q){
-
     }
     //=========================================================================================================================
     //ASSIGNMENTS
@@ -363,7 +360,7 @@ public void addTeacher(final Teacher t){
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Firestore", "added assignment successfully");
                         Log.d("Hussu", "added assignment successfully");
-                        UIConnector.addedAssignment(a);
+                        UIConnector.addedAssignment();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

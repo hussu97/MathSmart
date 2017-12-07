@@ -101,9 +101,6 @@ public class Teacher  implements Parcelable{
 //    public Question editQuestion(String questionID){
 //        return getQuestion(questionID);
 //    }
-    public void updateQuestion(Question question){
-        dc.updateQuestion(question);
-    }
 //    private String addQuestion(Question q){
 //        return dc.addQuestion(q);
 //    }

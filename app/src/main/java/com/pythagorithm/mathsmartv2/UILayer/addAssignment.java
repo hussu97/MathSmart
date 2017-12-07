@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.R;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ public class addAssignment extends AppCompatActivity {
     private Teacher teacher;
     private EditText assignmentCreateDueDate;
     private EditText assignmentCreateSubmissionPeriod;
+    private UIConnector uic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,7 @@ public class addAssignment extends AppCompatActivity {
         assignmentCreateDueDate=(EditText)findViewById(R.id.assignmentCreateDueDate);
         assignmentCreateSubmissionPeriod=(EditText)findViewById((R.id.assignmentCreateSubPeriod));
 
+        uic=new UIConnector((this));
         topicSpinner = (Spinner) findViewById(R.id.topicSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.topics, R.layout.support_simple_spinner_dropdown_item);
@@ -61,7 +64,7 @@ public class addAssignment extends AppCompatActivity {
         secSpinner.setAdapter(adapter3);
     }
 
-    public void buttonAssignmentClicked(View v) throws ParseException {
+    public void createAssignmentButton(View v) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date strDate = sdf.parse(assignmentCreateDueDate.getText().toString());
 
@@ -94,11 +97,23 @@ public class addAssignment extends AppCompatActivity {
                     assignmentCreateDueDate.getText().toString().trim(),
                     assignmentCreateSubmissionPeriod.getText().toString().trim(),
                     sections);
-            Log.d("Hussu", "Going back to teacher activity");
-            Intent intent = new Intent(this, Sections.class);
-            intent.putExtra("teacher", teacher);
-            startActivity(intent);
         }
+    }
+
+    public void addedAssignment(){
+        Log.d("Hussu", "Going back to teacher activity");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Assignment successfully added").
+                setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(addAssignment.this, Sections.class);
+                        intent.putExtra("teacher", teacher);
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
 

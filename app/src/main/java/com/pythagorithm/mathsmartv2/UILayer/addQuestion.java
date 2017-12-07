@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.R;
+import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 
 import io.github.kexanie.library.MathView;
 
@@ -27,6 +28,7 @@ public class addQuestion extends AppCompatActivity {
     private EditText wAnswer1;
     private EditText wAnswer2;
     private EditText wAnswer3;
+    private UIConnector uic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,7 @@ public class addQuestion extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         teacher = (Teacher)getIntent().getParcelableExtra("teacher");
 
+        uic=new UIConnector(this);
         topicSpinner = (Spinner) findViewById(R.id.topicSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.topics, R.layout.support_simple_spinner_dropdown_item);
@@ -81,7 +84,7 @@ public class addQuestion extends AppCompatActivity {
 
 
     }
-    public void buttonClicked(View v){
+    public void addQuestionClicked(View v){
         Log.d("Hussu","{"+wAnswer2.getText().toString()+"}");
         if(qStatement.getText().toString().isEmpty()||
                 cAnswer.getText().toString().isEmpty()||
@@ -104,10 +107,20 @@ public class addQuestion extends AppCompatActivity {
                     wAnswer3.getText().toString().trim(),
                     topicSpinner.getSelectedItem().toString().toLowerCase(),
                     Integer.parseInt(difSpinner.getSelectedItem().toString()));
-            Log.d("Hussu", "Going back to teacher activity");
-            Intent intent = new Intent(this, Sections.class);
-            intent.putExtra("teacher", teacher);
-            startActivity(intent);
         }
+    }
+    public void addedQuestion(){
+        Log.d("Hussu", "Going back to teacher activity");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Question successfully added").
+                setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(addQuestion.this, Sections.class);
+                        intent.putExtra("teacher", teacher);
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
