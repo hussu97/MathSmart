@@ -1,4 +1,4 @@
-package com.pythagorithm.mathsmartv2.AppLogic;
+package com.pythagorithm.mathsmartv2.DatabaseConnector;
 
 import java.util.Date;
 

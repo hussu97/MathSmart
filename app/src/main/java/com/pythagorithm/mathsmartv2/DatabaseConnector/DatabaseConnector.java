@@ -16,7 +16,6 @@ import com.pythagorithm.mathsmartv2.AppLogic.AssignmentHandler;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentProgress;
 import com.pythagorithm.mathsmartv2.AppLogic.AssignmentReport;
 import com.pythagorithm.mathsmartv2.AppLogic.Question;
-import com.pythagorithm.mathsmartv2.AppLogic.QuestionScore;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
