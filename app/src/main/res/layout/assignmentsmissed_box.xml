@@ -4,24 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
-    android:onClick="clicked">
+    >
 
     <TextView
+        android:id="@+id/missedAssignmentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/assTitle" />
+        android:text="New Text" />
 
     <TextView
+        android:id="@+id/missedAssignmentTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/Descrip1" />
+        android:text="New Text" />
 
     <TextView
+        android:id="@+id/missedAssignmentDueDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/Descrip2" />
+        android:text="New Text" />
 
 </LinearLayout>

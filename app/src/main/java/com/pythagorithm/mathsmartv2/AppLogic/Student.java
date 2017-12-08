@@ -8,6 +8,7 @@ import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.Assignments;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -65,7 +66,7 @@ public class Student implements Parcelable {
         dc = new DatabaseConnector();
     }
 
-    public void displayAssignmentLists(){
+    public void displayAssignmentLists() throws ParseException {
         assignmentsActivity.displayCompleteAssingments();
         assignmentsActivity.displayPendingAssingments();
     }
@@ -106,7 +107,7 @@ public class Student implements Parcelable {
     public void setSectionID(String sectionID) {this.sectionID = sectionID;}
     public String getStudentID() {return studentID;}
     public void setStudentID(String studentID) {this.studentID = studentID;}
-    public void setAssignmentList(ArrayList<Assignment> assignmentList) {
+    public void setAssignmentList(ArrayList<Assignment> assignmentList) throws ParseException {
         this.assignmentList = assignmentList;
         Log.d("Firestore","changed assignment list to new assignment list with "+ assignmentList.size()+ " assignments");
         // UI.showassignments

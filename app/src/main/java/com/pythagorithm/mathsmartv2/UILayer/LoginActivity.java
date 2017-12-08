@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void LoginButtonClick(View v){
         //Start loading screen dialogue
-        String usrname=username.getText().toString().toLowerCase().concat("@mathsmart.edu");
+        String usrname=username.getText().toString().trim().toLowerCase().concat("@mathsmart.edu");
         mAuth.signInWithEmailAndPassword(usrname,password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startAssignmentsActivity(Student student){
+        Log.d("FireAuth","Student Starting assignments activity");
         Intent intent = new Intent(LoginActivity.this, Assignments.class);
         intent.putExtra("student", student);
         startActivity(intent);

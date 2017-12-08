@@ -21,6 +21,7 @@ import com.pythagorithm.mathsmartv2.AppLogic.Teacher;
 import com.pythagorithm.mathsmartv2.UIConnector.UIConnector;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -72,8 +73,9 @@ public class DatabaseConnector {
                         }
                         else if (task.isSuccessful()){
                             for (DocumentSnapshot doc : task.getResult()){
-                                Student student= doc.toObject(Student.class);
                                 Log.d("Firestore", "onComplete: "+ doc.getData());
+                                Student student= doc.toObject(Student.class);
+
                                 uic.loginSuccessful(student);
                             }
                         }
@@ -215,7 +217,11 @@ public class DatabaseConnector {
                             assignmentList.add(a);
                             Log.d("Firestore", "found assignment AID:"+a.getAssignmentID()+". Adding to list");
                         }
-                        student.setAssignmentList(assignmentList);
+                        try {
+                            student.setAssignmentList(assignmentList);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
@@ -299,7 +305,7 @@ public class DatabaseConnector {
     }
 
     public void getAvailableAssignments(final Teacher teacher, final String sectionID){
-        Log.d("Hussu","Entering availAssignments");
+        Log.d("Hussu","Entering availAssignments "+sectionID);
         FirebaseFirestore.getInstance()
                 .collection(ASSIGNMENT_COLLECTION)
                 .whereEqualTo("sectionList."+sectionID,true)

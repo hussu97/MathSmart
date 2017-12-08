@@ -3,6 +3,7 @@ package com.pythagorithm.mathsmartv2.UILayer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class assignmentPreview extends AppCompatActivity {
         btn = (Button) findViewById(R.id.startAssignmentButton);
         student = getIntent().getParcelableExtra("student");
         student.setAssignmentPreview(this);
+        assignment = getIntent().getParcelableExtra("assignment");
         if (nextButtonStatus ==FINISH_ASSIGNMENT){
 
             assignmentReport = getIntent().getParcelableExtra("report");
@@ -49,10 +51,11 @@ public class assignmentPreview extends AppCompatActivity {
             showButton(null);
         }
         else{
-            assignment = getIntent().getParcelableExtra("assignment");
+
             assTitle.setText(assignment.getAssignmentName());
-            assTopic.setText(assignment.getAssignmentTopic());
-            assDueDate.setText(assignment.getDueDate());
+            assTopic.setText("Topic: "+assignment.getAssignmentTopic());
+            assDueDate.setText("Assignment due Date: "+assignment.getDueDate());
+            assNumQuestions.setText("Minimum number of correct answers: "+String.valueOf(assignment.getMinCorrectAnswers()));
             btn.setVisibility(View.INVISIBLE);
             student.getAssignmentProgress(assignment.getAssignmentID(), this);
 
@@ -60,7 +63,13 @@ public class assignmentPreview extends AppCompatActivity {
 
     }
     private void showResult(){
-        assDueDate.setText(String.valueOf(assignmentReport.getAssignmentScore()));
+        Log.d("Hussu","report completed questions: "+assignmentReport.getCompletedQuestions().size());
+        Log.d("Hussu","report completed questions: "+assignmentReport.getTotalQuestionsAttempted());
+        assTitle.setText((assignment.getAssignmentName()));
+        assTopic.setText("Topic: "+assignment.getAssignmentTopic());
+        assDueDate.setText("Average difficulty of questions received by student: "+
+                String.valueOf(assignmentReport.getAssignmentScore()/assignmentReport.getTotalQuestionsAttempted()+"/10"));
+        assNumQuestions.setText("Total Questions Attempted: "+String.valueOf(assignmentReport.getTotalQuestionsAttempted()));
     }
 
     public void showButton(AssignmentProgress a){

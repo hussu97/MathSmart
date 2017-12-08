@@ -112,16 +112,23 @@ public class AssignmentHandler  {
         False: begins fetching next question
      */
     public boolean solveQuestion(int time,boolean answer) {
+        Log.d("Hussu","Entering SolveQuestion");
         totalQuestionsAttempted++;
+        Log.d("Hussu","Overall score before: "+overallScore );
         overallScore = ((overallScore*totalQuestionsAttempted)+ currentScore)/(totalQuestionsAttempted+1);
+        Log.d("Hussu","Overall score after: "+overallScore );
         nextQWeight=ceil(overallScore);
         completedQuestions.add(currentQuestion.getQuestionID());
         scoreMinus = scorePlus = nextQWeight;
 
 
         //scores generation
+        Log.d("Hussu","Current score before: "+currentScore );
+        Log.d("Hussu","Assignment score before: "+assignmentScore );
         currentScore = masterFormula(currentQuestion.getWeight(),answer,time);
         assignmentScore+=currentScore;
+        Log.d("Hussu","Current score after: "+currentScore );
+        Log.d("Hussu","Assignment score after: "+assignmentScore );
         questionAvailable = false;
         dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),completedQuestions,currentScore, assignmentScore, min,answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
 
@@ -156,12 +163,16 @@ public class AssignmentHandler  {
     public void getNextQuestion(){
         //getting appropriate question
         Log.d("Firestore", "called getNextQuestion");
+        Log.d("Firestore", scoreMinus+" "+scorePlus+" nextQ "+nextQWeight);
+        nextQWeight=ceil(overallScore);
+        scoreMinus = scorePlus = nextQWeight;
         if(alt)
             nextQWeight=++scorePlus;
         else
             nextQWeight=--scoreMinus;
         alt=!alt;
-        if (nextQWeight<0||nextQWeight>10){
+        Log.d("Firestore", scoreMinus+" "+scorePlus);
+        if (scoreMinus<1||scorePlus>10){
             Log.d("Firestore", "No questions for assignment: "+assignment.getAssignmentID()+" found");
             assignmentQuestion.noQuestionsError();
         }

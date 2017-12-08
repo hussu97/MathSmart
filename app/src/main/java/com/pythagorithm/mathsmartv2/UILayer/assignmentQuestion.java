@@ -114,9 +114,11 @@ public class assignmentQuestion extends AppCompatActivity {
     //
     public void nextQuestionBtn(View v) {
         if(done){
+            Log.d("Hussu",student.getaH().getAssignmentReport().getAssignmentID());
             Intent returnIntent = new Intent(this, assignmentPreview.class);
             returnIntent.putExtra("result", 1);
             returnIntent.putExtra("report", student.getaH().getAssignmentReport());
+            returnIntent.putExtra("assignment",assignment);
             returnIntent.putExtra("student", student);
             startActivity(returnIntent);
             finish();

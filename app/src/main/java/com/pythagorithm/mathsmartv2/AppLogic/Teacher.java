@@ -31,6 +31,7 @@ public class Teacher  implements Parcelable{
         this.teacherID = teacherID;
         this.sectionList = sectionList;
 
+
     }
 
     public Teacher(Parcel in){
@@ -38,6 +39,7 @@ public class Teacher  implements Parcelable{
         teacherID = in.readString();
         Bundle sectionsBundle = in.readBundle();
         sectionList = (HashMap<String, Boolean>)sectionsBundle.getSerializable("map");
+        Log.d("Hussu",sectionList.toString());
         dc = new DatabaseConnector();
     }
 

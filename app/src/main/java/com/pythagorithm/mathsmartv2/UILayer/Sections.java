@@ -66,7 +66,7 @@ public class Sections extends AppCompatActivity {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.section_box, null, false);
             TextView assTitle = (TextView) inflatedLayout.findViewById(R.id.secTitle);
             TextView assDesc = (TextView) inflatedLayout.findViewById(R.id.secDesc);
-            assTitle.setText( sectionList.keySet().toArray()[0].toString());
+            assTitle.setText( sectionList.keySet().toArray()[i].toString());
             assTitle.setTextColor(Color.BLACK);
 
             assDesc.setText("Description " + i);
@@ -78,6 +78,7 @@ public class Sections extends AppCompatActivity {
 
     }
     public void displaySectionAssingments(ArrayList<Assignment> ass){
+        myRoot2.removeAllViews();
         Log.d("Hussu","Entered displaySecAss "+ass.size());
         for (int i = 0; i < ass.size(); i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.assignmentteacher_box, null, false);
