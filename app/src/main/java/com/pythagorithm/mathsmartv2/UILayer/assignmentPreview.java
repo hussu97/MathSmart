@@ -14,6 +14,8 @@ import com.pythagorithm.mathsmartv2.AppLogic.AssignmentReport;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.R;
 
+import java.math.BigDecimal;
+
 public class assignmentPreview extends AppCompatActivity {
     TextView assTitle;
     TextView assNumQuestions;
@@ -68,8 +70,14 @@ public class assignmentPreview extends AppCompatActivity {
         assTitle.setText((assignment.getAssignmentName()));
         assTopic.setText("Topic: "+assignment.getAssignmentTopic());
         assDueDate.setText("Average difficulty of questions received by student: "+
-                String.valueOf(assignmentReport.getAssignmentScore()/assignmentReport.getTotalQuestionsAttempted()+"/10"));
+                String.valueOf(round((float)(assignmentReport.getAssignmentScore()/(assignmentReport.getTotalQuestionsAttempted()+1)),2)+"/10"));
         assNumQuestions.setText("Total Questions Attempted: "+String.valueOf(assignmentReport.getTotalQuestionsAttempted()));
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     public void showButton(AssignmentProgress a){

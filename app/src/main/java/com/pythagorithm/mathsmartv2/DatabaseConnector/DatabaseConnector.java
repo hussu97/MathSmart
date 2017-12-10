@@ -124,6 +124,14 @@ public class DatabaseConnector {
         return new ArrayList<>();
     }
 
+    private boolean StringIsInArrayList(ArrayList<String> arrayList ,String string){
+        for (int i =0; i<arrayList.size();i++){
+            if (string.equals(arrayList.get(i)))return true;
+
+        }
+        return false;
+    }
+
     public void getQuestion(final ArrayList<String> completedQuestion, final int weight, final String topic){
 
             Log.d("Firestore", "Initialized getQuestion...");
@@ -146,11 +154,11 @@ public class DatabaseConnector {
                                 for (DocumentSnapshot doc : task.getResult()){
                                     Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Success.");
                                     Question q = doc.toObject(Question.class);
-                                    if (Arrays.asList(completedQuestion).contains(q.getQuestionID())){
+                                    if (StringIsInArrayList(completedQuestion,q.getQuestionID())){
                                         Log.d("Firestore", "Question with ID: "+ doc.getId() +" found. Not needed.");
-                                        if (count==0){
+                                        if (count==1){
                                             assignmentHandler.getNextQuestion();
-                                            Log.d("Firestore","did not find a question and calling getNextQuestion()");
+                                            Log.d("Firestore","did not find a question with weight"+weight+" and calling getNextQuestion()");
                                         }
 
                                     }
@@ -222,6 +230,35 @@ public class DatabaseConnector {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+                    }
+                });
+    }
+
+    public void updateOverallScore(final String studentID, final int overallScore){
+        FirebaseFirestore.getInstance()
+                .collection(STUDENT_COLLECTION)
+                .whereEqualTo("studentID", studentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        final DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        FirebaseFirestore.getInstance()
+                                .collection(STUDENT_COLLECTION)
+                                .document(doc.getId())
+                                .update("overallScore",overallScore)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("Firestore", "Updated the overallscore of student "+ doc.getId()+" to "+overallScore);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Firestore", "could not update the overallscore of student "+ doc.getId()+" to "+overallScore);
+                                    }
+                        });
                     }
                 });
     }

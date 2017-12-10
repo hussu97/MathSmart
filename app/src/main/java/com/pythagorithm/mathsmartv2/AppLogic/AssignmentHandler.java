@@ -145,6 +145,7 @@ public class AssignmentHandler  {
             assignmentReport = new AssignmentReport(studentID, completedQuestions, assignment.getAssignmentID(), assignment.getAssignmentTopic(),
                     assignmentScore, totalQuestionsAttempted);
             dc.completeAssignment(studentID, assignment.getAssignmentID(),assignmentReport);
+            dc.updateOverallScore(studentID,ceil(overallScore));
             return true;
         }
         else {
@@ -163,15 +164,14 @@ public class AssignmentHandler  {
     public void getNextQuestion(){
         //getting appropriate question
         Log.d("Firestore", "called getNextQuestion");
-        Log.d("Firestore", scoreMinus+" "+scorePlus+" nextQ "+nextQWeight);
-        nextQWeight=ceil(overallScore);
-        scoreMinus = scorePlus = nextQWeight;
+        Log.d("Firestore", "Minus: "+scoreMinus+" Plus: "+scorePlus+" nextQ: "+nextQWeight);
+//        nextQWeight=ceil(overallScore);
+//        scoreMinus = scorePlus = nextQWeight;
         if(alt)
             nextQWeight=++scorePlus;
         else
             nextQWeight=--scoreMinus;
         alt=!alt;
-        Log.d("Firestore", scoreMinus+" "+scorePlus);
         if (scoreMinus<1||scorePlus>10){
             Log.d("Firestore", "No questions for assignment: "+assignment.getAssignmentID()+" found");
             assignmentQuestion.noQuestionsError();

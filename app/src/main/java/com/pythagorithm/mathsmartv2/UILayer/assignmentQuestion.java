@@ -60,6 +60,7 @@ public class assignmentQuestion extends AppCompatActivity {
         row2.setTag("wrong");
         answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
         optionSelected = false;
+        nxtbtn.setEnabled(false);
     }
 
     @Override
@@ -97,6 +98,7 @@ public class assignmentQuestion extends AppCompatActivity {
     }
 
     public void optionSelect(View v) {
+        nxtbtn.setEnabled(true);
         optionSelected = true;
         row1.setBackgroundResource(0);
         row2.setBackgroundResource(0);
@@ -107,6 +109,7 @@ public class assignmentQuestion extends AppCompatActivity {
         else correctAnswer = false;
     }
     void finishAssignment(){
+        nxtbtn.setEnabled(true);
         done = true;
         Toast.makeText(this, "Done",Toast.LENGTH_LONG).show();
         nxtbtn.setText("Submit Assignment");
@@ -123,7 +126,8 @@ public class assignmentQuestion extends AppCompatActivity {
             startActivity(returnIntent);
             finish();
         }
-        if (optionSelected) {
+        else if (optionSelected) {
+            nxtbtn.setEnabled(false);
             int version = rand.nextInt(4);
             row1.setBackgroundResource(0);
             row2.setBackgroundResource(0);
@@ -138,6 +142,7 @@ public class assignmentQuestion extends AppCompatActivity {
             Intent returnIntent = new Intent(this, Assignments.class);
             returnIntent.putExtra("student", student);
             startActivity(returnIntent);
+            finish();
         }
     }
     public void noQuestionsError(){
@@ -150,6 +155,7 @@ public class assignmentQuestion extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         nxtbtn.setText("Exit assignment");
+        nxtbtn.setEnabled(true);
         exit=true;
     }
 }

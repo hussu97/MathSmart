@@ -141,13 +141,13 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/nxtbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next Question"
-        android:id="@+id/nxtbtn"
-        android:layout_gravity="bottom|right"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:onClick="nextQuestionBtn" />
+        android:layout_gravity="bottom|right"
+        android:onClick="nextQuestionBtn"
+        android:text="Next Question" />
 
 </RelativeLayout>
