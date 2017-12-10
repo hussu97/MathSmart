@@ -59,6 +59,7 @@ public class AssignmentHandler  {
         this.assignmentScore=0;
         this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);
+        dc.createAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,min);
         start();
     }
     /*
@@ -94,8 +95,9 @@ public class AssignmentHandler  {
         topic
      */
     private void start(){
+        nextQWeight = ceil(overallScore);
+        scoreMinus = scorePlus = nextQWeight;
         Log.d("Firestore", "Assignment handler of aissgnment: "+assignment.getAssignmentID()+" started");
-        dc.createAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,min);
         questionAvailable = false;
         dc.getQuestion(completedQuestions,ceil(overallScore),assignment.getAssignmentTopic());
     }
@@ -166,7 +168,7 @@ public class AssignmentHandler  {
         Log.d("Firestore", "called getNextQuestion");
         Log.d("Firestore", "Minus: "+scoreMinus+" Plus: "+scorePlus+" nextQ: "+nextQWeight);
 //        nextQWeight=ceil(overallScore);
-//        scoreMinus = scorePlus = nextQWeight;
+
         if(alt)
             nextQWeight=++scorePlus;
         else
@@ -186,10 +188,14 @@ public class AssignmentHandler  {
     Postcondition: returns a double indicating the score of the question solved
      */
     private double masterFormula(int weight, boolean correct,int time){
-        if(correct)
-            return CORRECT_ANSWER_COEFF+CORRECT_ANSWER_WEIGHT_VALUE*weight+CORRECT_ANSWER_TIME_VALUE*time;
+        if(correct) {
+            double score = CORRECT_ANSWER_COEFF + CORRECT_ANSWER_WEIGHT_VALUE * weight + CORRECT_ANSWER_TIME_VALUE * time;
+            if (score > 10) return 10;
+            else if (score < 1) return 1;
+            else return score;
+        }
         else
-            return INCORRECT_ANSWER_COEFF+INCORRECT_ANSWER_WEIGHT_VALUE*weight;
+            return Math.max(INCORRECT_ANSWER_COEFF+INCORRECT_ANSWER_WEIGHT_VALUE*weight,10);
     }
 
     /*

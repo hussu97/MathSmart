@@ -15,7 +15,7 @@ import java.util.Map;
 public class AssignmentProgress implements Parcelable {
     String studentID;
     String assignmentID;
-    HashMap<String,Object> completedQuestions;
+    HashMap<String,Boolean> completedQuestions;
     double assignmentScore;
     int questionsLeft; // minimum questions to complete assignment
     double overallScore; // weight the student reached
@@ -25,18 +25,18 @@ public class AssignmentProgress implements Parcelable {
     public AssignmentProgress() {
     }
 
-    public AssignmentProgress(String studentID, String assignmentID, ArrayList<String> completedQuestions, double assignmentScore, int questionsLeft) {
+    public AssignmentProgress(String studentID, String assignmentID, HashMap<String,Boolean> completedQuestions, double assignmentScore, int questionsLeft) {
         this.studentID = studentID;
         this.assignmentID = assignmentID;
-        this.completedQuestions = new HashMap<>();
-        if (completedQuestions !=null) {
-            HashMap<String, Boolean> compQsValue = new HashMap<>();
-            for (int i = 0; i < completedQuestions.size(); i++) {
-                compQsValue.put(completedQuestions.get(i), true);
-            }
-            this.completedQuestions.put("completedQuestions", compQsValue);
-        }
-        else this.completedQuestions=null;
+        this.completedQuestions = completedQuestions;
+//        if (completedQuestions !=null) {
+//            HashMap<String, Boolean> compQsValue = new HashMap<>();
+//            for (int i = 0; i < completedQuestions.size(); i++) {
+//                compQsValue.put(completedQuestions.get(i), true);
+//            }
+//            this.completedQuestions.put("completedQuestions", compQsValue);
+//        }
+//        else this.completedQuestions=null;
         this.assignmentScore = assignmentScore;
         this.questionsLeft = questionsLeft;
     }
@@ -61,7 +61,7 @@ public class AssignmentProgress implements Parcelable {
         studentID = in.readString();
         assignmentID = in.readString();
         Bundle comp = in.readBundle();
-        completedQuestions = (HashMap<String, Object>)comp.getSerializable("comp");
+        completedQuestions = (HashMap<String, Boolean>)comp.getSerializable("comp");
         assignmentScore = in.readDouble();
         questionsLeft = in.readInt();
         overallScore = in.readDouble();
@@ -96,20 +96,28 @@ public class AssignmentProgress implements Parcelable {
     public void setAssignmentID(String assignmentID) {
         this.assignmentID = assignmentID;
     }
-    public ArrayList<String> getCompletedQuestions() {
-        if (completedQuestions!=null) {
-            HashMap<String, Boolean> temp = (HashMap<String, Boolean>) this.completedQuestions.get("completedQuestions");
-            ArrayList<String> result = new ArrayList<String>(temp.keySet());
-            return result;
-        }
-        else return new ArrayList<String>();
+
+    public HashMap<String, Boolean> getCompletedQuestions() {
+        return completedQuestions;
     }
-    public void setCompletedQuestions(ArrayList<String> completedQuestions) {
-        HashMap<String, Boolean> compQsValue = new HashMap<>();
-        for (int i =0; i< completedQuestions.size();i++){
-            compQsValue.put(completedQuestions.get(i),true);
-        }
+
+    public void setCompletedQuestions(HashMap<String, Boolean> completedQuestions) {
+        this.completedQuestions = completedQuestions;
     }
+
+    //    public ArrayList<String> getCompletedQuestions() {
+//        if (completedQuestions!=null) {
+//            ArrayList<String> result = new ArrayList<String>(completedQuestions.keySet());
+//            return result;
+//        }
+//        else return new ArrayList<String>();
+//    }
+//    public void setCompletedQuestions(ArrayList<String> completedQuestions) {
+//        HashMap<String, Boolean> compQsValue = new HashMap<>();
+//        for (int i =0; i< completedQuestions.size();i++){
+//            compQsValue.put(completedQuestions.get(i),true);
+//        }
+//    }
     public double getAssignmentScore() {
         return assignmentScore;
     }

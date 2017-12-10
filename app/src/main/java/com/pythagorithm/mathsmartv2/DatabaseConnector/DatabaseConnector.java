@@ -181,7 +181,13 @@ public class DatabaseConnector {
 
                         }
 
-                    });
+                    })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("Firestore", "Listener to get question failed");
+                }
+            });
 
     }
 
@@ -414,7 +420,10 @@ public class DatabaseConnector {
         Postcondition: an assignment progress object is added to the database.
      */
     public void saveAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, int questionsLeft){
-        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,completedQuestions, assignmentScore,questionsLeft);
+        HashMap<String, Boolean> compQs = new HashMap<>();
+        for (int i =0; i< completedQuestions.size();i++)
+            compQs.put(completedQuestions.get(i),true);
+        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,compQs, assignmentScore,questionsLeft);
         FirebaseFirestore.getInstance().collection(ASSIGNMENT_PROGRESS_COLLECTION)
                 .document(aID)
                 .set(ap)

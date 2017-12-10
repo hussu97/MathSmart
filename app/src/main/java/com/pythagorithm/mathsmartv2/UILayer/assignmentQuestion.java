@@ -34,6 +34,7 @@ public class assignmentQuestion extends AppCompatActivity {
     String questionNumm;
     boolean correctAnswer = false;
 
+
     TableRow row1;
     TableRow row2;
     TableRow row3;
@@ -47,12 +48,14 @@ public class assignmentQuestion extends AppCompatActivity {
     int count;
     Button nxtbtn;
     TextView qstnNumber;
+    private boolean waitingForQuestion=true;
 
     private String mathviewify(String questionStatement){
         return "$$" + questionStatement + "$$";
     }
 
     public void setQuestion() {
+        waitingForQuestion = false;
         currentQuestion = student.getaH().getCurrentQuestion();
         questionFormula.setText(mathviewify(currentQuestion.getQuestionStatment()));
         answer1.setText(mathviewify(currentQuestion.getCorrectAnswer()));
@@ -67,14 +70,14 @@ public class assignmentQuestion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_question);
-        Bundle recieved = getIntent().getExtras();
-        AssignmentProgress ap = recieved.getParcelable("assignmentProgress");
+        Bundle received = getIntent().getExtras();
+        AssignmentProgress ap = received.getParcelable("assignmentProgress");
 
         exit=false;
         done = false;
-        student = (Student) recieved.getParcelable("student");
+        student = (Student) received.getParcelable("student");
 
-        assignment = (Assignment) recieved.getParcelable("assignment");
+        assignment = (Assignment) received.getParcelable("assignment");
         if (ap == null)
             student.createAssignmentHandler(false, null, assignment);
         else
@@ -94,19 +97,22 @@ public class assignmentQuestion extends AppCompatActivity {
         row4 = (TableRow) findViewById(R.id.row4);
         questionNumm = getIntent().getStringExtra("assignmentNum");
         nxtbtn = (Button) findViewById(R.id.nxtbtn);
+        nxtbtn.setEnabled(false);
 
     }
 
     public void optionSelect(View v) {
-        nxtbtn.setEnabled(true);
-        optionSelected = true;
-        row1.setBackgroundResource(0);
-        row2.setBackgroundResource(0);
-        row3.setBackgroundResource(0);
-        row4.setBackgroundResource(0);
-        v.setBackgroundResource(R.drawable.border);
-        if (v.getTag().equals("correct")) correctAnswer = true;
-        else correctAnswer = false;
+        if (!waitingForQuestion) {
+            nxtbtn.setEnabled(true);
+            optionSelected = true;
+            row1.setBackgroundResource(0);
+            row2.setBackgroundResource(0);
+            row3.setBackgroundResource(0);
+            row4.setBackgroundResource(0);
+            v.setBackgroundResource(R.drawable.border);
+            if (v.getTag().equals("correct")) correctAnswer = true;
+            else correctAnswer = false;
+        }
     }
     void finishAssignment(){
         nxtbtn.setEnabled(true);
@@ -126,7 +132,8 @@ public class assignmentQuestion extends AppCompatActivity {
             startActivity(returnIntent);
             finish();
         }
-        else if (optionSelected) {
+        else if (optionSelected&&!waitingForQuestion) {
+            waitingForQuestion = true;
             nxtbtn.setEnabled(false);
             int version = rand.nextInt(4);
             row1.setBackgroundResource(0);

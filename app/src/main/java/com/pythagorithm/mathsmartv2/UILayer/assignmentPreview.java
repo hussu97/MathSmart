@@ -70,7 +70,7 @@ public class assignmentPreview extends AppCompatActivity {
         assTitle.setText((assignment.getAssignmentName()));
         assTopic.setText("Topic: "+assignment.getAssignmentTopic());
         assDueDate.setText("Average difficulty of questions received by student: "+
-                String.valueOf(round((float)(assignmentReport.getAssignmentScore()/(assignmentReport.getTotalQuestionsAttempted()+1)),2)+"/10"));
+                String.valueOf(round((float)(assignmentReport.getAssignmentScore()/assignmentReport.getTotalQuestionsAttempted()),2)+"/10"));
         assNumQuestions.setText("Total Questions Attempted: "+String.valueOf(assignmentReport.getTotalQuestionsAttempted()));
     }
 
@@ -86,7 +86,7 @@ public class assignmentPreview extends AppCompatActivity {
             showResult();
             btn.setText("Finish Assignment");
         }
-        else if (ap == null){
+        else if (ap != null){
             btn.setText("Resume Assignment");
         }
         btn.setVisibility(View.VISIBLE);

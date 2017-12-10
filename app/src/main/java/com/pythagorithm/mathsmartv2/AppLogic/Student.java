@@ -8,6 +8,7 @@ import com.pythagorithm.mathsmartv2.DatabaseConnector.DatabaseConnector;
 import com.pythagorithm.mathsmartv2.UILayer.Assignments;
 import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -91,8 +92,11 @@ public class Student implements Parcelable {
     }
 
     public void createAssignmentHandler(boolean found, AssignmentProgress ap,Assignment assignment){
-        if (found)
-            aH = new AssignmentHandler(assignment, studentID, overallScore, ap.getCompletedQuestions(), ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
+        if (found) {
+            ArrayList<String> compQs = new ArrayList<>();
+            compQs.addAll(ap.getCompletedQuestions().keySet());
+            aH = new AssignmentHandler(assignment, studentID, overallScore, compQs, ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
+        }
         else
             aH = new AssignmentHandler(assignment,studentID,overallScore,0);
 
