@@ -25,10 +25,12 @@ public class addAssignment extends AppCompatActivity {
     private Spinner topicSpinner;
     private Spinner ansSpinner;
     private Spinner secSpinner;
+    private Spinner daySpinner;
+    private Spinner monthSpinner;
+    private Spinner yearSpinner;
     private String[] sectionSet;
     private Teacher teacher;
     private EditText assignmentName;
-    private EditText assignmentCreateDueDate;
     private EditText assignmentCreateSubmissionPeriod;
     private UIConnector uic;
     @Override
@@ -40,7 +42,6 @@ public class addAssignment extends AppCompatActivity {
         sectionSet=teacher.getSectionList().keySet().toArray(new String[teacher.getSectionList().size()]);
 
         assignmentName=(EditText)findViewById((R.id.assignmentCreateTitle));
-        assignmentCreateDueDate=(EditText)findViewById(R.id.assignmentCreateDueDate);
         assignmentCreateSubmissionPeriod=(EditText)findViewById((R.id.assignmentCreateSubPeriod));
 
         uic=new UIConnector((this));
@@ -51,6 +52,24 @@ public class addAssignment extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item);
         topicSpinner.setAdapter(adapter);
 
+        daySpinner=(Spinner)findViewById(R.id.daySpinner);
+        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(
+                this, R.array.day, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        daySpinner.setAdapter(adapter4);
+        monthSpinner=(Spinner)findViewById(R.id.monthSpinner);
+        ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(
+                this, R.array.month, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(adapter5);
+        yearSpinner=(Spinner)findViewById(R.id.yearSpinner);
+        ArrayAdapter<CharSequence> adapter6 = ArrayAdapter.createFromResource(
+                this, R.array.year, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(adapter6);
         ansSpinner = (Spinner) findViewById(R.id.ansSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
                 this, R.array.answers, R.layout.support_simple_spinner_dropdown_item);
@@ -68,11 +87,25 @@ public class addAssignment extends AppCompatActivity {
 
     public void createAssignmentButton(View v) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date strDate = sdf.parse(assignmentCreateDueDate.getText().toString());
-
+        sdf.setLenient(false);
+        String date=daySpinner.getSelectedItem().toString()+"/"+monthSpinner.getSelectedItem().toString()+"/"+yearSpinner.getSelectedItem().toString();
+        Log.d("Hussu","Assignment create date: "+date);
+        Date strDate=null;
+        try {
+            strDate = sdf.parse(date);
+        }catch(ParseException e){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Date is invalid").
+                    setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {}
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            return;
+        }
         Log.d("Hussu","Assignment create clicked");
-        if(assignmentCreateSubmissionPeriod.getText().toString().isEmpty()||
-                assignmentCreateDueDate.getText().toString().isEmpty()){
+        if(assignmentName.getText().toString().isEmpty()||
+                assignmentCreateSubmissionPeriod.getText().toString().isEmpty()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Please enter values in all the required fields").
                     setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -94,9 +127,9 @@ public class addAssignment extends AppCompatActivity {
             HashMap<String,Boolean> sections=new HashMap<>();
             sections.put(secSpinner.getSelectedItem().toString(),true);
             teacher.createAssignment(assignmentName.getText().toString().trim(),
-                    topicSpinner.getSelectedItem().toString().toLowerCase(),
+                    topicSpinner.getSelectedItem().toString(),
                     Integer.parseInt(ansSpinner.getSelectedItem().toString()),
-                    assignmentCreateDueDate.getText().toString().trim(),
+                    date,
                     assignmentCreateSubmissionPeriod.getText().toString().trim(),
                     sections);
         }
