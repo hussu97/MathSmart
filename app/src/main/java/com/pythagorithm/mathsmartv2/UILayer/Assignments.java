@@ -108,20 +108,20 @@ public class Assignments extends AppCompatActivity {
             missedB=false;
             Assignment currAssignment = student.getAssignmentList().get(i);
             for (int j = 0; j< student.getCompletedAssignments().size();j++){
-                strDate=sdf.parse(currAssignment.getDueDate().replaceAll("-", "/"));
-                Log.d("Hussu","Assignment date: "+currAssignment.getDueDate());
 
                 if  (currAssignment.getAssignmentID().equals(student.getCompletedAssignments().get(j))) {
                     cont = false;
                     break;
                 }
-                else if(new Date().after(strDate)){
-                    cont=false;
-                    missedB=true;
-                    break;
-                }
 
 
+
+            }
+            strDate=sdf.parse(currAssignment.getDueDate().replaceAll("-", "/"));
+            Log.d("Hussu","Assignment date: "+currAssignment.getDueDate());
+            if(new Date().after(strDate)){
+                cont=false;
+                missedB=true;
             }
             Log.d("Hussu","boolean: "+missedB);
             Log.d("Hussu","boolean: "+cont);
