@@ -229,4 +229,11 @@ public class AssignmentHandler  {
     public com.pythagorithm.mathsmartv2.UILayer.assignmentQuestion getAssignmentQuestion() {return assignmentQuestion;}
     public void setAssignmentQuestion( assignmentQuestion assignmentQuestion) {this.assignmentQuestion = assignmentQuestion;}
 
+    public int getTotalQuestionsAttempted() {
+        return totalQuestionsAttempted;
+    }
+
+    public void setTotalQuestionsAttempted(int totalQuestionsAttempted) {
+        this.totalQuestionsAttempted = totalQuestionsAttempted;
+    }
 }
