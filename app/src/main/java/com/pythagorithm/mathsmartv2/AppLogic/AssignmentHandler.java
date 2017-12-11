@@ -49,7 +49,7 @@ public class AssignmentHandler  {
         Constructor: Initializes studentID to upload quizScore
          */
     //Starting new Assignment
-    public AssignmentHandler(Assignment assignment,String studentID,double overallScore,int totalQuestionsAttempted){
+    public AssignmentHandler(Assignment assignment,String studentID,double overallScore){
         Log.d("Firestore", "Assignment handler for assignment "+assignment.getAssignmentID()+" created for the first time");
         this.studentID=studentID;
         this.assignment=assignment;
@@ -57,7 +57,7 @@ public class AssignmentHandler  {
         this.min=assignment.getMinCorrectAnswers();
         this.completedQuestions=new ArrayList<>();
         this.assignmentScore=0;
-        this.totalQuestionsAttempted=totalQuestionsAttempted;
+        this.totalQuestionsAttempted=0;
         dc=new DatabaseConnector(this);
         dc.createAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,min, 0);
         start();
@@ -75,7 +75,6 @@ public class AssignmentHandler  {
         this.assignmentScore=assignmentScore;
         this.currentScore = this.overallScore=overallScore;
         this.min=min;
-        totalQuestionsAttempted = 0;
         this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);
         start();

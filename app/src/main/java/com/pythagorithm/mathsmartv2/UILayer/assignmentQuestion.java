@@ -18,8 +18,6 @@ import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.R;
 
-import org.w3c.dom.Text;
-
 import java.util.Random;
 
 import io.github.kexanie.library.MathView;
@@ -92,7 +90,7 @@ public class assignmentQuestion extends AppCompatActivity {
 
         assignmentTitle.setText(assignment.getAssignmentName());
         topicText.setText("Topic: "+assignment.getAssignmentTopic().substring(0, 1).toUpperCase() + assignment.getAssignmentTopic().substring(1));
-        questionAttempted.setText("Number of Attempts: 0");
+        questionAttempted.setText("Number of Attempts: "+student.getaH().getTotalQuestionsAttempted());
         questionNumm = getIntent().getStringExtra("assignmentNum");
         nxtbtn = (Button) findViewById(R.id.nxtbtn);
         nxtbtn.setEnabled(false);

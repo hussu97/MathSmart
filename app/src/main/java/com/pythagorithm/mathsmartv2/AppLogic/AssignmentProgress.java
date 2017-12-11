@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Created by b00061342 on 11/13/2017.
@@ -80,6 +77,13 @@ public class AssignmentProgress implements Parcelable {
         }
     };
 
+    public int getQuestionsAttempted() {
+        return questionsAttempted;
+    }
+
+    public void setQuestionsAttempted(int questionsAttempted) {
+        this.questionsAttempted = questionsAttempted;
+    }
 
     public int getQuestionsLeft() {
         return questionsLeft;
