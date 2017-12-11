@@ -64,6 +64,11 @@ public class assignmentPreview extends AppCompatActivity {
         }
 
     }
+    @Override public void onBackPressed(){
+        if(nextButtonStatus==FINISH_ASSIGNMENT){}
+        else
+            super.onBackPressed();
+    }
     private void showResult(){
         Log.d("Hussu","report completed questions: "+assignmentReport.getCompletedQuestions().size());
         Log.d("Hussu","report completed questions: "+assignmentReport.getTotalQuestionsAttempted());

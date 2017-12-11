@@ -174,7 +174,7 @@ public class AssignmentHandler  {
         else
             nextQWeight=--scoreMinus;
         alt=!alt;
-        if (scoreMinus<1||scorePlus>10){
+        if (scoreMinus<1&&scorePlus>10){
             Log.d("Firestore", "No questions for assignment: "+assignment.getAssignmentID()+" found");
             assignmentQuestion.noQuestionsError();
         }
