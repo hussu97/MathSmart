@@ -481,21 +481,21 @@ public class DatabaseConnector {
         HashMap<Integer,String> map = new HashMap<>();
         map.put(0,"Algebra");
         map.put(1,"Multiplication");
-        map.put(2, "Fractions");
+        map.put(2, "Addition");
         //
         Log.d("Hussu","Entering getTopicScores dc");
 
         HashMap<String,Float> map2 = new HashMap<>();
-        map2.put("Algebra",5.0f);
-        map2.put("Multiplication",10.0f);
-        map2.put("Fractions",6.0f);
+        map2.put("Algebra",7.86f);
+        map2.put("Multiplication",8.97f);
+        map2.put("Addition",6.99f);
         UIConnector.showBarChartTeacher(map,map2);
     }
     public void getAssignmentsCreated(String teacherID){
         HashMap<String,Integer>map3=new HashMap<>();
         map3.put("Algebra",4);
-        map3.put("Fractions",6);
-        map3.put("Multiplication",10);
+        map3.put("Addition",2);
+        map3.put("Multiplication",4);
 
         Log.d("Hussu","Entering getAssignmentsCreated dc");
         UIConnector.showPieChartTeacher(map3);
@@ -503,16 +503,16 @@ public class DatabaseConnector {
     }
     public void getAssignmentsCompletedScores(String studentID){
         HashMap<String,Integer> map = new HashMap<>();
-        map.put("Algebra",7);
-        map.put("Multiplication",6);
-        map.put("Fractions",6);
+        map.put("Algebra",3);
+        map.put("Multiplication",1);
+        map.put("Addition",1);
         UIConnector.showPieChartStudent(map);
     }
     public void getAvgTime(String studentID){
         HashMap<String,Float> map2 = new HashMap<>();
         map2.put("Algebra",5.0f);
         map2.put("Multiplication",10.0f);
-        map2.put("Fractions",6.0f);
+        map2.put("Addition",6.0f);
         UIConnector.showBarChartStudent(map2);
     }
     public double getAssignmentScore(String aID,String studentID){
