@@ -18,6 +18,8 @@ import com.pythagorithm.mathsmartv2.AppLogic.Question;
 import com.pythagorithm.mathsmartv2.AppLogic.Student;
 import com.pythagorithm.mathsmartv2.R;
 
+import org.w3c.dom.Text;
+
 import java.util.Random;
 
 import io.github.kexanie.library.MathView;
@@ -26,6 +28,9 @@ public class assignmentQuestion extends AppCompatActivity {
     Student student;
     Assignment assignment;
     Question currentQuestion;
+    TextView assignmentTitle;
+    TextView topicText;
+    TextView questionAttempted;
     MathView questionFormula;
     MathView answer1;
     MathView answer2;
@@ -50,21 +55,6 @@ public class assignmentQuestion extends AppCompatActivity {
     TextView qstnNumber;
     private boolean waitingForQuestion=true;
 
-    private String mathviewify(String questionStatement){
-        return "$$" + questionStatement + "$$";
-    }
-
-    public void setQuestion() {
-        waitingForQuestion = false;
-        currentQuestion = student.getaH().getCurrentQuestion();
-        questionFormula.setText(mathviewify(currentQuestion.getQuestionStatment()));
-        answer1.setText(mathviewify(currentQuestion.getCorrectAnswer()));
-        row1.setTag("correct");
-        row2.setTag("wrong");
-        answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
-        optionSelected = false;
-        nxtbtn.setEnabled(false);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +85,36 @@ public class assignmentQuestion extends AppCompatActivity {
         row2 = (TableRow) findViewById(R.id.row2);
         row3 = (TableRow) findViewById(R.id.row3);
         row4 = (TableRow) findViewById(R.id.row4);
+
+        assignmentTitle = (TextView ) findViewById(R.id.assignmentTitleText);
+        topicText = (TextView) findViewById(R.id.topicText);
+        questionAttempted = (TextView) findViewById(R.id.questionAttemptNumberText);
+
+        assignmentTitle.setText(assignment.getAssignmentName());
+        topicText.setText("Topic: "+assignment.getAssignmentTopic().substring(0, 1).toUpperCase() + assignment.getAssignmentTopic().substring(1));
+        questionAttempted.setText("Number of Attempts: 0");
         questionNumm = getIntent().getStringExtra("assignmentNum");
         nxtbtn = (Button) findViewById(R.id.nxtbtn);
         nxtbtn.setEnabled(false);
 
+    }
+
+
+    private String mathviewify(String questionStatement){
+        return "$$" + questionStatement + "$$";
+    }
+
+    public void setQuestion() {
+        waitingForQuestion = false;
+        currentQuestion = student.getaH().getCurrentQuestion();
+        questionAttempted.setText("Number of Attempts: "+student.getaH().getTotalQuestionsAttempted());
+        questionFormula.setText(mathviewify(currentQuestion.getQuestionStatment()));
+        answer1.setText(mathviewify(currentQuestion.getCorrectAnswer()));
+        row1.setTag("correct");
+        row2.setTag("wrong");
+        answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
+        optionSelected = false;
+        nxtbtn.setEnabled(false);
     }
 
     public void optionSelect(View v) {
@@ -116,6 +132,7 @@ public class assignmentQuestion extends AppCompatActivity {
     }
     void finishAssignment(){
         nxtbtn.setEnabled(true);
+        questionAttempted.setText("Number of Attempts: "+student.getaH().getTotalQuestionsAttempted());
         done = true;
         Toast.makeText(this, "Done",Toast.LENGTH_LONG).show();
         nxtbtn.setText("Submit Assignment");
@@ -161,6 +178,7 @@ public class assignmentQuestion extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+        questionAttempted.setText("Number of Attempts: "+student.getaH().getTotalQuestionsAttempted());
         nxtbtn.setText("Exit assignment");
         nxtbtn.setEnabled(true);
         exit=true;
