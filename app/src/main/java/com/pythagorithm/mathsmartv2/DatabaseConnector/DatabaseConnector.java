@@ -23,7 +23,6 @@ import com.pythagorithm.mathsmartv2.UILayer.assignmentPreview;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -504,8 +503,8 @@ public class DatabaseConnector {
     }
     public void getAssignmentsCompletedScores(String studentID){
         HashMap<String,Integer> map = new HashMap<>();
-        map.put("Algebra",5);
-        map.put("Multiplication",10);
+        map.put("Algebra",7);
+        map.put("Multiplication",6);
         map.put("Fractions",6);
         UIConnector.showPieChartStudent(map);
     }
