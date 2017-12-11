@@ -94,7 +94,8 @@ public class Student implements Parcelable {
     public void createAssignmentHandler(boolean found, AssignmentProgress ap,Assignment assignment){
         if (found) {
             ArrayList<String> compQs = new ArrayList<>();
-            compQs.addAll(ap.getCompletedQuestions().keySet());
+            if (ap.getCompletedQuestions()!=null)
+                compQs.addAll(ap.getCompletedQuestions().keySet());
             aH = new AssignmentHandler(assignment, studentID, overallScore, compQs, ap.getAssignmentScore(), ap.getQuestionsLeft(), ap.questionsAttempted);
         }
         else
