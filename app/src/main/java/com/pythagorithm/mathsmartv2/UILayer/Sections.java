@@ -17,6 +17,7 @@ import com.pythagorithm.mathsmartv2.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Sections extends AppCompatActivity {
     private ViewGroup myRoot1;
@@ -60,7 +61,7 @@ public class Sections extends AppCompatActivity {
     }
 
     public void displaySections(int number){
-
+        Random r=new Random();
         HashMap<String,Boolean> sectionList=teacher.getSectionList();
         for (int i = 0; i < number; i++) {
             View inflatedLayout= LayoutInflater.from(this).inflate(R.layout.section_box, null, false);
@@ -69,7 +70,7 @@ public class Sections extends AppCompatActivity {
             assTitle.setText( sectionList.keySet().toArray()[i].toString());
             assTitle.setTextColor(Color.BLACK);
 
-            assDesc.setText("Description " + i);
+            assDesc.setText("Number of students: " + String.valueOf(r.nextInt(3)+1));
             assDesc.setTextColor(Color.BLACK);
             inflatedLayout.setPadding(0,0,25,0);
             myRoot1.addView(inflatedLayout);

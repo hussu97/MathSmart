@@ -105,7 +105,7 @@ public class addQuestion extends AppCompatActivity {
                     wAnswer1.getText().toString().trim(),
                     wAnswer2.getText().toString().trim(),
                     wAnswer3.getText().toString().trim(),
-                    topicSpinner.getSelectedItem().toString().toLowerCase(),
+                    topicSpinner.getSelectedItem().toString(),
                     Integer.parseInt(difSpinner.getSelectedItem().toString()));
         }
     }

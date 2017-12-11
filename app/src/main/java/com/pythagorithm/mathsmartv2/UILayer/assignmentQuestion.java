@@ -32,6 +32,7 @@ public class assignmentQuestion extends AppCompatActivity {
     MathView answer3;
     MathView answer4;
     String questionNumm;
+    private TextView qNo;
     boolean correctAnswer = false;
 
 
@@ -58,10 +59,15 @@ public class assignmentQuestion extends AppCompatActivity {
         waitingForQuestion = false;
         currentQuestion = student.getaH().getCurrentQuestion();
         questionFormula.setText(mathviewify(currentQuestion.getQuestionStatment()));
+        //qNo.setText(student.getaH().get);
         answer1.setText(mathviewify(currentQuestion.getCorrectAnswer()));
         row1.setTag("correct");
         row2.setTag("wrong");
         answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
+        if(currentQuestion.getWrongAnswer2()!=null) {
+            answer3.setText(mathviewify(currentQuestion.getWrongAnswer2()));
+            answer4.setText(mathviewify(currentQuestion.getWrongAnswer3()));
+        }
         optionSelected = false;
         nxtbtn.setEnabled(false);
     }
@@ -73,6 +79,7 @@ public class assignmentQuestion extends AppCompatActivity {
         Bundle received = getIntent().getExtras();
         AssignmentProgress ap = received.getParcelable("assignmentProgress");
 
+        qNo=(TextView)findViewById(R.id.questionNumber);
         exit=false;
         done = false;
         student = (Student) received.getParcelable("student");

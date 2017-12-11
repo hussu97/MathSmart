@@ -47,9 +47,6 @@ public class Assignments extends AppCompatActivity {
         myRoot2 = (ViewGroup) findViewById(R.id.completedAssingmentsHolder);
         myRoot3 = (ViewGroup) findViewById(R.id.missedAssignmentsHolder);
 
-        Toast.makeText(this,getIntent().getStringExtra("username"),
-                Toast.LENGTH_SHORT).show();
-
     }
 
     private void getAssignments(){
