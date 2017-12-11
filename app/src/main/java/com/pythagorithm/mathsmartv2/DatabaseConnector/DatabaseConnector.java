@@ -418,11 +418,11 @@ public class DatabaseConnector {
         Precondition: a student is logged in and an assignment has been started.
         Postcondition: an assignment progress object is added to the database.
      */
-    public void saveAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, int questionsLeft){
+    public void saveAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions, final double assignmentScore, int questionsLeft, int questionsAttempted){
         HashMap<String, Boolean> compQs = new HashMap<>();
         for (int i =0; i< completedQuestions.size();i++)
             compQs.put(completedQuestions.get(i),true);
-        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,compQs, assignmentScore,questionsLeft);
+        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,compQs, assignmentScore,questionsLeft, questionsAttempted);
         FirebaseFirestore.getInstance().collection(ASSIGNMENT_PROGRESS_COLLECTION)
                 .document(aID)
                 .set(ap)
@@ -434,8 +434,8 @@ public class DatabaseConnector {
                 });
     }
 
-    public void createAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions , int questionsLeft){
-        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,null, 0,questionsLeft);
+    public void createAssignmentProgress(final String studentID, final String aID, final ArrayList<String> completedQuestions , int questionsLeft, int questionsAttempted){
+        final AssignmentProgress ap = new AssignmentProgress(studentID, aID,null, 0,questionsLeft, questionsAttempted);
         FirebaseFirestore.getInstance().collection(ASSIGNMENT_PROGRESS_COLLECTION)
                 .document(aID)
                 .set(ap)
@@ -457,7 +457,7 @@ public class DatabaseConnector {
         Postcondition: a new score for a question is added to the database. The assignment report of the assignment with assignment ID assignmentID
         is either created or updated with the new score
      */
-    public void updateScore(String studentID, final String questionID, String assignmentID,ArrayList<String> completedQuestions, double questionScore, double assignementScore, int questionsLeft ,boolean correct, int time, String topic, int difficulty){
+    public void updateScore(String studentID, final String questionID, String assignmentID,ArrayList<String> completedQuestions, double questionScore, double assignementScore, int questionsLeft ,boolean correct, int time, String topic, int difficulty, int questionsAttempted){
         QuestionScore qs = new QuestionScore(studentID, questionID, assignmentID, correct, time, topic, difficulty, questionScore);
         FirebaseFirestore.getInstance().collection(QUESTION_SCORES_COLLECTION)
                 .add(qs)
@@ -473,7 +473,7 @@ public class DatabaseConnector {
                         Log.w("Firestore", "Error writing score", e);
                     }
         });
-        saveAssignmentProgress(studentID,assignmentID,completedQuestions,assignementScore,questionsLeft);
+        saveAssignmentProgress(studentID,assignmentID,completedQuestions,assignementScore,questionsLeft, questionsAttempted);
 
     }
 

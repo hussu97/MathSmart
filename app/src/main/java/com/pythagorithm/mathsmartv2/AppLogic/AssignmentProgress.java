@@ -25,7 +25,7 @@ public class AssignmentProgress implements Parcelable {
     public AssignmentProgress() {
     }
 
-    public AssignmentProgress(String studentID, String assignmentID, HashMap<String,Boolean> completedQuestions, double assignmentScore, int questionsLeft) {
+    public AssignmentProgress(String studentID, String assignmentID, HashMap<String,Boolean> completedQuestions, double assignmentScore, int questionsLeft, int questionsAttempted) {
         this.studentID = studentID;
         this.assignmentID = assignmentID;
         this.completedQuestions = completedQuestions;
@@ -39,6 +39,7 @@ public class AssignmentProgress implements Parcelable {
 //        else this.completedQuestions=null;
         this.assignmentScore = assignmentScore;
         this.questionsLeft = questionsLeft;
+        this.questionsAttempted = questionsAttempted;
     }
 
     @Override
@@ -55,6 +56,7 @@ public class AssignmentProgress implements Parcelable {
         parcel.writeDouble(assignmentScore);
         parcel.writeInt(questionsLeft);
         parcel.writeDouble(overallScore);
+        parcel.writeInt(questionsAttempted);
     }
 
     public AssignmentProgress(Parcel in){
@@ -65,6 +67,7 @@ public class AssignmentProgress implements Parcelable {
         assignmentScore = in.readDouble();
         questionsLeft = in.readInt();
         overallScore = in.readDouble();
+        questionsAttempted = in.readInt();
     }
 
     // This is to de-serialize the object

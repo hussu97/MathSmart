@@ -105,14 +105,10 @@ public class Assignments extends AppCompatActivity {
             missedB=false;
             Assignment currAssignment = student.getAssignmentList().get(i);
             for (int j = 0; j< student.getCompletedAssignments().size();j++){
-
                 if  (currAssignment.getAssignmentID().equals(student.getCompletedAssignments().get(j))) {
                     cont = false;
                     break;
                 }
-
-
-
             }
             strDate=sdf.parse(currAssignment.getDueDate().replaceAll("-", "/"));
             Log.d("Hussu","Assignment date: "+currAssignment.getDueDate());

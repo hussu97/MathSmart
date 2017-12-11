@@ -112,7 +112,11 @@ public class assignmentQuestion extends AppCompatActivity {
         answer1.setText(mathviewify(currentQuestion.getCorrectAnswer()));
         row1.setTag("correct");
         row2.setTag("wrong");
+        row3.setTag("wrong");
+        row4.setTag("wrong");
         answer2.setText(mathviewify(currentQuestion.getWrongAnswer1()));
+        answer3.setText(mathviewify(currentQuestion.getWrongAnswer2()));
+        answer4.setText(mathviewify(currentQuestion.getWrongAnswer3()));
         optionSelected = false;
         nxtbtn.setEnabled(false);
     }

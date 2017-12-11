@@ -59,7 +59,7 @@ public class AssignmentHandler  {
         this.assignmentScore=0;
         this.totalQuestionsAttempted=totalQuestionsAttempted;
         dc=new DatabaseConnector(this);
-        dc.createAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,min);
+        dc.createAssignmentProgress(studentID,assignment.getAssignmentID(),completedQuestions,min, 0);
         start();
     }
     /*
@@ -132,7 +132,7 @@ public class AssignmentHandler  {
         Log.d("Hussu","Current score after: "+currentScore );
         Log.d("Hussu","Assignment score after: "+assignmentScore );
         questionAvailable = false;
-        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),completedQuestions,currentScore, assignmentScore, min,answer,time,currentQuestion.getTopic(),currentQuestion.getWeight());
+        dc.updateScore(studentID, currentQuestion.getQuestionID(), assignment.getAssignmentID(),completedQuestions,currentScore, assignmentScore, min,answer,time,currentQuestion.getTopic(),currentQuestion.getWeight(), totalQuestionsAttempted);
 
         currentQuestion=null;
 
