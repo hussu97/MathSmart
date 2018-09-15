@@ -16,7 +16,6 @@ public class AssignmentProgress implements Parcelable {
     double assignmentScore;
     int questionsLeft; // minimum questions to complete assignment
     double overallScore; // weight the student reached
-    //TODO: add questionsAttempted to logic
     int questionsAttempted;
 
     public AssignmentProgress() {
